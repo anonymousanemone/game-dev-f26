@@ -1,0 +1,38 @@
+{
+  "entries": {
+    "e31": {
+      "name": "Crocodiles of spell 31",
+      "short_name": "The crocodiles",
+      "plural": true,
+      "descriptions": {
+        "default": "Crocodiles guard the road.",
+        "settled": "They come to take the magic of the deceased. Turned back with the spear."
+      },
+      "journal": true
+    },
+    "e32": {
+      "name": "Crocodiles of spell 32",
+      "short_name": "The crocodiles",
+      "plural": true,
+      "descriptions": {
+        "default": "Crocodiles wait on both sides.",
+        "settled": "One for each quarter of the sky. Turned back two at a time."
+      },
+      "journal": true
+    },
+    "caption_e31": {
+      "name": "Spell 31",
+      "descriptions": {
+        "default": "A chapter about repelling the reptiles that come to take off the man's magic charms in the Netherworld."
+      },
+      "journal": false
+    },
+    "caption_e32": {
+      "name": "Spell 32",
+      "descriptions": {
+        "default": "A chapter about repelling the crocodiles coming to deprive the deceased from his magic power in the Netherworld."
+      },
+      "journal": false
+    }
+  }
+}

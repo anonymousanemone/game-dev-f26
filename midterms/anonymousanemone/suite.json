@@ -1,0 +1,17 @@
+{
+  "declared_date": "2026-10-26",
+  "scope": "Original spell31 and spell32 combat, three initial situations",
+  "fixed_step_seconds": 0.016666666666666666,
+  "frames_per_action": 6,
+  "step_limit": 1200,
+  "model_call_limit": 1200,
+  "call_timeout_seconds": 30,
+  "episode_timeout_seconds": 1800,
+  "history_observations": 2,
+  "cases": [
+    {"id": "spell31", "description": "One-sided tutorial followed by heka wave", "development_seeds": [30], "held_out_seeds": [101, 102]},
+    {"id": "spell32", "description": "Two-sided mixed crocodiles, default vertical position", "development_seeds": [30], "held_out_seeds": [201, 202]},
+    {"id": "spell32_low", "description": "Same two-sided rules, bearer starts at lowest allowed position", "development_seeds": [30], "held_out_seeds": [301, 302]}
+  ],
+  "note": "Declared before player tuning. Held-out seeds must not be used for prompt or heuristic tuning. Run each held-out case/seed once per policy, including model history=0 and history=2."
+}

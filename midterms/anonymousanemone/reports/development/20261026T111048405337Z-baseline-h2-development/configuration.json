@@ -1,0 +1,21 @@
+{
+  "date": "20261026T111048405337Z",
+  "game_version": "29b75ff59ff531699834cb05545d23451bfea9242d43892681c924a5fbd2e4db",
+  "suite_sha256": "ec3c1399d77b9bbfdacef14246234a20421a1e6540ec55d618cbbe35a756c752",
+  "prompt_sha256": "19644df97fbc09ce3b04477667ea7b9fed379a017af40785dd8a9a6fc0e6de2d",
+  "arguments": {
+    "policy": "baseline",
+    "model": null,
+    "split": "development",
+    "case": null,
+    "history": 2,
+    "max_calls": 1200,
+    "call_timeout": 30,
+    "episode_timeout": 1800,
+    "out": "reports/development",
+    "input_price": null,
+    "output_price": null,
+    "price_date": null,
+    "price_source": null
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "implementation": {
+    "instructions": "AGENTS.md",
+    "session_link": null,
+    "status": "implementation present; session link still required"
+  },
+  "reusable_skill": {
+    "name": "crocodile-evaluation",
+    "instructions": "skills/crocodile-evaluation/SKILL.md",
+    "evidence": "reports/skill-sessions.md"
+  },
+  "independent_review": {
+    "instructions": "review.md",
+    "status": "pending separate read-only review; implementation session is not independent"
+  },
+  "player": {
+    "entrypoint": "python -m players.run --policy model --split development --case spell31",
+    "adapter": "players/model.py",
+    "provider": "openai",
+    "default_model": "gpt-6-luna",
+    "credentials": "private .env or process environment; never player inputs",
+    "tools": [],
+    "observations": "visible observations and at most two earlier observations",
+    "max_cost_usd": 10,
+    "trace_directory": "playtrace"
+  }
+}

@@ -1,0 +1,34 @@
+--- original/godot/scripts/dangers/crocodiles.gd
++++ godot/scripts/dangers/crocodiles.gd
+@@ -67,7 +67,11 @@
+ 	# the four drawn crocodiles wait spread out on the left, at different heights
+ 	game.fight.crocs = []
+ 	var lanes: Array = game.fight.lanes.duplicate()
+-	lanes.shuffle()
++	for i in range(lanes.size() - 1, 0, -1):
++		var j = game.rng.randi() % (i + 1)
++		var previous = lanes[i]
++		lanes[i] = lanes[j]
++		lanes[j] = previous
+ 	for i in e.foes.size():
+ 		var a: Node2D = game.actors[e.foes[i]]
+ 		var start = Vector2(full.position.x + (0.12 + 0.13 * i) * (game.fight.stand.x - full.position.x), 0.0)
+@@ -158,7 +162,7 @@
+ 
+ 
+ func _holding_heka() -> bool:
+-	return Input.is_key_pressed(KEY_SHIFT) or game.fight.get("force_heka", false)
++	return bool(game.get_meta("midterm_controls").heka) if game.has_meta("midterm_controls") else Input.is_key_pressed(KEY_SHIFT) or game.fight.get("force_heka", false)
+ 
+ 
+ func _crocs(dt: float) -> void:
+@@ -228,6 +232,9 @@
+ 
+ ## The arrow keys (or WASD); ← → only where he can turn.
+ func _keys() -> Vector2:
++	if game.has_meta("midterm_controls"):
++		var action: Dictionary = game.get_meta("midterm_controls")
++		return Vector2(action.face, action.move)
+ 	var mv := Vector2(Input.get_axis("ui_left", "ui_right"), Input.get_axis("ui_up", "ui_down"))
+ 	mv.x += float(Input.is_key_pressed(KEY_D)) - float(Input.is_key_pressed(KEY_A))
+ 	if not game.fight.both:

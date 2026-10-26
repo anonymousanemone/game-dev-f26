@@ -1,0 +1,35 @@
+name: Midterm anonymousanemone
+on:
+  push:
+    branches: ['anonymousanemone/midterm']
+    paths:
+      - 'midterms/anonymousanemone/**'
+      - '.github/workflows/midterm-anonymousanemone.yml'
+  pull_request:
+    paths:
+      - 'midterms/anonymousanemone/**'
+      - '.github/workflows/midterm-anonymousanemone.yml'
+permissions:
+  contents: read
+jobs:
+  deterministic:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: midterms/anonymousanemone
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Godot
+        env:
+          GODOT_VERSION: '4.7.2'
+        run: |
+          curl --fail --location --retry 3 "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o "$RUNNER_TEMP/godot.zip"
+          unzip "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot-bin"
+          echo "GODOT=$RUNNER_TEMP/godot-bin/Godot_v${GODOT_VERSION}-stable_linux.x86_64" >> "$GITHUB_ENV"
+      - name: Import project
+        run: '"$GODOT" --headless --path godot --editor --import --quit'
+      - name: Deterministic checks
+        run: python -m unittest discover -s tests -v

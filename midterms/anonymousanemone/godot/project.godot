@@ -1,0 +1,33 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Totenbuch — Crocodiles Midterm"
+config/description="The Book of the Dead (Lepsius, 1842) as a point-and-click game: the funeral procession, night journey, dangers, Field of Offerings, and weighing of the heart."
+run/main_scene="res://scenes/dangers.tscn"
+config/features=PackedStringArray("4.7")
+
+[autoload]
+
+Scroll="*res://scripts/scroll.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/size/window_width_override=2000
+window/size/window_height_override=1125
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[rendering]
+
+environment/defaults/default_clear_color=Color(0.906, 0.839, 0.682, 1)

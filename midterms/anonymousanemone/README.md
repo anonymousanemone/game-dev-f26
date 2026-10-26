@@ -48,72 +48,96 @@ The original HUD provides restart, Journal and Hint. Three bites lose; using hek
 against an ordinary crocodile loses, and an escaping crocodile can steal the word.
 Turn back every crocodile to win an encounter; complete both to finish the excerpt.
 
-## Classmate play: record a human trace
+## Classmate play: Record session
 
-**Current evidence:** the saved development runs are scripted baseline runs. No live model run or model-player trace has been recorded. A human trace records a real person's inputs; it is separate from baseline and model evidence.
+Launch the game normally using **Setup and play** above. On the intro card, click
+**Record session**, beside **Begin**. This starts the normal scroll game and saves
+into **./playtrace/** automatically. Plain **Begin** starts an unrecorded session.
 
-Use this mode for a classmate's recorded combat attempt. First complete the import command under **Setup and play**. From this project's root folder, run:
+A **Recording · Stop** button appears in the top bar. Click it to finish saving
+while continuing to play, or close the game window to finish the recording.
+**Escape retains its normal meaning: leave the encounter.** It does not end this
+session recording. Restart, Journal, Hint, walking and further encounter attempts
+remain part of the session until you stop or close it. A new recording begins
+from the intro after returning to Menu or relaunching the game.
 
-```bash
-export GODOT=/Applications/Godot.app/Contents/MacOS/Godot
-"$GODOT" --path godot --script res://scripts/human_trace.gd -- --case=spell31
-```
+This mode keeps the original native controls: movement responds each frame, and
+Space thrusts on a new key press. Holding Space does not auto-repeat. It records
+actual frame timing, including exact binary frame deltas, rather than sampling
+all controls every 100 ms. Preparing the build archive happens while the intro
+is still paused. Each frame, input command and result is flushed to disk. A crash
+may leave a partial last row or no final summary; earlier complete rows remain.
 
-On Linux/Windows, substitute your Godot executable. Each attempt automatically gets a unique filename in **./playtrace/**, printed in the terminal. No API key, Python package or model service is needed. An optional `--trace=/absolute/path/to/new.jsonl` overrides the destination; existing traces are never overwritten.
+Each session produces a uniquely named `human-session-....jsonl` actions/state
+file plus a matching `.jsonl.build.zip` containing the Godot source and artwork.
+The terminal prints its path. Both stay in **./playtrace/**, so nothing needs to
+be copied out of `/tmp`. Build ZIPs are Git-ignored and remain local; back them up
+if needed. API keys, installed dependencies and import caches are excluded.
 
-The window opens directly in spell 31 combat. Click the game window to give it keyboard focus. Use **Up/Down or W/S** to align the spear, **Space** to thrust, and **Shift + Space** against red crocodiles. Ordinary crocodiles require Space without Shift. Three bites lose, with introductory tutorial protection; using heka on an ordinary crocodile or letting a crocodile steal the active heka word also loses. Turn back all crocodiles to win.
+### Watch or verify the recording
 
-For the next encounter, rerun the command with `--case=spell32` to record a new attempt. **Left/Right or A/D** turns the bearer in spell 32. `--case=spell32_low` selects its low starting position. All human recordings use development seed 30; do not use held-out seeds for classmate practice.
-
-Recording samples held keys every 0.1 seconds and advances the actual Godot scene six fixed frames per action, matching the automated interface. Hold a key through a sampling interval; holding Space requests repeated thrusts as cooldown permits. This mode skips the intro, scroll navigation and arena opening. Use the regular launch above to audit those interfaces. During a recorded attempt, use the combat keys; close and relaunch to restart rather than using HUD navigation.
-
-At victory, defeat or the 1200-action limit, recording stops and the window displays the reason. Close it afterward. **Escape** ends an unfinished attempt and closes the window. Closing the window also ends an attempt. Interrupted attempts are labeled as interrupted, not as wins or losses. Each row is flushed to disk; a crash can leave a partial trace without a summary.
-
-The terminal prints the trace path. Keep **both** the `.jsonl` action file and the automatically created `.jsonl.build.zip` beside it in **./playtrace/**. This folder is permanent project storage; no copying out of `/tmp` is needed. The action files can be committed as evidence. Generated build archives are Git-ignored and stay local; back them up if needed.
-
-The JSONL saves:
-
-- Build file hashes, exact Godot version, UTC start time, fixed-step settings and the build archive's SHA-256.
-- Starting case, development seed and initial observation.
-- Every submitted action, sequential step/frame number, wall-clock elapsed microseconds, before/after observations, action validity and outcome. Observations include visible crocodile geometry/color/direction, bearer and spear geometry, thrust state, tutorial feedback, health and score.
-- Keyboard press/release events received by the recorder, with timestamps and step numbers, plus application focus changes. These help distinguish the sampled actions from brief presses between samples.
-- The final outcome or interruption reason. Rows are flushed after writing; a crash may leave an incomplete final row or no summary.
-
-The ZIP preserves the Godot source and artwork used in the attempt, excluding import caches. It contains no API keys or installed dependencies. Keep the matching Godot release too: the archive does not contain the engine executable. HUD navigation is disabled during recording and replay so unrecorded restart, hint or Journal interactions cannot alter the attempt.
-
-This is a deterministic **combat action trace**, not a video of the screen or a record of scroll navigation. It does not capture spoken questions, mouse movement, operating-system overlays or every rendered frame. For exact visual appearance and original wall-clock pacing, also make a screen recording outside this project. Write classmate questions separately in [PEER-NOTES.md](PEER-NOTES.md).
-
-Replay the saved attempt with the same build:
+From this project folder:
 
 ```bash
 python -m players.replay --latest-human
 ```
 
-To replay a particular actions file instead, use `python -m players.replay playtrace/YOUR_FILENAME.jsonl`. The replay executor is a bot that follows that file exactly: it makes no new tactical choices. It reconstructs the combat by submitting those actions to the original Godot engine and verifying the results.
+Or give the replay executor the specific actions file:
 
-Replay checks the build hashes and Godot version before starting, then compares every replayed result with the recorded result. It stops on a mismatch rather than presenting an inaccurate continuation. Older traces without build metadata can only verify their recorded observations/results. An interrupted trace replays only the actions that were saved; a malformed row is rejected.
+```bash
+python -m players.replay playtrace/YOUR_FILENAME.jsonl
+```
 
-Replay controls: **Space** pauses/resumes; **Right arrow** advances one action and pauses; **1/2/3** selects 0.25×/1×/2× speed; **Escape** exits. The title shows the current step, simulation time, health, score and submitted action. Replay uses simulation timing; wall-clock timestamps remain in the JSONL for analysis of original timing.
+It executes the saved inputs in the same original Godot scene and checks every
+recorded native frame's gameplay state. It stops on a mismatch. Space pauses or
+resumes; Right advances one native frame; 1/2/3 selects 0.25×/1×/2× speed; Escape
+exits. For fixed-step agent traces, Right advances one six-frame action instead.
+The replay detects which trace format it is reading.
 
-To check the entire trace without watching:
+To verify without watching:
 
 ```bash
 python -m players.replay --latest-human --verify
 ```
 
-Success prints `Verified all N recorded steps`; a mismatch exits unsuccessfully. This verifies exact recorded observations and outcomes at action boundaries on the matching engine/build. It is not a claim of pixel-identical rendering across computers.
+The JSONL preserves session/build identity, input commands and mouse world
+coordinates, movement/facing/heka state, pauses, frame timing, encounter state,
+health, progress, outcomes, dialogue, Journal position, and interruption reason.
+Trusted audit state is saved for analysis and never passed to a model policy.
+The build and exact Godot version are checked before replay. The archive excludes
+the engine executable, so keep access to the same Godot release too.
 
-If this project's files have changed, restore the archived build into a new folder outside the project, using the matching Godot version identified in the trace's first row. For example, with an unused destination folder:
+If the game source has changed, restore the matching archive into a new folder
+outside this project, import it, and replay using the archived script:
 
 ```bash
-unzip playtrace/REPLACE_WITH_PRINTED_FILENAME.jsonl.build.zip -d /tmp/crocodiles-restored-attempt1
+unzip playtrace/YOUR_FILENAME.jsonl.build.zip -d /tmp/crocodiles-restored-attempt1
 "$GODOT" --headless --path /tmp/crocodiles-restored-attempt1/godot --editor --import --quit
-"$GODOT" --path /tmp/crocodiles-restored-attempt1/godot --script res://scripts/replay.gd -- --replay="$PWD/playtrace/REPLACE_WITH_PRINTED_FILENAME.jsonl"
+"$GODOT" --path /tmp/crocodiles-restored-attempt1/godot --script res://scripts/replay.gd -- --replay="$PWD/playtrace/YOUR_FILENAME.jsonl"
 ```
 
-Label playback **human trace replay**, not a fresh playtest or model run.
+Replay reconstructs and verifies gameplay; it is not a pixel-identical video
+capture or a recording of spoken comments. Keep screenshots and screen recordings
+outside the project. Label playback **human session replay**, and write actual
+classmate questions separately in [PEER-NOTES.md](PEER-NOTES.md).
 
-For a README-only audit, give the classmate this README and let them follow setup and these commands without coaching. Note every question they need to ask; those questions identify instructions to clarify. For silent play, observe without directing their choices. No classmate playtest is claimed merely because recording mode exists.
+### Optional fixed-step combat recorder
+
+For a human attempt at the same 0.1-second cadence used by automated players:
+
+```bash
+"$GODOT" --path godot --script res://scripts/human_trace.gd -- --case=spell31
+```
+
+This older diagnostic mode opens combat directly, skips scroll navigation and
+opening presentation, samples held keys every six 1/60-second frames, repeats
+thrust requests while Space is held, and disables HUD navigation. Escape ends
+that attempt. It also saves automatically under `./playtrace/` and supports the
+same replay commands. Use the intro's **Record session** button for normal play.
+
+For a README-only audit, let the classmate follow setup and play without coaching.
+Their questions identify missing instructions. No human playtest is claimed by
+an automated recording fixture or by the presence of this feature.
 
 ## Editor/source layout
 
@@ -213,6 +237,7 @@ Observations include active visible snout positions/directions/colors/dimensions
 | Crocodiles, bearer, heka glyphs and captions of spells 31/32 | manual (visual reference) | Lepsius, *Das Todtenbuch der Ägypter* (1842), plate XVI; [digitized volume](https://archiv.ub.uni-heidelberg.de/propylaeumdok/467/1/lepsius_todtenbuch.pdf); see [CREDITS.md](CREDITS.md) |
 | Spell 31 tutorial, waves, red-order choices; spell 32 two-sided mixed waves; counts, speeds, ramp, spacing | design + code | `godot/scripts/dangers/danger_encounters.gd`, original e31/e32 dictionaries |
 | Movement speed, lane spacing, snout geometry, silhouette strike and grace distance | design + code | `godot/scripts/dangers/crocodiles.gd`, constants, `_move_bearer`, `_croc_head`, `_solid_of`, `_croc_strike` |
+| Spell 32 movement starts must be at least half the larger crocodile's body farther from the bearer than every approaching crocodile, across both sides and all heights; returning crocodiles wait for the same clearance. Base speed is reduced to 120 plate px/s (180 world px/s at scale 1.5), retaining the 1% ramp. | design | User's spacing/difficulty correction; `crocodiles.gd`, `_croc_clear` and `_croc_resume`; `danger_encounters.gd`, e32. Deterministic fixtures in `spacing_checks.gd`. |
 | Plain/heka color match; heka on ordinary foe loses; red foe resists plain strike | design + code | Same file, `_croc_strike`, `_croc_takes_word` |
 | Three health; bites, escape/word theft; tutorial bite grace | design + code | Same file, `_croc_bites`, `_crocs`, `_croc_dies` |
 | Last drawn crocodile waits until others are gone; waves complete only when all are turned | design + code | Same file, `_croc_launch`, `_croc_break`, `_croc_next_wave` |
@@ -251,6 +276,8 @@ This is a short worked example of **expected** behavior for later checks, not a 
 Evidence: [reset, fixed ticks and observations](godot/scripts/episode.gd); [practice-thrust transition](godot/scripts/dangers/dangers.gd), `_croc_thrust`; [first launch and thrust completion](godot/scripts/dangers/crocodiles.gd), `_crocs`. A later acceptance example can cover a full win or loss using an actual saved trace.
 
 ## Evidence and hand-in
+
+Historical image source: **Carl Richard Lepsius, *Das Todtenbuch der Ägypter*, Leipzig: Wigand, 1842**, plate XVI, spells 31–32. Heidelberg's catalog credits **Dr. Marcus Müller, Totenbuch-Projekt, University of Bonn**, with supplying the digital version, hosted by **Universitätsbibliothek Heidelberg / Propylaeum-DOK**. [Persistent citation](https://doi.org/10.11588/propylaeumdok.00000467). An [Internet Archive copy](https://archive.org/details/bub_gb_RQE2AQAAMAAJ) of the edition is explicitly marked Public Domain Mark 1.0. [CREDITS.md](CREDITS.md) records that reuse basis separately from the original Heidelberg source and the existing exported artwork’s provenance.
 
 - [Evaluation and current results](EVALUATION.md)
 - [Credits, reuse terms and extraction provenance](CREDITS.md), [source manifest](reports/source-manifest.json)

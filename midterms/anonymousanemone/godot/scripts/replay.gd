@@ -10,6 +10,7 @@ var speed := 1.0
 var stopped := false
 var verify_only := false
 var trace_summary: Dictionary = {}
+var native_playback
 const Build = preload("res://scripts/trace_build.gd")
 func _initialize() -> void:
 	call_deferred("start")
@@ -27,6 +28,7 @@ func start() -> void:
 	var situation := "spell31"
 	var initial: Dictionary = {}
 	var metadata: Dictionary = {}
+	var all_rows: Array = []
 	while not file.eof_reached():
 		var line := file.get_line()
 		if line.is_empty(): continue
@@ -35,6 +37,7 @@ func start() -> void:
 			push_error("Malformed trace row; refusing an incomplete replay")
 			quit(1)
 			return
+		all_rows.append(row)
 		if row.get("type") == "metadata": metadata = row
 		if row.get("type") == "summary": trace_summary = row
 		if row.get("type") == "reset":
@@ -44,10 +47,6 @@ func start() -> void:
 		elif row.get("type") == "step":
 			actions.append(row.action)
 			rows.append(row)
-	if initial.is_empty():
-		push_error("Trace has no initial observation")
-		quit(1)
-		return
 	if not metadata.is_empty():
 		var current: Dictionary = JSON.parse_string(JSON.stringify(Build.manifest()))
 		if current.files_sha256 != metadata.files_sha256 or current.godot != metadata.godot:
@@ -56,6 +55,14 @@ func start() -> void:
 			return
 	else:
 		print("Legacy trace: build identity unavailable; checking recorded observations/results only")
+	if metadata.get("format") == "native_session_v1":
+		native_playback = load("res://scripts/session_playback.gd").new(self)
+		native_playback.start(metadata, all_rows, verify_only)
+		return
+	if initial.is_empty():
+		push_error("Trace has no initial observation")
+		quit(1)
+		return
 	var game = load("res://scenes/dangers.tscn").instantiate()
 	root.add_child(game)
 	episode = load("res://scripts/episode.gd").new(game)
@@ -90,6 +97,9 @@ func advance() -> void:
 		episode.game.say("Replay", "End of trace · %d verified steps · %s: %s" % [index, recorded.status, recorded.reason])
 
 func _input(event: InputEvent) -> void:
+	if native_playback != null:
+		native_playback.input_event(event)
+		return
 	if episode == null or stopped or not event is InputEventKey or not event.pressed or event.echo: return
 	match event.keycode:
 		KEY_SPACE: replay_paused = not replay_paused
@@ -101,6 +111,9 @@ func _input(event: InputEvent) -> void:
 		KEY_3: speed = 2.0
 		KEY_ESCAPE: quit()
 func _process(delta: float) -> bool:
+	if native_playback != null:
+		native_playback.tick(delta)
+		return false
 	if episode == null or replay_paused or stopped: return false
 	elapsed += minf(delta, 0.25) * speed
 	while elapsed >= 0.1 and index < actions.size() and not stopped:

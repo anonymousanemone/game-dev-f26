@@ -59,8 +59,9 @@ func is_walking() -> bool:
 
 
 func _process(delta: float) -> void:
+	if has_meta("session_driven") and not get_meta("session_tick", false): return
 	var moving := false
-	var axis := Input.get_axis("ui_left", "ui_right") if keys else 0.0
+	var axis: float = float(get_meta("session_walk_axis", Input.get_axis("ui_left", "ui_right"))) if keys else 0.0
 	if axis != 0.0:
 		stop()
 		position.x = clampf(position.x + axis * speed * delta, min_x, max_x)

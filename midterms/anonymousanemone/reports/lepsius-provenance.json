@@ -1,0 +1,75 @@
+{
+  "checked_date": "2026-10-26",
+  "record_url": "https://archiv.ub.uni-heidelberg.de/propylaeumdok/467/",
+  "doi": "10.11588/propylaeumdok.00000467",
+  "urn": "urn:nbn:de:bsz:16-propylaeumdok-4678",
+  "creator": "Lepsius, Carl Richard",
+  "title": "Das Todtenbuch der Ägypter (nach dem hieroglyphischen Papyrus in Turin)",
+  "publisher": "Wigand",
+  "place": "Leipzig",
+  "publication_year": 1842,
+  "ancient_source": "Papyrus Turin 1791, Ptolemaic period (catalog description)",
+  "digital_version_supplied_by": "Dr. Marcus Müller, Totenbuch-Projekt, University of Bonn (catalog abstract)",
+  "host": "Universitätsbibliothek Heidelberg / Propylaeum-DOK",
+  "deposited": "2010-01-15 10:27",
+  "deposit_is_not_scan_date": true,
+  "catalog_last_modified": "2023-02-03 14:30:02",
+  "pdf_url": "https://archiv.ub.uni-heidelberg.de/propylaeumdok/467/1/lepsius_todtenbuch.pdf",
+  "oai_identifier": "oai:propylaeumdok.uni-hd.de:467",
+  "oai_url": "https://archiv.ub.uni-heidelberg.de/propylaeumdok/cgi/oai2?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:propylaeumdok.uni-hd.de:467",
+  "dc_rights": [
+    "info:eu-repo/semantics/openAccess",
+    "http://archiv.ub.uni-heidelberg.de/volltextserver/help/license_urhg.html"
+  ],
+  "download_terms_url": "https://archiv.ub.uni-heidelberg.de/propylaeumdok/help/license_urhg.html",
+  "terms_summary": "Default No POD terms: private/personal reproduction, no alteration, further public reproduction/distribution subject to rights-holder approval. No item-specific CC license or Public Domain Mark was found in the retrieved record. This records the notice rather than adjudicating subsisting rights in the historical work.",
+  "picture_credit_guidance": "https://www.ub.uni-heidelberg.de/Englisch/helios/digi/nutzung/",
+  "local_chain": "Existing Totenbuch exported PNGs to midterm: see source-manifest.json and direct-extraction.json. Source URL identified by student checklist; PDF-to-export crop history unverified.",
+  "plate_locator": "XVI, spells 31 and 32, retained from existing game documentation; PDF page not re-inspected during this lookup",
+  "retrievals": [
+    {
+      "kind": "catalog_html",
+      "sha256": "d5d8d5dd8e57453c90cd9e69b756413ab6e7a3e7f154b224f2d9959fc4a6f427"
+    },
+    {
+      "kind": "linked_terms_html",
+      "sha256": "e3e0a0130a9ea62ee92f6e2fe631b8e3a71c8434120722c263685498c64eb9ab"
+    },
+    {
+      "kind": "oai_metadata_xml",
+      "sha256": "bb88fc64721eacbfc7e8f245d171ca6b9d3da251f31a1c92fe252a5278cc5c61"
+    }
+  ],
+  "pdf_retrieval": "Bot-check HTML, not PDF; no PDF hash or image comparison claimed",
+  "clearance_status": "Public-domain copy of the 1842 edition identified with explicit PDM 1.0 label. Existing exports exact source/crop chain remains unverified; Heidelberg item retains its distinct notice.",
+  "font_status": "Separate: OldFax.ttf source and license remain unresolved",
+  "underlying_papyrus_record": {
+    "url": "https://totenbuch.awk.nrw.de/objekt/tm57201",
+    "tm_id": 57201,
+    "name": "P. Turin 1791",
+    "institution": "Museo Egizio, Turin",
+    "recommended_citation": "Totenbuchprojekt Bonn, TM 57201, https://totenbuch.awk.nrw.de/objekt/tm57201",
+    "content_check": "Record lists spells 31 and 32 with vignettes; image access restriction is stated separately."
+  },
+  "archive_citation_documentation": {
+    "url": "https://totenbuch.awk.nrw.de/projekt/dokumentation#OAIPMH",
+    "checked_date": "2026-10-26",
+    "summary": "Persistent object URLs are recommended for citation. OAI-PMH exposes object metadata; unAPI provides bibliographic exports. These are not image reuse licenses."
+  },
+  "public_domain_copy": {
+    "checked_date": "2026-10-26",
+    "item_url": "https://archive.org/details/bub_gb_RQE2AQAAMAAJ",
+    "identifier": "bub_gb_RQE2AQAAMAAJ",
+    "pdf_url": "https://dn790006.ca.archive.org/0/items/bub_gb_RQE2AQAAMAAJ/bub_gb_RQE2AQAAMAAJ.pdf",
+    "rights_label": "Public Domain Mark 1.0",
+    "rights_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "collection_source": "University of California",
+    "scanner": "google",
+    "google_books_id": "RQE2AQAAMAAJ",
+    "publisher": "Leipzig, G. Wigand",
+    "year": 1842,
+    "pdf_checksum": null,
+    "verification": "Item page and linked Public Domain Mark explanation inspected; PDF not downloaded or compared with existing exports.",
+    "use": "Public-domain basis for artwork taken from this copy; existing exported sprites have not been relabeled or replaced."
+  }
+}

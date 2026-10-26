@@ -12,8 +12,8 @@ const ENCOUNTERS := [
 		"caption": [5189, 6667]},
 	{"id": "e32", "tag": "Crocodiles", "boxes": ["e32"], "kind": "crocs", "spear": "spear32", "task": 0,
 		"foes": ["c32a", "c32b", "c32c", "c32d"], "both_sides": true,
-		# harder than 31 and losable, but always possible: each crocodile is `ramp` faster than the
-		# one before (210 -> about 420), and none reaches him within `min_gap` s of the one before
-		"waves": [{"count": 14, "speed": 180.0, "ramp": 0.01, "interval": 0.8, "at_once": 2, "red": 0.35, "min_gap": 0.9}],
+		# Deliberately slower after human feedback: 120 plate px/s = 180 world px/s at scale 1.5.
+		# All movement starts also obey the cross-side half-body gap in _croc_clear.
+		"waves": [{"count": 14, "speed": 120.0, "ramp": 0.01, "interval": 0.8, "at_once": 2, "red": 0.35, "min_gap": 0.9}],
 		"caption": [3944, 5168]},
 ]

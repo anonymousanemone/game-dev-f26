@@ -62,6 +62,7 @@ var _fight_tweens: Array[Tween] = []
 var _hover := []                ## the actors glowing under the pointer
 var _caption := {}              ## the encounter whose caption glows under the pointer
 var _caption_glow: Sprite2D
+var session_recorder
 
 @onready var avatar: Node2D = $Avatar
 @onready var camera: Camera2D = $Camera
@@ -229,6 +230,7 @@ func walk_then(x: float, then := Callable()) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if hud.is_blocking() or finished:
 		return
+	if session_recorder != null: session_recorder.input_event(event, get_meta("session_mouse", get_global_mouse_position()))
 	if event.is_action_pressed("ui_cancel") and not fight.is_empty():   # Esc always steps out of a fight
 		leave_fight()
 		get_viewport().set_input_as_handled()
@@ -239,12 +241,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 	if event is InputEventMouseMotion:
-		var at := get_global_mouse_position()
+		var at: Vector2 = get_meta("session_mouse", get_global_mouse_position())
 		_set_hover(_hover_at(at))
 		_set_caption_hover(_caption_at(at) if fight.is_empty() and _hover.is_empty() else {})
 		Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND if not (_hover.is_empty() and _caption.is_empty()) else Input.CURSOR_ARROW)
 	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		var p := get_global_mouse_position()
+		var p: Vector2 = get_meta("session_mouse", get_global_mouse_position())
 		if _heka_at(p) != "":
 			heka_known = true
 			say("Scribe", _hints.message("dangers.heka_controls"))
@@ -419,6 +421,7 @@ func _targets() -> Array:
 	return []
 
 func _process(delta: float) -> void:
+	if has_meta("session_driven") and not get_meta("session_tick", false): return
 	_time += delta
 	if not finished and fight.is_empty():
 		_check_position()
@@ -500,7 +503,7 @@ func say(who: String, text: String) -> void:
 
 func _fight_tween(node: Node = null) -> Tween:
 	var tween := (node if node else self).create_tween()
-	if has_meta("fixed_step"): tween.pause()
+	if has_meta("fixed_step") or has_meta("session_driven"): tween.pause()
 	_fight_tweens = _fight_tweens.filter(func(t): return t.is_valid())
 	_fight_tweens.append(tween)
 	return tween
@@ -640,6 +643,12 @@ func _won_if(done: bool) -> void:
 		return
 	var id: String = fight.e.id
 	var session := _session
+	if has_meta("session_driven"):
+		var tween := _fight_tween()
+		tween.tween_interval(0.5)
+		tween.tween_callback(func():
+			if session == _session and not fight.is_empty() and fight.e.id == id: end_fight())
+		return
 	get_tree().create_timer(0.5, false).timeout.connect(func():
 		if session == _session and not fight.is_empty() and fight.e.id == id:
 			end_fight())
@@ -1253,6 +1262,26 @@ func _draw_flesh_health() -> void:
 			overlay.draw_circle(at + fs / 2.0, fs.y / 2.0, Color(UI.DANGER, a))
 
 
+func start_session_recording() -> bool:
+	if session_recorder != null and session_recorder.recording: return true
+	session_recorder = load("res://scripts/session_tape.gd").new(self)
+	add_child(session_recorder)
+	if not session_recorder.begin(str(get_meta("session_trace_path", ""))):
+		hud._record_session_button.text = "Recording failed — see console"
+		return false
+	hud._stop_recording_button.visible = true
+	return true
+
+
+func stop_session_recording(reason := "stopped") -> void:
+	if session_recorder != null: session_recorder.finish(reason)
+	hud._stop_recording_button.visible = false
+
+
+func record_session_command(op: String, data := {}) -> void:
+	if session_recorder != null: session_recorder.command(op, data)
+
+
 func _autotest() -> void:
 	hud.dismiss_intro()
 	var failures: Array[String] = []
@@ -1279,4 +1308,3 @@ func _autotest() -> void:
 	expect.call(finished and hud.is_blocking(), "both crocodile encounters lead to the excerpt ending")
 	print("AUTOTEST ", "OK" if failures.is_empty() else "FAILED")
 	get_tree().quit(0 if failures.is_empty() else 1)
-

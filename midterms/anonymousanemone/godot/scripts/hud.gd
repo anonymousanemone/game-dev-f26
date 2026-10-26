@@ -40,6 +40,9 @@ var _journal_scroll: ScrollContainer
 var _overlay_layouts: Array = []
 var _revision := 0
 var _title_label: Label
+var _record_session_button: Button
+var _stop_recording_button: Button
+var _recording_preparing := false
 
 
 ## cfg keys: title, journal_hint, intro_title, intro_body, outro_title.
@@ -63,6 +66,26 @@ func setup(level: Node, cfg: Dictionary) -> void:
 	_held.visible = false
 	_root.add_child(_held)
 	_intro = _build_overlay(cfg.intro_title, cfg.intro_body, "Begin", dismiss_intro)
+	if level.has_method("start_session_recording"):
+		_record_session_button = Button.new()
+		_record_session_button.text = "Record session"
+		_record_session_button.add_theme_font_size_override("font_size", UI.BIG)
+		_record_session_button.focus_mode = Control.FOCUS_NONE
+		_record_session_button.pressed.connect(func():
+			_recording_preparing = true
+			_record_session_button.disabled = true
+			_overlay_layouts[0].button.disabled = true
+			if _level.start_session_recording():
+				# Keep the intro paused through archive I/O and its resulting long frame.
+				await get_tree().process_frame
+				await get_tree().process_frame
+				_recording_preparing = false
+				dismiss_intro()
+			else:
+				_recording_preparing = false
+				_record_session_button.disabled = false
+				_overlay_layouts[0].button.disabled = false)
+		_overlay_layouts[0].actions.add_child(_record_session_button)
 	_intro.visible = true
 	_outro = _build_overlay(cfg.outro_title, "", "Go on", func(): Scroll.finish(level.scene_file_path.get_file().get_basename()))
 	_outro_text = _outro.find_child("Body", true, false)
@@ -93,6 +116,7 @@ func is_blocking() -> bool:
 
 
 func dismiss_intro() -> void:
+	_note_command("begin")
 	_intro.visible = false
 	_sync_pause()
 
@@ -195,6 +219,7 @@ func add_journal_entry(label: String, note: String, tex: Texture2D, count: int, 
 	_journal_entries[id] = {"node": entry, "label": name_label, "picture": pic, "text": note, "speaker": speaker}
 	entry.gui_input.connect(func(e):
 		if e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
+			_note_command("journal_entry", {"id": id})
 			var observed: Dictionary = _journal_entries[id]
 			say(observed.speaker, observed.text))
 	_journal_grid.add_child(entry)
@@ -212,11 +237,13 @@ func show_outro(body: String) -> void:
 
 ## The Journal opens over the scene; [j] or the button toggles it, [esc] or a click beside it closes it.
 func toggle_journal(open := not _journal_page.visible) -> void:
+	_note_command("journal", {"open": open})
 	_journal_page.visible = open
 	_sync_pause()
 
 
 func _input(event: InputEvent) -> void:
+	if _recording_preparing: return
 	if not (event is InputEventKey and event.pressed and not event.echo):
 		return
 	if _intro.visible or _outro.visible:
@@ -271,8 +298,18 @@ func _build_top_bar() -> void:
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(title)
 	row.add_child(spacer)
-	row.add_child(UI.icon_button("restart", "Restart", func(): restart_pressed.emit()))
-	row.add_child(UI.icon_button("menu", "Menu", func(): menu_pressed.emit()))
+	_stop_recording_button = Button.new()
+	_stop_recording_button.text = "Recording · Stop"
+	_stop_recording_button.focus_mode = Control.FOCUS_NONE
+	_stop_recording_button.visible = false
+	_stop_recording_button.pressed.connect(func(): _level.stop_session_recording())
+	row.add_child(_stop_recording_button)
+	row.add_child(UI.icon_button("restart", "Restart", func():
+		_note_command("restart")
+		restart_pressed.emit()))
+	row.add_child(UI.icon_button("menu", "Menu", func():
+		if _level.has_method("stop_session_recording"): _level.stop_session_recording("menu")
+		menu_pressed.emit()))
 
 
 ## The strip: deep papyrus under the band (and, if BOXED, inside it along the screen's edges), the
@@ -311,7 +348,7 @@ func _build_strip() -> void:
 	buttons.add_theme_constant_override("separation", 16)
 	buttons.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	buttons.add_child(_labelled_button("journal", "journal", "Journal  [j]", func(): toggle_journal()))
-	buttons.add_child(_labelled_button("hint", "hint", "Hint", func(): hint_pressed.emit()))
+	buttons.add_child(_labelled_button("hint", "hint", "Hint", request_hint))
 	row.add_child(buttons)
 
 	# the speaker's tag sits on the band
@@ -426,10 +463,24 @@ func _build_overlay(title: String, body: String, button: String, on_press: Calla
 	btn.pressed.connect(on_press)
 	var button_margin := MarginContainer.new()
 	button_margin.add_theme_constant_override("margin_top", 6)
-	button_margin.add_child(btn)
+	var actions := HBoxContainer.new()
+	actions.add_theme_constant_override("separation", 18)
+	actions.add_child(btn)
+	button_margin.add_child(actions)
 	v.add_child(button_margin)
 	_overlay_layouts[-1]["button"] = btn
+	_overlay_layouts[-1]["actions"] = actions
 	return dim
+
+
+func _note_command(op: String, data := {}) -> void:
+	if _level.has_method("record_session_command"):
+		_level.record_session_command(op, data)
+
+
+func request_hint() -> void:
+	_note_command("hint")
+	hint_pressed.emit()
 
 
 ## An icon button with a small word under it (the Journal's count, "hint").

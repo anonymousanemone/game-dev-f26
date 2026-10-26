@@ -242,10 +242,10 @@
     },
     {
       "destination": "godot/scripts/avatar.gd",
-      "destination_sha256": "ebf141190eb92b0b103fb5275dae50a3d700aa57ba593c5f25c937fb29d62c6e",
+      "destination_sha256": "8888dbe563743ec58d8d8d36fa1aae6fa7cecd576469b3487b0f02451e864761",
       "source": "godot/scripts/avatar.gd",
       "sha256": "ebf141190eb92b0b103fb5275dae50a3d700aa57ba593c5f25c937fb29d62c6e",
-      "unchanged": true
+      "unchanged": false
     },
     {
       "destination": "godot/scripts/checks.gd",
@@ -254,21 +254,21 @@
     },
     {
       "destination": "godot/scripts/dangers/crocodiles.gd",
-      "destination_sha256": "14ba1c554fc98dccb92234aee5d02d9d84cad09113e77867c6882c9ba78570a4",
+      "destination_sha256": "65bc498911a4af6c0bb70b492998f77a1a34138bbe59affdac335064baa7d615",
       "source": "godot/scripts/dangers/crocodiles.gd",
       "sha256": "b620ed96d0b37fc047fd009296223c4766b4788642eed8b4a7ad8a4c0825d03d",
       "unchanged": false
     },
     {
       "destination": "godot/scripts/dangers/danger_encounters.gd",
-      "destination_sha256": "a874d48ec9f9e8a3e753b82bf6f57bd2ec61b199499a015a46c3f4a0ab4f342b",
+      "destination_sha256": "2572610f5d769fc7c954525bd53c138b013899a5fad39e081537fcbfeaa40283",
       "source": "godot/scripts/dangers/danger_encounters.gd",
       "sha256": "a0f4da559fa384b3bb6dee38126e7990faa4fb410c0fc934d6c6f9fdade0b3a4",
       "unchanged": false
     },
     {
       "destination": "godot/scripts/dangers/dangers.gd",
-      "destination_sha256": "7d9d3349bd8e379c2f1605eb7815de2164ed795ccb99824d937855496f8b1187",
+      "destination_sha256": "9e7337692f1dc09f1f9f84d2124a00f1cc235f1c20b8efe6a30724b122f536bf",
       "source": "godot/scripts/dangers/dangers.gd",
       "sha256": "cbfe99de0d670b6999e10c314110da2823b07906d3d1e1a36118199baeac6e23",
       "unchanged": false
@@ -315,10 +315,10 @@
     },
     {
       "destination": "godot/scripts/hud.gd",
-      "destination_sha256": "e380427470552dbfd4d4836db8caa955261082f4435cf1a77f99e2a307c32d75",
+      "destination_sha256": "080b033d8ce4ce6d356ded47c4caaf849a772633a9b46670e38172050ccdd23b",
       "source": "godot/scripts/hud.gd",
       "sha256": "e380427470552dbfd4d4836db8caa955261082f4435cf1a77f99e2a307c32d75",
-      "unchanged": true
+      "unchanged": false
     },
     {
       "destination": "godot/scripts/papyrus.gdshader",
@@ -343,7 +343,7 @@
     },
     {
       "destination": "godot/scripts/replay.gd",
-      "destination_sha256": "a139ad544c88418cc58430d886eda443daf9237a61ca323cfe04a5172c1c4419",
+      "destination_sha256": "af4219ae0a8af7df3756e1a6879edeae1ba9158fa992f03af2b822a8301f1f0d",
       "added_for_midterm": true
     },
     {
@@ -372,5 +372,6 @@
       "sha256": "eba275e20038422381be68ff44c27d01f6d8339088a6d8eea9c597ebc56d04de",
       "unchanged": true
     }
-  ]
+  ],
+  "adaptation_note": "After initial extraction: user-requested spell32 speed/spacing changes and native session recording are documented in reports/difficulty-and-recording.md. Original source hashes remain unchanged."
 }

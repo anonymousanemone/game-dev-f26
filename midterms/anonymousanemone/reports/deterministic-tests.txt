@@ -1,19 +1,11 @@
-test_baseline_complete_successful_path (test_game.GameTests.test_baseline_complete_successful_path) ... ok
-test_deterministic_seeded_replay (test_game.GameTests.test_deterministic_seeded_replay) ... ok
-test_godot_rule_invariants (test_game.GameTests.test_godot_rule_invariants) ... ok
-test_json_numeric_regression (test_game.GameTests.test_json_numeric_regression) ... ok
-test_legal_actions_and_invalid_handling (test_game.GameTests.test_legal_actions_and_invalid_handling) ... ok
-test_observation_boundary (test_game.GameTests.test_observation_boundary) ... ok
-test_original_scene_and_artwork_preserved (test_game.GameTests.test_original_scene_and_artwork_preserved) ... ok
-test_step_limit_and_terminal_lock (test_game.GameTests.test_step_limit_and_terminal_lock) ... ok
-test_archive_replay_and_tamper_detection (test_human_trace.HumanTraceTests.test_archive_replay_and_tamper_detection) ... ok
-test_cost_reservation_stops_before_an_unfunded_call (test_runner.RunnerTests.test_cost_reservation_stops_before_an_unfunded_call) ... ok
-test_episode_timeout_before_first_call (test_runner.RunnerTests.test_episode_timeout_before_first_call) ... ok
-test_failed_calls_consume_budget_and_are_fallbacks (test_runner.RunnerTests.test_failed_calls_consume_budget_and_are_fallbacks) ... ok
-test_failed_calls_keep_their_full_cost_reservation (test_runner.RunnerTests.test_failed_calls_keep_their_full_cost_reservation) ... ok
-test_observation_only_and_cost_accounting (test_runner.RunnerTests.test_observation_only_and_cost_accounting) ... ok
+Local verification summary — October 26, 2026 (summary, not a raw console transcript)
 
-----------------------------------------------------------------------
-Ran 14 tests in 12.064s
+Command: python -m unittest discover -s tests -v
+Result: 16 tests passed in 38.674 seconds.
 
-OK
+After extending the native-session fixture through a real engine defeat and return to scroll:
+Command: python -m unittest discover -s tests -p test_human_trace.py -v
+Result: 2 tests passed in 23.195 seconds, including archived fixed-step replay, native-session replay and altered-frame rejection.
+
+Spacing regression: initial new engine fixtures failed 9 assertions before the fix; final spacing cases, return clearance and single-scale speed checks pass.
+Original retained scene and artwork checks passed. No held-out seeds, live provider calls, or human/classmate trial evidence are claimed by these fixtures.

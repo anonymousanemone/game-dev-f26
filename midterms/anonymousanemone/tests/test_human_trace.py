@@ -11,6 +11,33 @@ from players.engine import ROOT, godot_binary
 
 
 class HumanTraceTests(unittest.TestCase):
+    def test_intro_button_records_native_controls_and_replays_session(self):
+        with tempfile.TemporaryDirectory(prefix='crocodiles-native-session-') as folder:
+            trace = Path(folder)/'session.jsonl'
+            command = [godot_binary(), '--headless', '--path', str(ROOT/'godot')]
+            recorded = subprocess.run(command + ['--script', 'res://scripts/session_checks.gd',
+                '--max-fps', '60', '--', f'--trace={trace}'], capture_output=True, text=True, timeout=60)
+            self.assertEqual(recorded.returncode, 0, recorded.stdout + recorded.stderr)
+            self.assertNotIn('SCRIPT ERROR', recorded.stderr)
+            self.assertIn('Native session fixture completed', recorded.stdout)
+            rows = [json.loads(line) for line in trace.read_text().splitlines()]
+            self.assertEqual(rows[0]['format'], 'native_session_v1')
+            self.assertEqual(rows[-1]['reason'], 'stopped')
+            self.assertTrue(any(row.get('state', {}).get('fight') for row in rows))
+            self.assertTrue(any(row.get('state', {}).get('fight', {}).get('lost') for row in rows))
+            replayed = subprocess.run(command + ['--script', 'res://scripts/replay.gd', '--',
+                f'--replay={trace}', '--verify-only'], capture_output=True, text=True, timeout=30)
+            self.assertEqual(replayed.returncode, 0, replayed.stdout + replayed.stderr)
+            self.assertNotIn('SCRIPT ERROR', replayed.stderr)
+            self.assertIn('recorded native frames', replayed.stdout)
+            next(row for row in rows if row['type'] == 'frame')['state']['bites'] = 99
+            altered = Path(folder)/'altered.jsonl'
+            altered.write_text(''.join(json.dumps(row) + '\n' for row in rows))
+            rejected = subprocess.run(command + ['--script', 'res://scripts/replay.gd', '--',
+                f'--replay={altered}', '--verify-only'], capture_output=True, text=True, timeout=30)
+            self.assertNotEqual(rejected.returncode, 0)
+            self.assertIn('Session replay mismatch', rejected.stderr)
+
     def test_archive_replay_and_tamper_detection(self):
         with tempfile.TemporaryDirectory(prefix='crocodiles-trace-') as folder:
             trace = Path(folder) / 'attempt.jsonl'

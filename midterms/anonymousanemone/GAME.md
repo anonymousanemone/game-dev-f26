@@ -18,7 +18,7 @@ An ordinary crocodile requires a plain thrust. A red crocodile requires heka. A 
 
 The bearer starts with three health signs. Bites reduce health, and losing all three ends the encounter, with an introductory tutorial exception that protects the first lesson. Once the heka word is active, a crocodile that slips past can steal it and end the encounter. Turn back every crocodile in every wave to win. Complete both encounters to finish the excerpt.
 
-Spell 31 teaches the thrust against crocodiles approaching from one side, then introduces a mixed wave of ordinary and red crocodiles. Spell 32 combines ordinary and red crocodiles approaching from both sides, requiring the player to choose a facing as well as a vertical position and attack type.
+Spell 31 teaches the thrust against crocodiles approaching from one side, then introduces a mixed wave of ordinary and red crocodiles. Spell 32 combines ordinary and red crocodiles approaching from both sides, requiring the player to choose a facing as well as a vertical position and attack type. After the student’s difficulty feedback, its base speed is 120 plate pixels/second, and movement starts on either side must stay at least half the larger body length behind every already approaching crocodile, regardless of height.
 
 The original Godot scene, [dangers.tscn](godot/scenes/dangers.tscn), is the game authority. Its combat implementation is [crocodiles.gd](godot/scripts/dangers/crocodiles.gd). This source excerpt describes the color-matching rule:
 
@@ -48,7 +48,7 @@ The repeated decision is which threat to meet next and when to commit to a thrus
 
 ### Human interface
 
-The game retains the original papyrus scene, artwork, camera, arena animations and HUD. The scroll serves as the encounter-selection interface: walking brings the player to a vignette, and clicking its crocodiles opens combat. The combat view shows the spear-bearer, moving crocodiles, red heka cues and health signs. The spear animation and crocodile reactions provide action feedback. The HUD supplies restart, **Journal** and **Hint** controls; the Journal opens over the scene.
+The game retains the original papyrus scene, artwork, camera, arena animations and HUD. The scroll serves as the encounter-selection interface: walking brings the player to a vignette, and clicking its crocodiles opens combat. The combat view shows the spear-bearer, moving crocodiles, red heka cues and health signs. The spear animation and crocodile reactions provide action feedback. The HUD supplies restart, **Journal** and **Hint** controls; the Journal opens over the scene. The intro also offers **Record session** beside Begin, with a Stop control in the top bar while recording.
 
 Screenshots are pending. Useful captures would show the scroll with the HUD, spell 31 with its health and heka cues, and spell 32 with threats on both sides. Captures should come from the running game and be stored outside the project, as required by AGENTS.md. Source artwork alone is not a screenshot of the interface.
 

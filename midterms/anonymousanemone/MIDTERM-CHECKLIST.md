@@ -14,11 +14,15 @@
 - [x] Reusable skill and independent-review task prepared.
 - [x] Source map, extraction hashes, patch and submission packager.
 - [x] October 26 checkpoint branch pushed to the course fork; dedicated GitHub CI passed all 14 deterministic tests.
-- [x] Human action tracing under `playtrace/`, exact-result replay checks and local matching-build archives.
+- [x] In-game Record session beside Begin; native-input session replay, exact frame-delta preservation, local build archives and tamper checks.
+- [x] Spell32 reduced speed and cross-side/all-height half-body movement spacing, including returning crocodiles; deterministic regression fixtures and current development baseline traces.
+- [x] Identify the Lepsius digital edition, digital-version supplier, repository, DOI/URN, deposit date and actual linked reuse notice in CREDITS.md and reports/lepsius-provenance.json.
 
 ## Still needs actual evidence / student work
 
-- [ ] Record exact historical scan provenance and applicable reuse terms in CREDITS.md. - https://archiv.ub.uni-heidelberg.de/propylaeumdok/467/
+- [x] Find an explicit public-domain reuse basis for the Lepsius edition: Internet Archive item bub_gb_RQE2AQAAMAAJ is labeled Public Domain Mark 1.0; credit and source recorded in CREDITS.md.
+- [ ] Verify the existing PNGs’ precise source/crop chain, or document any future re-extraction from the identified public-domain copy. No assets have been silently replaced.
+- [ ] Record the exact OldFax.ttf source and reuse terms separately.
 - [ ] Link the implementation session from the course PR.
 - [ ] Use the reusable skill by name in a second separate session; record that evidence.
 - [ ] Obtain independent read-only review and respond to its actual findings.

@@ -7,20 +7,19 @@ material and is excluded from packaging; it is not submitted as project source.
 | Today's requirement | Evidence / status |
 |---|---|
 | Engine behind five operations | Implemented: `players.engine.Engine` calls the original Godot scene through reset, observe, legal_actions, step and outcome. Deterministic tests exercise these operations. |
-| Baseline completes an episode | Verified on development seed 30: spell31 won in 249 actions; spell32 lost in 64; spell32_low lost in 37. [Current run](../playtrace/20261026T184527216889Z-baseline-h2-development/summary.json). |
+| Baseline completes an episode | Verified on development seed 30: spell31 won in 249 actions; spell32 lost in 122 (8 turned back); spell32_low lost in 43 (2 turned back). [Current run](../playtrace/20261026T234254422011Z-baseline-h2-development/summary.json). |
 | Live model completes an episode with a trace | **Pending funded API key.** No live calls have been made. The student chose the cheapest model and a $10 ceiling. The private `.env` has a blank key field and GPT-6 Luna settings. |
 | First baseline/model comparison | Baseline rows are available; [live comparison remains pending](session7-comparison.md). `python -m players.checkpoint` runs a matched development pair and replaces that report with actual results. |
-| GitHub CI green on deterministic checks | **Passed: 14 tests** in the dedicated [midterm workflow](https://github.com/anonymousanemone/game-dev-f26/actions/runs/40396786117), commit `88c9a6d09d3b44512490e4238754b4088977a157`, on the course fork's `anonymousanemone/midterm` branch. The workflow changes only the permitted project folder and one workflow file. |
+| GitHub CI green on deterministic checks | **Historical checkpoint: 14 tests passed** in the dedicated [midterm workflow](https://github.com/anonymousanemone/game-dev-f26/actions/runs/40396786117), commit `88c9a6d09d3b44512490e4238754b4088977a157`, on the course fork's `anonymousanemone/midterm` branch. The workflow changes only the permitted project folder and one workflow file. |
 | Demo / peer critique | Game launch, human trace recording and action-file replay are documented. Actual classmate observations have not been supplied. |
 
 ## In-class commands
 
 From `midterm-crocodiles/` locally, or `midterms/anonymousanemone/` in the course
-checkout, import and launch using README.md. For a human combat attempt with
-automatic recording into `./playtrace/`:
+checkout, import and launch using README.md. For normal human play, launch the game and click **Record session** beside Begin. Use **Recording · Stop** in the top bar or close the window to finish. Recordings go to `./playtrace/`:
 
 ```bash
-"$GODOT" --path godot --script res://scripts/human_trace.gd -- --case=spell31
+"$GODOT" --path godot
 python -m players.replay --latest-human
 python -m players.replay --latest-human --verify
 ```
@@ -52,7 +51,7 @@ November 6, the completed course PR URL on CourseWorks by **November 7 at 11:59
 p.m.**, and three assigned recording critiques before class November 16.
 Held-out comparisons, the viewable 3–5 minute recording, independent read-only
 review, two separately evidenced skill sessions, the implementation session link,
-source/font reuse verification, and the student's own team log and reflection
+precise image-source/crop verification and font reuse verification, and the student's own team log and reflection
 remain required before final hand-in. They are not fabricated as completed.
 
 The assignment identifies a changed scope as requiring a Week 3 thread update.

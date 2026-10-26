@@ -103,5 +103,12 @@ class GameTests(unittest.TestCase):
         self.assertNotIn('SCRIPT ERROR', result.stderr)
         self.assertNotIn('ERROR:', result.stderr)
 
+    def test_both_side_half_body_movement_spacing(self):
+        result = subprocess.run([godot_binary(), '--headless', '--path', str(ROOT/'godot'),
+            '--script', 'res://scripts/spacing_checks.gd', '--', '--machine'],
+            capture_output=True, text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertNotIn('SCRIPT ERROR', result.stderr)
+
 
 if __name__ == '__main__': unittest.main()

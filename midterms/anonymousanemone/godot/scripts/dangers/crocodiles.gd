@@ -20,7 +20,7 @@ func _init(level) -> void:
 # they come from both sides, he stands in the middle and ← → turn him.
 const CROC_REACH := 20.0        ## the point also counts this close to the snout (plate px)
 const CROC_SAME_SPOT := 1.0     ## two from one side at nearly one height reach him at least this far apart (s)
-const CROC_FRONT_OVERLAP := 0.15   ## how far (of their height) two front halves may overlap above and below
+const CROC_FRONT_OVERLAP := 0.1   ## how far (of their height) two front halves may overlap above and below
 const CROC_GRACE := 5.0         ## the spear point counts this close outside a crocodile's outline (plate px)
 const CROC_LANE := 70.0         ## spacing of the heights the crocodiles come at
 const BEARER_SPEED := 260.0     ## how fast the bearer moves
@@ -170,6 +170,10 @@ func _crocs(dt: float) -> void:
 	if game.fight.open < 1.0 or game.fight.lost:
 		return
 	game.fight.clock += dt
+	# Returning crocodiles are visible before they are allowed to move again.
+	for c in game.fight.crocs:
+		if c.s == "back" and c.get("ready_to_resume", false):
+			_croc_resume(c)
 	_move_bearer(_bot_move() if game.fight.get("bot", false) else _keys(), dt)
 	if game.fight.thrust >= 0.0:
 		game.fight.thrust += dt
@@ -471,7 +475,14 @@ func _croc_send_back(c: Dictionary) -> void:
 	t.tween_property(a, "modulate:a", 1.0, 0.4)
 	t.tween_callback(func():
 		if not game.fight.is_empty() and c.s == "back":
-			c.s = "crawl")
+			c.ready_to_resume = true
+			_croc_resume(c))
+
+
+func _croc_resume(c: Dictionary) -> void:
+	if not game.fight.both or _croc_clear(c, c.speed):
+		c.ready_to_resume = false
+		c.s = "crawl"
 
 
 ## Send the next crocodile: one of the drawn ones still waiting (the last of a wave always is), else
@@ -568,6 +579,19 @@ func _croc_clear(c: Dictionary, speed: float) -> bool:
 	for o in game.fight.crocs:
 		if o == c or o.s != "crawl":
 			continue
+		if game.fight.both:
+			# Treat left and right as a single queue of distances from the bearer.
+			# This is independent of lane height: a new mover must be behind ALL active foes.
+			var dc: float = absf(game.fight.pos.x - _snout(c).x)
+			var other_distance: float = absf(game.fight.pos.x - _snout(o).x)
+			var half_body: float = maxf(c.node.get_meta("size").x, o.node.get_meta("size").x) / 2.0
+			if dc - other_distance < half_body - 0.0001:
+				return false
+			# Faster followers may not close the gap before the leading threat reaches him.
+			var first_arrival: float = minf(dc / (speed * game.unit), other_distance / (o.speed * game.unit))
+			var future_gap: float = dc - other_distance - (speed - o.speed) * game.unit * first_arrival
+			if future_gap < half_body - 0.0001:
+				return false
 		var t_o: float = absf(game.fight.pos.x - _snout(o).x) / (o.speed * game.unit)
 		if absf(_snout(o).y - _snout(c).y) < CROC_LANE * game.unit * 1.5 and absf(t_c - t_o) < CROC_SAME_SPOT:
 			return false

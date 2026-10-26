@@ -1,0 +1,35 @@
+{
+  "date": "20261026T233426831171Z",
+  "game_version": "beffe68fca5599d77b165013487f65dde76166bdf7102b52a8586afed773e006",
+  "suite_sha256": "ec3c1399d77b9bbfdacef14246234a20421a1e6540ec55d618cbbe35a756c752",
+  "prompt_sha256": "19644df97fbc09ce3b04477667ea7b9fed379a017af40785dd8a9a6fc0e6de2d",
+  "prompt": "You play Crocodiles. Return one JSON object with exactly move (-1 up, 0 still,\n1 down), face (-1 left, 0 unchanged, 1 right), thrust (boolean), heka (boolean).\nIn spell31 face must be 0. Each action lasts 0.1 simulation seconds. Thrust lands\n0.0833s after initiation and cooldown lasts 0.25s. Spear reach extends 15 world\npixels along spear_direction from tip. Align vertically with an approaching\ncrocodile and thrust while the spear reaches its snout or silhouette. Hold heka\nonly for red crocodiles; heka against an ordinary crocodile loses. Three bites\nlose. Letting a crocodile escape after heka activates loses. During tutorial\n\"thrust\", thrust to begin. Movement speed is 390 world pixels/s. The engine\nfreezes while you decide. Earlier observations, if supplied, are bounded history;\nuse successive positions to estimate velocity. Choose the action yourself.\nDo not provide prose or markdown. No tools are available.",
+  "max_output_tokens": 1024,
+  "player_source_sha256": {
+    "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "baseline.py": "0851f1a739468c1c2eb24fd2592be4cf8d3fd440eea48ee1ee17d31d36e499e6",
+    "checkpoint.py": "ae6f05dd41f5f0e930b5ecd7808f56bc1df846d5e4a7bd5b3e8acd9ebd7d3379",
+    "config.py": "6e24518fb6021764e3d5cdf101eb2bfbc012f6abea7a03de9024f819cba02a26",
+    "engine.py": "5f9a47fee4acdc4efb1f3711897bf9847017ca52caf079f5d6f022670f22cc3a",
+    "model.py": "bb760f39a380bf7aa4fde19276c01e0d81444d8eeda4a581051293900a0b2eda",
+    "replay.py": "279be80fccea44e09164ea8f9966abf08ae115d12e373b3c928d93b2c1c6c1fa",
+    "run.py": "105c4d6892e40bbb78d5c6bb976e8d6a05a9464169bacdd47af0144e9225bff9",
+    "traces.py": "efd1791f865f23f4516bead772a1f4980740634a7f9085588dc89e0c2a2ff5fa"
+  },
+  "arguments": {
+    "policy": "baseline",
+    "model": "gpt-6-luna",
+    "split": "development",
+    "case": null,
+    "history": 2,
+    "max_calls": 1200,
+    "call_timeout": 30,
+    "episode_timeout": 1800,
+    "out": "/Users/sophial/Documents/School/GameAI/midterm-crocodiles/playtrace",
+    "max_cost_usd": 10.0,
+    "input_price": 0.1,
+    "output_price": 0.5,
+    "price_date": "2026-10-26",
+    "price_source": "https://developers.openai.com/api/docs/pricing"
+  }
+}

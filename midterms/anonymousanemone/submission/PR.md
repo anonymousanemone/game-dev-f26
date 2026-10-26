@@ -16,7 +16,7 @@ Replace these placeholders with links to the committed folder at this PR:
 - Recording: ADD VIEWABLE RECORDING URL
 - Implementation session: ADD SESSION LINK
 - Independent review and two skill sessions: ADD EVIDENCE LINKS
-- Deterministic GitHub CI: ADD WORKFLOW RUN LINK
+- Deterministic GitHub CI: https://github.com/anonymousanemone/game-dev-f26/actions/runs/40396786117 (14 tests passed on the checkpoint commit; refresh after final changes)
 
 Validation: replace with the final submitted version's test and trial results.
 List any remaining limitations accurately. Do not present prepared tasks or

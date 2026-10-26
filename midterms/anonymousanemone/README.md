@@ -6,7 +6,7 @@ A self-contained midterm excerpt of your original game, [Totenbuch](https://gith
 
 [Game rules, core loop and interfaces](GAME.md) provides a short submission-ready description based on the implemented source. Interface screenshots are pending.
 
-For the October 26 checkpoint, see [current readiness and remaining blockers](reports/session7-readiness.md). A live model episode still needs the funded API key; passing local tests is reported separately from GitHub CI.
+For the October 26 checkpoint, see [current readiness and remaining blockers](reports/session7-readiness.md). [GitHub deterministic CI passed all 14 tests](https://github.com/anonymousanemone/game-dev-f26/actions/runs/40396786117). A live model episode and its comparison still need the funded API key.
 
 Two complete encounters: spell 31's one-sided tutorial and mixed-color waves, and spell 32's two-sided fight. Each can be won or lost independently. Three declared evaluation situations use these two games; the third starts spell 32 at the lowest permitted vertical position. Included: existing crocodile combat, cropped artwork, human play, authoritative five-operation interface, baseline, live model adapter, deterministic tests and trace playback.
 

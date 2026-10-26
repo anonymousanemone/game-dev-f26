@@ -13,6 +13,8 @@
 - [x] Deterministic rule, terminal, regression and budget checks.
 - [x] Reusable skill and independent-review task prepared.
 - [x] Source map, extraction hashes, patch and submission packager.
+- [x] October 26 checkpoint branch pushed to the course fork; dedicated GitHub CI passed all 14 deterministic tests.
+- [x] Human action tracing under `playtrace/`, exact-result replay checks and local matching-build archives.
 
 ## Still needs actual evidence / student work
 
@@ -21,7 +23,7 @@
 - [ ] Use the reusable skill by name in a second separate session; record that evidence.
 - [ ] Obtain independent read-only review and respond to its actual findings.
 - [ ] Write AGENT-TEAM.md and reflection in your own voice.
-- [ ] Run at least one live model episode and first comparison for the October 26 checkpoint. Paid runs were explicitly deferred by the user.
+- [ ] Run at least one live model episode and first comparison for the October 26 checkpoint. GPT-6 Luna and a $10 cap are authorized; the funded API key is not yet configured. Run `python -m players.checkpoint` after filling `.env`.
 - [ ] After freezing tuning, run baseline and model on the six held-out episodes; compare model history=0 and history=2, document failures and cost.
 - [ ] Incorporate real peer playtest notes and limitations.
 - [ ] Record 3–5 minutes and link it from README/PR.

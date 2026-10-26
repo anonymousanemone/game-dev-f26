@@ -1,0 +1,17 @@
+{
+  "repository": "anonymousanemone/game-dev-f26",
+  "branch": "anonymousanemone/midterm",
+  "tested_commit": "88c9a6d09d3b44512490e4238754b4088977a157",
+  "workflow": ".github/workflows/midterm-anonymousanemone.yml",
+  "run_id": 40396786117,
+  "run_url": "https://github.com/anonymousanemone/game-dev-f26/actions/runs/40396786117",
+  "job_url": "https://github.com/anonymousanemone/game-dev-f26/actions/runs/40396786117/job/121831821584",
+  "status": "completed",
+  "conclusion": "success",
+  "test_count": 14,
+  "python": "3.12",
+  "godot": "4.7.2",
+  "runner": "Ubuntu",
+  "upstream_pr": null,
+  "limitation": "This verifies the dedicated midterm workflow on the course fork. The eventual upstream PR and its minigame boundary workflow remain separate."
+}

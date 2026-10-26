@@ -10,7 +10,7 @@ material and is excluded from packaging; it is not submitted as project source.
 | Baseline completes an episode | Verified on development seed 30: spell31 won in 249 actions; spell32 lost in 64; spell32_low lost in 37. [Current run](../playtrace/20261026T184527216889Z-baseline-h2-development/summary.json). |
 | Live model completes an episode with a trace | **Pending funded API key.** No live calls have been made. The student chose the cheapest model and a $10 ceiling. The private `.env` has a blank key field and GPT-6 Luna settings. |
 | First baseline/model comparison | Baseline rows are available; [live comparison remains pending](session7-comparison.md). `python -m players.checkpoint` runs a matched development pair and replaces that report with actual results. |
-| GitHub CI green on deterministic checks | Workflow prepared for `midterms/anonymousanemone/` only. Actual GitHub run link will be recorded in EVALUATION.md; local tests are separate evidence. |
+| GitHub CI green on deterministic checks | **Passed: 14 tests** in the dedicated [midterm workflow](https://github.com/anonymousanemone/game-dev-f26/actions/runs/40396786117), commit `88c9a6d09d3b44512490e4238754b4088977a157`, on the course fork's `anonymousanemone/midterm` branch. The workflow changes only the permitted project folder and one workflow file. |
 | Demo / peer critique | Game launch, human trace recording and action-file replay are documented. Actual classmate observations have not been supplied. |
 
 ## In-class commands
@@ -38,6 +38,14 @@ An episode without valid model-selected actions and a game win/loss is explicitl
 marked insufficient by the generated comparison report.
 
 ## Later requirements remain separate
+
+The checkpoint branch is [published on the course fork](https://github.com/anonymousanemone/game-dev-f26/tree/anonymousanemone/midterm/midterms/anonymousanemone).
+The sibling checkout's existing Get Out branch was left untouched. A clean
+temporary checkout was used to package, import, test and push the midterm branch.
+The upstream course PR is not open yet. Its existing minigame boundary checker
+protects every `.github/` path, conflicting with the midterm's explicitly required
+workflow file. Instructor-owned tooling has not been changed; that upstream
+boundary needs resolution before claiming that the eventual course PR is green.
 
 The HTML schedules the partner playtest during the week of November 2, notes by
 November 6, the completed course PR URL on CourseWorks by **November 7 at 11:59

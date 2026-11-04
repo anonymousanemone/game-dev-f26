@@ -254,14 +254,16 @@
     },
     {
       "destination": "godot/scripts/dangers/crocodiles.gd",
-      "destination_sha256": "65bc498911a4af6c0bb70b492998f77a1a34138bbe59affdac335064baa7d615",
+      "destination_sha256": "82e352e9884c94e6ead930083610321d1ca318a93f99d27a11272dca769939ee",
       "source": "godot/scripts/dangers/crocodiles.gd",
-      "sha256": "b620ed96d0b37fc047fd009296223c4766b4788642eed8b4a7ad8a4c0825d03d",
-      "unchanged": false
+      "source_commit": "0d5a3404a9ae186659194f4a8309f98550fcd629",
+      "sha256": "77c1690b160edc6412b28d798421b925ed84ae94240c7e7518513339ed30bd29",
+      "unchanged": false,
+      "adaptation": "Tuned Totenbuch version at source_commit plus three midterm hooks (seeded lane shuffle, agent heka and move/face input); see reports/inherited-crocodiles.patch"
     },
     {
       "destination": "godot/scripts/dangers/danger_encounters.gd",
-      "destination_sha256": "2572610f5d769fc7c954525bd53c138b013899a5fad39e081537fcbfeaa40283",
+      "destination_sha256": "ed19209861dfc4d261d318c36917a37321e546274366049103528100c9612af4",
       "source": "godot/scripts/dangers/danger_encounters.gd",
       "sha256": "a0f4da559fa384b3bb6dee38126e7990faa4fb410c0fc934d6c6f9fdade0b3a4",
       "unchanged": false

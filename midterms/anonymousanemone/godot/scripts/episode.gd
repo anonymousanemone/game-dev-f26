@@ -16,6 +16,11 @@ func _init(scene) -> void:
 	game.set_meta("fixed_step", true)
 	game.set_process(false)
 	game.set_process_unhandled_input(false)
+	# Headless Godot has no window and reports a square viewport, which narrows the arena
+	# (its width follows the viewport's aspect). Use the project's own base size instead.
+	if DisplayServer.get_name() == "headless":
+		game.get_tree().root.size = Vector2i(ProjectSettings.get_setting("display/window/size/viewport_width"),
+			ProjectSettings.get_setting("display/window/size/viewport_height"))
 
 func reset(seed: int, situation := "spell31") -> Dictionary:
 	if situation not in CASES: return {"error": "unknown_case"}

@@ -1,14 +1,21 @@
-# Session 7 comparison — live episode pending
+# Session 7 development comparison
 
-Current difficulty revision: spell32 base speed reduced and global half-body movement spacing enforced. These are actual development baseline results, not a completed baseline/model comparison.
+Automatically assembled from actual run summaries; this is not held-out evaluation.
 
-| Player | Case/seed | Outcome/reason | Score | Steps | Illegal | Calls/failed | Mean decision seconds | Input/output tokens | API cost USD |
+| Player/model | Case/seed | Outcome/reason | Score | Steps | Illegal | Calls/failed | Mean decision seconds | Input/output tokens | Estimated USD |
 |---|---|---|---:|---:|---:|---|---:|---|---:|
-| Baseline | spell31/30 | won: all_crocodiles_defeated | 9 | 249 | 0 | 0/0 | 0.000003 | 0/0 | 0 |
-| Baseline | spell32/30 | lost: three_bites | 8 | 122 | 0 | 0/0 | 0.000003 | 0/0 | 0 |
-| Baseline | spell32_low/30 | lost: three_bites | 2 | 43 | 0 | 0/0 | 0.000005 | 0/0 | 0 |
-| Live model (Gemini 3.5 Flash-Lite, Vertex AI) | Pending | Not run | — | — | — | — | — | — | — |
+| baseline / heuristic | spell32/30 | won: all_crocodiles_defeated | 14 | 189 | 0 | 0/0 | 0.000005 | 0/0 | 0.000000 |
+| model / gemini-3.5-flash-lite | spell32/30 | lost: three_bites | 1 | 80 | 0 | 80/0 | 0.880433 | 101561/2160 | 0.035868 |
 
-[Configuration](../playtrace/20261026T234254422011Z-baseline-h2-development/configuration.json) · [Summary](../playtrace/20261026T234254422011Z-baseline-h2-development/summary.json). Individual JSONL traces are beside them.
+[Trace](../playtrace/20261104T025633917875Z-baseline-h2-development/spell32-30.jsonl) · [Configuration](../playtrace/20261104T025633917875Z-baseline-h2-development/configuration.json) · [Summary](../playtrace/20261104T025633917875Z-baseline-h2-development/summary.json)
 
-The prior faster-difficulty runs remain available as historical evidence, not results for this revision. Repeated development runs are reproducibility/debugging checks, not independent held-out trials. After configuring the key, `python -m players.checkpoint` replaces this report with a matched baseline/live-model comparison. No held-out seeds have been used.
+
+[Trace](../playtrace/20261104T025635197909Z-model-h2-development/spell32-30.jsonl) · [Configuration](../playtrace/20261104T025635197909Z-model-h2-development/configuration.json) · [Summary](../playtrace/20261104T025635197909Z-model-h2-development/summary.json)
+
+Game SHA-256: `d33f017b8ed276aff1b69b5800afdef62d971ca44ee2b9655463b684ad096f80`.
+
+Dated prices: 2026-11-03; [provider price source](https://cloud.google.com/model-garden/pricing). Uncached input prices are used for the estimate; reconcile failed-call billing with the provider.
+
+Live checkpoint episode: a model submitted valid actions and reached a game win/loss.
+
+Limitations: one development seed, one trial per player, no statistical inference. CI evidence is tracked separately in EVALUATION.md. Peer observations and student interpretation remain separate evidence.

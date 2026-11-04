@@ -15,7 +15,7 @@
 - [x] Source map, extraction hashes, patch and submission packager.
 - [x] October 26 checkpoint branch pushed to the course fork; dedicated GitHub CI passed all 14 deterministic tests.
 - [x] In-game Record session beside Begin; native-input session replay, exact frame-delta preservation, local build archives and tamper checks.
-- [x] Spell32 reduced speed and cross-side/all-height half-body movement spacing, including returning crocodiles; deterministic regression fixtures and current development baseline traces.
+- [x] Crocodile speeds and arrival spacing synced with the tuned Totenbuch (commit 0d5a340), including returning crocodiles; deterministic spacing fixtures and current development baseline traces.
 - [x] Identify the Lepsius digital edition, digital-version supplier, repository, DOI/URN, deposit date and actual linked reuse notice in CREDITS.md and reports/lepsius-provenance.json.
 
 ## Still needs actual evidence / student work
@@ -27,7 +27,7 @@
 - [ ] Use the reusable skill by name in a second separate session; record that evidence.
 - [ ] Obtain independent read-only review and respond to its actual findings.
 - [ ] Write AGENT-TEAM.md and reflection in your own voice.
-- [ ] Run at least one live model episode and first comparison for the October 26 checkpoint. Gemini 3.5 Flash-Lite on Vertex AI with a $10 default cap; the starter's Vertex check passes. Set `GOOGLE_CLOUD_PROJECT` in `.env`, then run `python -m players.checkpoint`.
+- [x] Run at least one live model episode and first comparison (due for the October 26 checkpoint; done November 4). Gemini 3.5 Flash-Lite on Vertex AI, spell32 seed 30, with `python -m players.checkpoint`; results in EVALUATION.md and reports/session7-comparison.md.
 - [ ] After freezing tuning, run baseline and model on the six held-out episodes; compare model history=0 and history=2, document failures and cost.
 - [ ] Incorporate real peer playtest notes and limitations.
 - [ ] Record 3–5 minutes and link it from README/PR.

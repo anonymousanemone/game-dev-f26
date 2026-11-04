@@ -50,7 +50,6 @@ func _crocs_start(e: Dictionary) -> void:
 	game.fight.nudged = false
 	game.fight.health = game.CROC_HEALTH
 	game.fight.clock = 0.0
-	game.fight.last_arrival = -INF
 	game.fight.told_back = false
 	game.fight.tut = "thrust" if e.get("tutorial", false) and game.fight.wave == 0 else ""
 	# the heights the snouts can come at: wherever the spear tip can reach
@@ -170,10 +169,6 @@ func _crocs(dt: float) -> void:
 	if game.fight.open < 1.0 or game.fight.lost:
 		return
 	game.fight.clock += dt
-	# Returning crocodiles are visible before they are allowed to move again.
-	for c in game.fight.crocs:
-		if c.s == "back" and c.get("ready_to_resume", false):
-			_croc_resume(c)
 	_move_bearer(_bot_move() if game.fight.get("bot", false) else _keys(), dt)
 	if game.fight.thrust >= 0.0:
 		game.fight.thrust += dt
@@ -473,16 +468,19 @@ func _croc_send_back(c: Dictionary) -> void:
 	t.tween_property(a, "modulate:a", 0.0, 0.25)
 	t.tween_callback(func(): a.position = to)
 	t.tween_property(a, "modulate:a", 1.0, 0.4)
-	t.tween_callback(func():
-		if not game.fight.is_empty() and c.s == "back":
-			c.ready_to_resume = true
-			_croc_resume(c))
+	t.tween_callback(_croc_return.bind(c))
 
 
-func _croc_resume(c: Dictionary) -> void:
-	if not game.fight.both or _croc_clear(c, c.speed):
-		c.ready_to_resume = false
+## A crocodile sent back crawls again only once it keeps clear of the others; until then it waits.
+func _croc_return(c: Dictionary) -> void:
+	if game.fight.is_empty() or c.s != "back":
+		return
+	if game._instant or _croc_clear(c, c.speed):
 		c.s = "crawl"
+	else:
+		var t = game._fight_tween(c.node)
+		t.tween_interval(0.15)
+		t.tween_callback(_croc_return.bind(c))
 
 
 ## Send the next crocodile: one of the drawn ones still waiting (the last of a wave always is), else
@@ -552,16 +550,6 @@ func _croc_launch(speed: float) -> bool:
 			game.fight.crocs.erase(c)
 			c.node.queue_free()
 		return false
-	# keep the arrivals apart, so there is always time to turn, move and strike between two
-	if w.has("min_gap") and not game._instant:
-		var arrive: float = game.fight.clock + absf(game.fight.pos.x - _snout(c).x) / (speed * game.unit)
-		if arrive < game.fight.last_arrival + w.min_gap:
-			if c.node in game.fight.copies:          # not yet: take the new one away again
-				game.fight.copies.erase(c.node)
-				game.fight.crocs.erase(c)
-				c.node.queue_free()
-			return false
-		game.fight.last_arrival = arrive
 	game.fight.wave_launched += 1
 	c.t0 = game.fight.clock
 	c.s = "crawl"
@@ -573,26 +561,20 @@ func _croc_launch(speed: float) -> bool:
 ## halves (snout to middle) may never touch on the way in (a little overlap above and below is
 ## allowed), and two at nearly the same height reach him CROC_SAME_SPOT s apart. One coming from
 ## the other side counts as if it came from this side (mirrored about the bearer), so the two sides
-## are kept as far apart as one.
+## are kept as far apart as one. Whichever reaches him first, every other is then still at least
+## half its body (and the wave's `min_gap` s) behind, whatever its height or side.
 func _croc_clear(c: Dictionary, speed: float) -> bool:
 	var t_c = absf(game.fight.pos.x - _snout(c).x) / (speed * game.unit)
+	var min_gap: float = game.fight.waves[game.fight.wave].get("min_gap", 0.0)
 	for o in game.fight.crocs:
 		if o == c or o.s != "crawl":
 			continue
-		if game.fight.both:
-			# Treat left and right as a single queue of distances from the bearer.
-			# This is independent of lane height: a new mover must be behind ALL active foes.
-			var dc: float = absf(game.fight.pos.x - _snout(c).x)
-			var other_distance: float = absf(game.fight.pos.x - _snout(o).x)
-			var half_body: float = maxf(c.node.get_meta("size").x, o.node.get_meta("size").x) / 2.0
-			if dc - other_distance < half_body - 0.0001:
-				return false
-			# Faster followers may not close the gap before the leading threat reaches him.
-			var first_arrival: float = minf(dc / (speed * game.unit), other_distance / (o.speed * game.unit))
-			var future_gap: float = dc - other_distance - (speed - o.speed) * game.unit * first_arrival
-			if future_gap < half_body - 0.0001:
-				return false
 		var t_o: float = absf(game.fight.pos.x - _snout(o).x) / (o.speed * game.unit)
+		var later: Dictionary = c if t_c >= t_o else o
+		var later_speed: float = (speed if later == c else o.speed) * game.unit
+		var half_body: float = later.node.get_meta("size").x / 2.0
+		if absf(t_c - t_o) < maxf(half_body / later_speed, min_gap):
+			return false
 		if absf(_snout(o).y - _snout(c).y) < CROC_LANE * game.unit * 1.5 and absf(t_c - t_o) < CROC_SAME_SPOT:
 			return false
 		var o_pos: Vector2 = o.node.position
@@ -745,6 +727,11 @@ func autotest(e: Dictionary, expect: Callable) -> void:
 		expect.call(not _croc_clear(rr, 300.0), e.id + " the other side counts as this side when spacing them")
 		rr.node.position.x = game.fight.pos.x + 600.0 * game.unit + 2.0 * rr.node.get_meta("size").x
 		expect.call(_croc_clear(rr, 300.0), e.id + " ...and one well behind is clear")
+		# at another height, and only a little less than half a body behind: still not clear
+		var far_lane: float = game.fight.lanes[-1]
+		rr.node.position = Vector2(game.fight.pos.x + 600.0 * game.unit, far_lane - _croc_head(rr.node, -1).y)
+		rr.node.position.x += _snout(l).x - (2.0 * game.fight.pos.x - _snout(rr).x) + rr.node.get_meta("size").x * 0.45
+		expect.call(not _croc_clear(rr, 300.0), e.id + " none reaches him within half a body of another, at any height")
 	# the last of a wave is one of the drawn crocodiles squatting on screen; before it, the
 	# last one squatting is kept back for it
 	game._crocs_cleanup()

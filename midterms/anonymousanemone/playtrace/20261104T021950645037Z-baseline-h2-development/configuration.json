@@ -1,0 +1,35 @@
+{
+  "date": "20261104T021950645037Z",
+  "game_version": "4fa1f22d33ec49f75a1c32d596e28ba2924f25eb072d54dd1e86530a635170b8",
+  "suite_sha256": "ec3c1399d77b9bbfdacef14246234a20421a1e6540ec55d618cbbe35a756c752",
+  "prompt_sha256": "19644df97fbc09ce3b04477667ea7b9fed379a017af40785dd8a9a6fc0e6de2d",
+  "prompt": "You play Crocodiles. Return one JSON object with exactly move (-1 up, 0 still,\n1 down), face (-1 left, 0 unchanged, 1 right), thrust (boolean), heka (boolean).\nIn spell31 face must be 0. Each action lasts 0.1 simulation seconds. Thrust lands\n0.0833s after initiation and cooldown lasts 0.25s. Spear reach extends 15 world\npixels along spear_direction from tip. Align vertically with an approaching\ncrocodile and thrust while the spear reaches its snout or silhouette. Hold heka\nonly for red crocodiles; heka against an ordinary crocodile loses. Three bites\nlose. Letting a crocodile escape after heka activates loses. During tutorial\n\"thrust\", thrust to begin. Movement speed is 390 world pixels/s. The engine\nfreezes while you decide. Earlier observations, if supplied, are bounded history;\nuse successive positions to estimate velocity. Choose the action yourself.\nDo not provide prose or markdown. No tools are available.",
+  "max_output_tokens": 1024,
+  "player_source_sha256": {
+    "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "baseline.py": "0851f1a739468c1c2eb24fd2592be4cf8d3fd440eea48ee1ee17d31d36e499e6",
+    "checkpoint.py": "4b667ae9456b7cb94fdb67717b5f52b4bde110999c3ece4217551811099d20ce",
+    "config.py": "989a30e1c361ec6d436a494868dc34a67617f1dc2edde47cd2cb714c77e64090",
+    "engine.py": "5f9a47fee4acdc4efb1f3711897bf9847017ca52caf079f5d6f022670f22cc3a",
+    "model.py": "ca027767da7b331358f00a0755a46cd3f98b408a3419d97d8a016e22448edfbe",
+    "replay.py": "279be80fccea44e09164ea8f9966abf08ae115d12e373b3c928d93b2c1c6c1fa",
+    "run.py": "ba157c45a011e2d1171b99bcd36cf5c89a79f73932c2066f6aa0fa48641605f3",
+    "traces.py": "efd1791f865f23f4516bead772a1f4980740634a7f9085588dc89e0c2a2ff5fa"
+  },
+  "arguments": {
+    "policy": "baseline",
+    "model": "gemini-3.5-flash-lite",
+    "split": "development",
+    "case": "spell32",
+    "history": 2,
+    "max_calls": 1200,
+    "call_timeout": 30,
+    "episode_timeout": 1800,
+    "out": "/Users/sophial/dcmt_tmp/School/GameAI/game-dev-f26/midterms/anonymousanemone/playtrace",
+    "max_cost_usd": 10.0,
+    "input_price": 0.3,
+    "output_price": 2.5,
+    "price_date": "2026-11-03",
+    "price_source": "https://cloud.google.com/model-garden/pricing"
+  }
+}

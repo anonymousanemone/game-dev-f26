@@ -6,7 +6,7 @@ import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
 ROOT_ENTRIES = {'godot', 'players', 'tests', 'skills', 'reports', 'submission',
-                'playtrace', 'suite.json', 'agent-config.json', '.gitignore', '.env.example'}
+                'playtrace', 'suite.json', 'agent-config.json', '.gitignore'}
 
 
 def ignore_private_files(folder, names):
@@ -16,7 +16,7 @@ def ignore_private_files(folder, names):
             ignored.append(name)
         elif (name in {'.git', '.godot', '__pycache__', '.DS_Store', '.env', '.venv',
                        'node_modules', 'build', 'obsolete-replacement'}
-              or (name.startswith('.env.') and name != '.env.example')
+              or name.startswith('.env.')
               or name.endswith(('.pyc', '.mdp', '.build.zip', '.html'))):
             ignored.append(name)
     return ignored

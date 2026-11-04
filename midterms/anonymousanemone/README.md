@@ -6,7 +6,7 @@ A self-contained midterm excerpt of your original game, [Totenbuch](https://gith
 
 [Game rules, core loop and interfaces](GAME.md) provides a short submission-ready description based on the implemented source. Interface screenshots are pending.
 
-For the October 26 checkpoint, see [current readiness and remaining blockers](reports/session7-readiness.md). [GitHub deterministic CI passed all 14 tests](https://github.com/anonymousanemone/game-dev-f26/actions/runs/40396786117). A live model episode and its comparison still need the funded API key.
+For the October 26 checkpoint, see [current readiness and remaining blockers](reports/session7-readiness.md). [GitHub deterministic CI passed all 14 tests](https://github.com/anonymousanemone/game-dev-f26/actions/runs/40396786117). The first live model episode, Gemini 3.5 Flash-Lite on spell32 seed 30, ran on November 4. Its comparison with the baseline is in [EVALUATION.md](EVALUATION.md). The held-out comparison has not been run.
 
 Two complete encounters: spell 31's one-sided tutorial and mixed-color waves, and spell 32's two-sided fight. Each can be won or lost independently. Three declared evaluation situations use these two games; the third starts spell 32 at the lowest permitted vertical position. Included: existing crocodile combat, cropped artwork, human play, authoritative five-operation interface, baseline, live model adapter, deterministic tests and trace playback.
 
@@ -171,12 +171,25 @@ python -m players.run --policy baseline --split development
 
 The second command writes configuration, JSONL action traces, local build archives and summaries under `playtrace/`. The preserved setup comparison is linked from [EVALUATION.md](EVALUATION.md).
 
-Live trials are prepared but **have not been run**. The model player uses **Gemini 3.5 Flash-Lite on Vertex AI** (`gemini-3.5-flash-lite`, global endpoint), paid from the course Google Cloud credit. Prices from the [Vertex AI pricing page](https://cloud.google.com/model-garden/pricing), checked November 3, 2026: $0.30 input and $2.50 output per million tokens. Output includes reasoning ("thinking") tokens, which the player counts as output. The adapter, `players/model.py`, calls the Vertex `generateContent` REST endpoint with Python's standard library and a JSON response schema. It sends no tools, repository contents or hidden state. All model actions come from the model response.
+One live development episode has been run, on November 4 (see [EVALUATION.md](EVALUATION.md)). The **held-out live trials have not been run**. The model player uses **Gemini 3.5 Flash-Lite on Vertex AI** (`gemini-3.5-flash-lite`, global endpoint), paid from the course Google Cloud credit. Prices from the [Vertex AI pricing page](https://cloud.google.com/model-garden/pricing), checked November 3, 2026: $0.30 input and $2.50 output per million tokens. Output includes reasoning ("thinking") tokens, which the player counts as output. The adapter, `players/model.py`, calls the Vertex `generateContent` REST endpoint with Python's standard library and a JSON response schema. It sends no tools, repository contents or hidden state. All model actions come from the model response.
 
 ### Set up the live player privately
 
 1. Use the same Google Cloud project and sign-in as the course starter. Its check, `uv run --frozen python -m course_game.setup_check --provider vertex --headless`, should pass first. If you have not signed in on this machine, run `gcloud auth application-default login`. The player reads those Application Default Credentials (`~/.config/gcloud/application_default_credentials.json`, or the file named by `GOOGLE_APPLICATION_CREDENTIALS`). No API key is stored in this project.
-2. On a fresh clone, run `cp .env.example .env`. Open `.env` and fill in `GOOGLE_CLOUD_PROJECT=` with your project ID. Values already exported in your shell, such as `GOOGLE_CLOUD_PROJECT` from the starter setup, take precedence over `.env`. `.env` is Git-ignored and excluded from packaging.
+2. Create a private `.env` file in this folder with these settings, filling in your Google Cloud project ID:
+
+   ```
+   GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID
+   GOOGLE_CLOUD_LOCATION=global
+   CROC_MODEL=gemini-3.5-flash-lite
+   CROC_MAX_COST_USD=10
+   CROC_INPUT_PRICE=0.30
+   CROC_OUTPUT_PRICE=2.50
+   CROC_PRICE_DATE=2026-11-03
+   CROC_PRICE_SOURCE=https://cloud.google.com/model-garden/pricing
+   ```
+
+   Values already exported in your shell, such as `GOOGLE_CLOUD_PROJECT` from the starter setup, take precedence over `.env`. `.env` is Git-ignored and excluded from packaging.
 3. From this project folder, run:
 
 ```bash
@@ -185,7 +198,7 @@ python -m players.checkpoint
 
 The runner reads `.env` directly; no `source` command or Python dependency is required. This command runs the baseline and the live model on the same spell32/development-seed-30 episode, saves both under `./playtrace/`, and writes [the comparison report](reports/session7-comparison.md). Spell32 provides a short game episode that can end in a real win or loss; either outcome is valid evidence. The report states whether the model submitted valid actions and reached such an ending. Limits and provider failures remain visible and are never relabeled as successful gameplay. Use `--case spell31` to choose the tutorial encounter instead.
 
-The `.env.example` records the model, dated prices and $10 maximum. A conservative reservation before each call covers the input byte bound plus message overhead and the full output-token cap. Reservations, including failed calls, count across every episode in one runner invocation; it stops before a call would exceed `--max-cost-usd`. This is intentionally more conservative than the reported usage-cost estimate. At these prices the reservation is roughly half a cent per call, mostly for the 1024-token output cap. A full 1200-call episode can therefore reserve several dollars, even though actual usage is usually far lower. Raise `--max-cost-usd` for the six-episode held-out runs, within your remaining credit. The cap resets for a new invocation: do not rerun paid experiments repeatedly without accounting for earlier spend. No automatic retries are made. Provider billing remains the source for actual charges.
+These settings record the model, dated prices and $10 maximum. A conservative reservation before each call covers the input byte bound plus message overhead and the full output-token cap. Reservations, including failed calls, count across every episode in one runner invocation; it stops before a call would exceed `--max-cost-usd`. This is intentionally more conservative than the reported usage-cost estimate. At these prices the reservation is roughly half a cent per call, mostly for the 1024-token output cap. A full 1200-call episode can therefore reserve several dollars, even though actual usage is usually far lower. Raise `--max-cost-usd` for the six-episode held-out runs, within your remaining credit. The cap resets for a new invocation: do not rerun paid experiments repeatedly without accounting for earlier spend. No automatic retries are made. Provider billing remains the source for actual charges.
 
 The model and dated prices default from `.env`, so a short pilot needs no extra flags:
 
@@ -223,7 +236,7 @@ This replays recorded actions with the same engine. Label it as replay in a reco
 | `step` | `player_id=0`, `action` | Validation, visible observation, outcome |
 | `outcome` | none | Ongoing/terminal, reason, score, counts |
 
-Only player 0 exists. Reset before other stateful operations. Action: `{"move": -1|0|1, "face": -1|0|1, "thrust": boolean, "heka": boolean}`. Face must be 0 in spell 31. Thrust during cooldown is permitted but has no effect. The list never filters out a tactically wrong heka choice or chooses a target. The game runs six 1/60-second ticks per action, then freezes during inference. Human play retains the original real-time controls. The evaluation wrapper selects those controls at the declared fixed cadence and skips only the arena opening animation; it preserves original spawning/collision rules. Drawing frames and wall-clock model latency do not advance combat.
+Only player 0 exists. Reset before other stateful operations. Action: `{"move": -1|0|1, "face": -1|0|1, "thrust": boolean, "heka": boolean}`. Face must be 0 in spell 31. Thrust during cooldown is permitted but has no effect. The list never filters out a tactically wrong heka choice or chooses a target. The game runs six 1/60-second ticks per action, then freezes during inference. Human play retains the original real-time controls. The evaluation wrapper selects those controls at the declared fixed cadence and skips only the arena opening animation; it preserves original spawning/collision rules. Drawing frames and wall-clock model latency do not advance combat. Headless runs use the project's 1280×720 viewport (set in `episode.gd`), because the arena's width follows the viewport's aspect ratio.
 
 Observations include active visible snout positions/directions/colors/dimensions, player position/facing, spear geometry, health, progress, tutorial feedback and simulation time. They exclude RNG, future waves/colors, launch timers, internal velocities and collision-mask queries. Coordinates are a deliberate accessible representation of the visible screen, rather than raw pixels. Velocity is inferred by the baseline from two observations; the model can receive the same two. The baseline has no engine reference. The model receives serialized observation/history, instructions, and no executable tools. The evaluator, not the model, determines victory. Rules and static control meanings are disclosed equally.
 
@@ -236,7 +249,7 @@ Observations include active visible snout positions/directions/colors/dimensions
 | Crocodiles, bearer, heka glyphs and captions of spells 31/32 | manual (visual reference) | Lepsius, *Das Todtenbuch der Ägypter* (1842), plate XVI; [digitized volume](https://archiv.ub.uni-heidelberg.de/propylaeumdok/467/1/lepsius_todtenbuch.pdf); see [CREDITS.md](CREDITS.md) |
 | Spell 31 tutorial, waves, red-order choices; spell 32 two-sided mixed waves; counts, speeds, ramp, spacing | design + code | `godot/scripts/dangers/danger_encounters.gd`, original e31/e32 dictionaries |
 | Movement speed, lane spacing, snout geometry, silhouette strike and grace distance | design + code | `godot/scripts/dangers/crocodiles.gd`, constants, `_move_bearer`, `_croc_head`, `_solid_of`, `_croc_strike` |
-| Spell 32 movement starts must be at least half the larger crocodile's body farther from the bearer than every approaching crocodile, across both sides and all heights; returning crocodiles wait for the same clearance. Base speed is reduced to 120 plate px/s (180 world px/s at scale 1.5), retaining the 1% ramp. | design | User's spacing/difficulty correction; `crocodiles.gd`, `_croc_clear` and `_croc_resume`; `danger_encounters.gd`, e32. Deterministic fixtures in `spacing_checks.gd`. |
+| A crocodile may start (or, once turned back, crawl again) only if its arrival at the bearer is at least max(half its body ÷ its speed, the wave's `min_gap`) seconds from every other crawling crocodile's, whatever the height or side; returning crocodiles wait until clear. Spell 32 base speed is 175 plate px/s (262.5 world px/s at scale 1.5), with a 1% ramp and `min_gap` 0.9 s; spell 31's waves run at 190 and 210 plate px/s. | design + code | Tuned in Totenbuch at commit `0d5a340`; `crocodiles.gd`, `_croc_clear` and `_croc_return`; `danger_encounters.gd`, e31/e32. Deterministic fixtures in `spacing_checks.gd`. |
 | Plain/heka color match; heka on ordinary foe loses; red foe resists plain strike | design + code | Same file, `_croc_strike`, `_croc_takes_word` |
 | Three health; bites, escape/word theft; tutorial bite grace | design + code | Same file, `_croc_bites`, `_crocs`, `_croc_dies` |
 | Last drawn crocodile waits until others are gone; waves complete only when all are turned | design + code | Same file, `_croc_launch`, `_croc_break`, `_croc_next_wave` |

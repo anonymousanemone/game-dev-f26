@@ -15,7 +15,7 @@
   },
   "independent_review": {
     "instructions": "review.md",
-    "status": "pending separate read-only review; implementation session is not independent"
+    "status": "separate read-only review findings and implementation responses recorded in review.md; human gate approval remains separate"
   },
   "experiment_skill": {
     "name": "make-experiment",

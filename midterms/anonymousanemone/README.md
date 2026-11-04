@@ -6,7 +6,7 @@ A self-contained midterm excerpt of your original game, [Totenbuch](https://gith
 
 [Game rules, core loop and interfaces](GAME.md) provides a short submission-ready description based on the implemented source.
 
-See the [report index](reports/README.md) for experiments, source evidence and validation. [GitHub deterministic CI passed all 14 tests](https://github.com/anonymousanemone/game-dev-f26/actions/runs/40396786117). The first live model episode, Gemini 3.5 Flash-Lite on spell32 seed 30, ran on November 4. Its comparison with the baseline is in [EVALUATION.md](EVALUATION.md). The held-out comparison has not been run.
+See the [report index](reports/README.md) for experiments, source evidence and validation. [GitHub deterministic CI passed all 14 tests](https://github.com/anonymousanemone/game-dev-f26/actions/runs/40396786117). The first live model episode, Gemini 3.5 Flash-Lite on spell32 seed 30, ran on November 4. Its comparison with the baseline is in [EVALUATION.md](EVALUATION.md). The [completed held-out comparison](reports/held-out-final.md) covers all 18 episodes: baseline 6/6 wins, model history=0 0/6, history=2 2/6.
 
 Two complete encounters: spell 31's one-sided tutorial and mixed-color waves, and spell 32's two-sided fight. Each can be won or lost independently. Three declared evaluation situations use these two games; the third starts spell 32 at the lowest permitted vertical position. Included: existing crocodile combat, cropped artwork, human play, authoritative five-operation interface, baseline, live model adapter, deterministic tests and trace playback.
 
@@ -23,7 +23,7 @@ remain unchanged; the other encounters have no active actors or code.
 The earlier replacement scenes and resources have been removed. Historical runs
 from those discarded implementations are not validation of this extraction.
 
-The suite was declared on 2026-10-26 before player tuning. Keep `suite.json` and update the Week 3 scope thread if this changes your prior commitment. No held-out cases have been run during setup.
+The suite was declared on 2026-10-26 before player tuning. Keep `suite.json` and update the Week 3 scope thread if this changes your prior commitment. Held-out cases were reserved during tuning and have now been evaluated once per declared condition; they are no longer unseen.
 
 ## Setup and play
 
@@ -157,7 +157,7 @@ python -m players.run --policy baseline --split development
 
 The second command writes configuration, JSONL action traces, local build archives and summaries under `playtrace/`. The preserved setup comparison is linked from [EVALUATION.md](EVALUATION.md).
 
-Multiple live development experiments have been run on November 4, including the selected combined-prompt comparison (see [EVALUATION.md](EVALUATION.md) and [full experiment](reports/experiments/combat-speed-full.md)). The **held-out live trials have not been run**. The model player uses **Gemini 3.5 Flash-Lite on Vertex AI** (`gemini-3.5-flash-lite`, global endpoint), paid from the course Google Cloud credit. Prices from the [Vertex AI pricing page](https://cloud.google.com/model-garden/pricing), checked November 3, 2026: $0.30 input and $2.50 output per million tokens. Output includes reasoning ("thinking") tokens, which the player counts as output. The adapter, `players/model.py`, calls the Vertex `generateContent` REST endpoint with Python's standard library and a JSON response schema. It sends no tools, repository contents or hidden state. All model actions come from the model response.
+Multiple live development experiments have been run on November 4, including the selected combined-prompt comparison (see [EVALUATION.md](EVALUATION.md) and [full experiment](reports/experiments/combat-speed-full.md)). The **held-out evaluation is complete**; see [the final report](reports/held-out-final.md). The model player uses **Gemini 3.5 Flash-Lite on Vertex AI** (`gemini-3.5-flash-lite`, global endpoint), paid from the course Google Cloud credit. Prices from the [Vertex AI pricing page](https://cloud.google.com/model-garden/pricing), checked November 3, 2026: $0.30 input and $2.50 output per million tokens. Output includes reasoning ("thinking") tokens, which the player counts as output. The adapter, `players/model.py`, calls the Vertex `generateContent` REST endpoint with Python's standard library and a JSON response schema. It sends no tools, repository contents or hidden state. All model actions come from the model response.
 
 ### Set up the live player privately
 
@@ -184,7 +184,7 @@ python -m players.checkpoint
 
 The runner reads `.env` directly; no `source` command or Python dependency is required. This command runs the baseline and the live model on the same spell32/development-seed-30 episode, saves both under `./playtrace/`, and writes [the comparison report](reports/session7-comparison.md). Spell32 provides a short game episode that can end in a real win or loss; either outcome is valid evidence. The report states whether the model submitted valid actions and reached such an ending. Limits and provider failures remain visible and are never relabeled as successful gameplay. Use `--case spell31` to choose the tutorial encounter instead.
 
-These settings record the model, dated prices and $10 maximum. A conservative reservation before each call covers the input byte bound plus message overhead and the full output-token cap. Reservations, including failed calls, count across every episode in one runner invocation; it stops before a call would exceed `--max-cost-usd`. This is intentionally more conservative than the reported usage-cost estimate. At these prices the reservation is roughly half a cent per call, mostly for the 1024-token output cap. A full 1200-call episode can therefore reserve several dollars, even though actual usage is usually far lower. Raise `--max-cost-usd` for the six-episode held-out runs, within your remaining credit. The cap resets for a new invocation: do not rerun paid experiments repeatedly without accounting for earlier spend. No automatic retries are made. Provider billing remains the source for actual charges.
+These settings record the model, dated prices and $10 maximum. A conservative reservation before each call covers the input byte bound plus message overhead and the full output-token cap. Reservations, including failed calls, count across every episode in one runner invocation; it stops before a call would exceed `--max-cost-usd`. This is intentionally more conservative than the reported usage-cost estimate. At these prices the reservation is roughly half a cent per call, mostly for the 1024-token output cap. A full 1200-call episode can therefore reserve several dollars, even though actual usage is usually far lower. The completed final evaluation used a separately authorized $20 shared cap and reserved $9.6231501; do not start additional paid evaluation from these setup examples without authorization. The cap resets for a new invocation: do not rerun paid experiments repeatedly without accounting for earlier spend. No automatic retries are made. Provider billing remains the source for actual charges.
 
 The model and dated prices default from `.env`, so a short pilot needs no extra flags:
 
@@ -194,13 +194,7 @@ python -m players.run --policy model --split development --case spell31 --max-ca
 
 A 50-call pilot will usually hit its call limit before completing spell 31. Use it to inspect transport and cost, not to claim a win. Full episodes can require hundreds of calls. Choose a total spend budget before live execution. Defaults are declared in `suite.json`: 1200 steps/calls, 30 seconds per call and 1800 wall seconds per episode. A failed call counts and submits an explicitly labeled neutral fallback. Invalid actions consume one step and advance neutral simulation. No retries are silently substituted.
 
-After freezing the prompt and heuristic, run the same six held-out case/seed episodes for the baseline and the model with both history settings. Use identical model/budget/price flags for the two model variants:
-
-```bash
-python -m players.run --policy baseline --split held_out
-python -m players.run --policy model --split held_out --history 0 --max-cost-usd BUDGET_USD
-python -m players.run --policy model --split held_out --history 2 --max-cost-usd BUDGET_USD
-```
+The frozen evaluation is complete: six baseline episodes and six live episodes for each model history setting. The [final report](reports/held-out-final.md) links the exact configuration and every trace. These held-out seeds are consumed; do not rerun them as fresh validation or use their results for tuning. Replaying a saved trace is an offline check, not a new trial.
 
 For visual playback, use the path to an actual episode trace:
 
@@ -279,7 +273,7 @@ Evidence: [reset, fixed ticks and observations](godot/scripts/episode.gd); [prac
 Historical image source: **Carl Richard Lepsius, *Das Todtenbuch der Ägypter*, Leipzig: Wigand, 1842**, plate XVI, spells 31–32. Heidelberg's catalog credits **Dr. Marcus Müller, Totenbuch-Projekt, University of Bonn**, with supplying the digital version, hosted by **Universitätsbibliothek Heidelberg / Propylaeum-DOK**. [Persistent citation](https://doi.org/10.11588/propylaeumdok.00000467). The edition was published in 1842 and is in the public domain, and faithful scans of it create no new copyright. [CREDITS.md](CREDITS.md) gives the legal basis for this and the provenance of the exported artwork. HUD font: "Old Fax" by George Blackwell, CC BY 4.0 ([source](https://georgeblackwell.itch.io/old-fax)).
 
 - [Evaluation and current results](EVALUATION.md)
-- [Credits, reuse terms and extraction provenance](CREDITS.md), [source manifest](reports/provenance/source-manifest.json)
+- [Credits and reuse terms](CREDITS.md); [inherited-code patches](reports/provenance/)
 - [Agent-team log prompts; student authorship still required](AGENT-TEAM.md)
 - [Reusable evaluation skill](skills/crocodile-evaluation/SKILL.md), [experiment skill](skills/make-experiment/SKILL.md), and [invocation evidence](reports/sessions/skill-sessions.md)
 - [Three implementation-session exports](reports/sessions/codex-implementation-sessions.md) and [November 4 review/experiment snapshot](reports/sessions/codex-review-and-experiment-session.md)
@@ -295,3 +289,5 @@ python submission/package.py --login anonymousanemone --course-repo /PATH/TO/gam
 This creates only `midterms/anonymousanemone/` and `.github/workflows/midterm-anonymousanemone.yml`. It refuses to overwrite an existing submission or workflow, excludes caches, and never commits/pushes. Run setup/tests from the copied folder. The workflow imports Godot and runs deterministic checks without API secrets; its GitHub execution remains pending until the course PR exists. Then create a branch such as `anonymousanemone/midterm`, review the changes, push and open one PR targeting the course repository's `main`. Use [submission/PR.md](submission/PR.md) for the description. Submit that PR URL on CourseWorks by November 7, 11:59 p.m. The complete source belongs in the PR, not only a link to this standalone repository.
 
 New fixed-step traces store speed, lives, crocodile count and reach-flag settings in the reset row. Replay restores them before checking observations. Legacy experimental traces use metadata and adjacent configuration.json for settings; restoring an old archive also restores its old replay implementation. Build/version checks remain enforced.
+
+New traces report `simulation_frame` from simulated time and `nominal_simulation_frame` from charged steps × 6. In historical traces, `simulation_frame` was nominal and can exceed the actual terminal frame; recover the actual frame as round(result.observation.time × 60). Historical artifacts are preserved unchanged.

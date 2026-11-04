@@ -112,7 +112,10 @@ def episode(engine, case, seed, policy, args, suite, trace, budget=None):
             break
         result = engine.call('step', action=action)
         write_trace(trace, {'type': 'step', 'observation': observation, 'action': action,
-            'step': result['outcome']['steps'], 'simulation_frame': result['outcome']['steps'] * 6,
+            'step': result['outcome']['steps'],
+            # Terminal actions can stop before all six ticks have elapsed.
+            'simulation_frame': round(result['observation']['time'] * 60),
+            'nominal_simulation_frame': result['outcome']['steps'] * 6,
             'wall_elapsed_seconds': time.monotonic() - started,
             'source': policy, 'fallback': action is None, 'error': error, 'raw': raw,
             'response_id': response_id, 'usage': usage, 'latency_seconds': elapsed, 'result': result,

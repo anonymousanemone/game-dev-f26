@@ -84,7 +84,7 @@ The user requested a decision if spending approached the limit. The runner would
 
 ## Frozen configuration and checks
 
-Command: `python -B -m players.held_out_evaluation` from the midterm folder. No execution deviations or paid retries. The pending independent review remains separate; execution does not certify it or approve a course gate.
+Command: `python -B -m players.held_out_evaluation` from the midterm folder. No execution deviations or paid retries. Separate read-only review findings and implementation responses are recorded in [review.md](../review.md); execution does not certify review or approve a course gate.
 
 Game SHA-256: `f08e6aea82a27010f29b03c9073c5ca26e539fd5ac16813d374ef23d8f036bd5`.
 Prompt SHA-256: `266b037a82f744197692ef37585dcac34e5695fc2729a7c55a8ddb2630ccebf9`.
@@ -102,3 +102,7 @@ Every episode and model-call reservation checked frozen game, suite and player-s
 - [Final shared budget](../playtrace/20261104T082332827621Z-held-out-final/budget.json)
 - [Completion record](../playtrace/20261104T082332827621Z-held-out-final/completion.json)
 - [Artifact checks and per-episode diagnostics](../playtrace/20261104T082332827621Z-held-out-final/verification.json)
+
+## Subsequent reporting correction (no new trials)
+
+After evaluation, players/run.py was changed only to report actual elapsed simulation frames and retain the nominal count separately. Existing traces remain unchanged: their simulation_frame field is nominal (charged steps × 6); actual terminal frames can be recovered as round(result.observation.time × 60). The frozen runner source is preserved in commit aee02a6 and matches the configuration hash. Current runner-source hashes therefore differ for this documented logging change; game, prompt, suite and gameplay policy are unchanged. All 41 final trace/summary/configuration/completion/budget/verification files are committed in aee02a6. No paid reruns were performed.

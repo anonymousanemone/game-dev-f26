@@ -1,4 +1,4 @@
-# Evaluation — development results and first live trial; held-out comparison pending
+# Evaluation — completed frozen comparison and development evidence
 
 ## Completed held-out evaluation — November 4
 
@@ -11,8 +11,7 @@ estimated returned-usage cost was **$1.3998745**. No increase, retry or limit
 truncation occurred. All 28 deterministic tests passed before execution.
 
 [Full report and per-episode evidence](reports/held-out-final.md). The prompt,
-suite, player sources and game were frozen throughout. These results supersede
-historical statements below that held-out evaluation was pending. Independent
+suite, player sources and game were frozen throughout. Historical development sections below retain their original experiment conditions; the completed table is the current result. Independent
 review and course gate decisions remain separate. The held-out seeds have now
 been evaluated and must not be treated as unseen tuning-validation data.
 
@@ -33,14 +32,14 @@ were 2/14 and 2/14 for the control at 1.0× and 0.75× speed, versus 7/14 and 6/
 for combined. All four lost. One stochastic trial per condition on seed 30
 supports this selection only as development evidence; it is not a general ranking
 or a successful held-out evaluation. No additional paid calls were made to adopt
-the prompt. The student will commit manually; no gate or merge is approved here.
+the prompt. The final evidence was committed by the student; no gate or merge is approved here.
 
 
 This evaluates a self-contained excerpt of the student’s original Totenbuch game. The design is original; the implementation starts from their own existing Godot codebase.
 
 ## Declared experiment
 
-The 2026-10-26 suite in [suite.json](suite.json) was written before player tuning. Three starting situations: spell31 tutorial/waves; standard two-sided spell32; spell32 starting at the lowest allowed position. Development uses seed 30. Held-out seeds are 101/102, 201/202 and 301/302 respectively and have not been used during setup. Run each case/held-out seed for the baseline, model history=0, and model history=2 after freezing prompts and the heuristic. This gives six episodes per policy/history condition, two per situation.
+The 2026-10-26 suite in [suite.json](suite.json) was written before player tuning. Three starting situations: spell31 tutorial/waves; standard two-sided spell32; spell32 starting at the lowest allowed position. Development uses seed 30. Held-out seeds are 101/102, 201/202 and 301/302 respectively and were reserved during tuning. Each case/held-out seed was evaluated once for the baseline, model history=0, and model history=2 after freezing prompts and the heuristic: six episodes per policy/history condition, two per situation. These seeds are now consumed.
 
 The model and baseline receive the same accessible visible-state representation and control meanings. The final combined prompt teaches the heka rule explicitly, as the baseline already knows it. The baseline reacts only after a crocodile has been visible for 0.4 s, estimates velocity from successive visible positions, aligns, turns and chooses heka by color. It has no engine handle or hidden speed/spawn data.
 
@@ -110,7 +109,7 @@ Model traces: [A](playtrace/20261104T054256539690Z-model-h2-development/spell32-
 - **B (option 1)** adds, for each visible crocodile, `dx_from_tip` and `dy_from_tip` (snout minus spear tip), `side`, and `seconds_to_bearer` (time until the snout reaches the bearer at the motion seen since the previous observation; null until seen moving). These are derived only from what is on screen; there is no "in reach" flag. Gemini moved far more (39% of decisions against 8%) and thrust much closer (67 px against 223 px), but still turned nothing back.
 - **C (option 2)** adds facts the model had got wrong: deal first with the crocodile that will reach you soonest; start a thrust when it is on the side you face within about 40 px horizontally and 20 px vertically; heka counts only when held with the thrust; look only when nothing will reach you within about 2 s. The prompt still does not say which crocodiles need heka. Gemini thrust only once. Two causes are visible in the trace. First, one movement step is 39 px (390 px/s for 0.1 s), wider than the ±20 px window, so it bounced past the right height while the first crocodile closed in. Second, from step 40 to 47 a red crocodile was level with the spear (vertical offset 0) and passed 40 px and then 13 px from the tip, yet it never thrust; it had not read the heka word yet. It then looked with a crocodile 1.7 s away, against its own 2 s instruction, and was facing the wrong way for the last bite.
 - In all three attempts the bites came at steps 32, 47 and 65. Because Gemini never stopped a crocodile, they arrived on the seeded schedule regardless of what it did.
-- The prompt and observation changes were made on the development seed only; no held-out seed has been used.
+- At the time of these development trials, prompt and observation changes used development seed 30 only; held-out seeds were reserved until the final evaluation.
 
 **Learning experiment: 5 lives, 20 crocodiles, and an event-log memory** ([full report](reports/experiments/learning-experiment.md)). Option 2 was dropped and the prompt is back to option 1 plus one sentence describing `memory`. The runner's optional `--memory` sends the model a log of its own thrusts and looks, crocodiles turned back, bites and game messages. Results:
 
@@ -150,15 +149,17 @@ Traces: [baseline](playtrace/20261104T025633917875Z-baseline-h2-development/spel
 
 Traces: [baseline](playtrace/20261104T021950645037Z-baseline-h2-development/spell32-30.jsonl), [model](playtrace/20261104T021952386012Z-model-h2-development/spell32-30.jsonl). All 58 model actions were valid model responses with no fallbacks. Latency was 0.64–4.22 s (median 0.87). The model never used heka.
 
-The historical ten-trial subtotal was about $0.398 in estimated token cost; later experiments report their own usage and reservations, so this is not a cumulative spend total; provider billing remains the authority for actual charges. These are single development episodes. They show that the model player works end to end. They are not held-out evidence and support no general claim about which player is stronger. Freeze the prompt and heuristic before the held-out comparison. Do not count baseline or replay as live model evidence.
+The historical ten-trial subtotal was about $0.398 in estimated token cost; later experiments report their own usage and reservations, so this is not a cumulative spend total; provider billing remains the authority for actual charges. These are single development episodes. They show that the model player works end to end. They are not held-out evidence and support no general claim about which player is stronger. The final comparison subsequently used the frozen prompt and heuristic. Do not count baseline or replay as live model evidence.
 
-## Held-out comparison — not yet run
+## Held-out comparison — completed
 
-| Condition | Episodes | Wins/losses | Illegal actions | Limit/timeout reasons | Calls/failures | Latency | Tokens | Dated cost |
-|---|---|---|---|---|---|---|---|---|
-| Baseline, held-out | Pending | Pending | Pending | Pending | 0 | Pending | 0 | No API cost |
-| Live model, no explicit history (derived motion retained) | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
-| Live model, two-observation history | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
+| Condition | Episodes | Wins / losses | Turn-backs | Invalid / failed calls | Model calls | Returned-usage USD | Reserved USD |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Baseline | 6 | 6 / 0 | 74/74 | 0 / 0 | 0 | 0 | 0 |
+| Model, no explicit history (derived motion retained) | 6 | 0 / 6 | 7/74 | 11 / 11 | 875 | 0.423916 | 3.581124 |
+| Model, two-observation history | 6 | 2 / 4 | 30/74 | 3 / 3 | 1324 | 0.975958 | 6.042026 |
+
+All episodes ended in a game win/loss; none hit a step, call, cost or wall-time limit. Invalid actions here are the explicitly labeled neutral fallbacks after provider failures. Per-episode latency, tokens, runtime model, dated prices and raw evidence are in the [final report](reports/held-out-final.md) and its linked summaries. The suite is consumed; no further tuning on these seeds is claimed or planned.
 
 Store every trace, including API failures and limits. The runner hashes game/suite/prompt and logs provider response IDs, actions, bounded input observations, reported usage and elapsed latency. Error calls count toward the budget; neutral fallback is labeled separately. Cost estimates cover reported token usage at entered prices; a failed request with unavailable usage may have unknown cost, so reconcile provider billing instead of claiming zero. Model IDs can be moving aliases; use a provider snapshot ID where available.
 
@@ -172,10 +173,14 @@ Local Godot import, startup, scroll and opened-arena rendering checks passed. Th
 
 ## Limitations — student to revise after playtests
 
-The selected prompt has one full normal-speed spell32 development trial on seed 30 (7/14, loss), plus the other conditions in the linked combat report. These are development evidence, not a ranking across situations. Older narrow-arena trials are historical and not directly comparable. The step-cap and replay fixes change the build hash; no live trials on that revised build are claimed. The required held-out experiment (six episodes each for the baseline and the model at history 0 and 2) has not been run. A three-case small classroom sample cannot support statistical certainty. Structured positions simplify perception; inference is paused, and each decision advances 0.1 simulated seconds. Human play retains the original scroll and real-time controls. Agent evaluation wraps the same original scene, skips its opening presentation and advances the original simulation in fixed 1/60-second ticks. It uses the project's 1280×720 viewport, and human play keeps the same 16:9 view at any window shape (the aspect ratio is locked), so humans and agents see the same arena. No replacement arena or HUD is used. No learning or improvement through repeated play is claimed. Full independent review, peer feedback and the required viewable recording remain pending. Two separate uses of crocodile-evaluation are now documented in [skill-session evidence](reports/sessions/skill-sessions.md); the linked exports also preserve implementation and partial scope-review evidence. The later alignment experiment is recorded separately in [its report](reports/experiments/y-alignment-experiment.md). CREDITS.md and reports/provenance/lepsius-provenance.json document the Lepsius digital edition and its supplier. The edition was published in 1842 and is in the public domain; faithful scans create no new copyright. The HUD font is "Old Fax" by George Blackwell, under CC BY 4.0. The existing PNGs' precise PDF-to-export crop history is not recorded. The baseline has not been retuned since the arena fix; it now wins all three development cases. A baseline that strong may leave little room for the model to do better on held-out cases. The selected prompt’s spell32 loss and the baseline’s development wins do not establish general performance across held-out cases.
+The selected prompt has one full normal-speed spell32 development trial on seed 30 (7/14, loss), plus the other conditions in the linked combat report. These are development evidence, not a ranking across situations. Older narrow-arena trials are historical and not directly comparable. The final held-out comparison used the fixed adapter build recorded in the final report. It completed all six case/seed episodes per condition. The later frame-reporting correction changes runner-source hashes only; it does not change gameplay, policy, observations or the prompt, and no new trials were run for it. A three-case small classroom sample cannot support statistical certainty. Structured positions simplify perception; inference is paused, and each decision advances 0.1 simulated seconds. Human play retains the original scroll and real-time controls. Agent evaluation wraps the same original scene, skips its opening presentation and advances the original simulation in fixed 1/60-second ticks. It uses the project's 1280×720 viewport, and human play keeps the same 16:9 view at any window shape (the aspect ratio is locked), so humans and agents see the same arena. No replacement arena or HUD is used. No learning or improvement through repeated play is claimed. Independent review findings and responses are in [review.md](review.md); peer feedback and the required viewable recording remain pending. Two separate uses of crocodile-evaluation are now documented in [skill-session evidence](reports/sessions/skill-sessions.md); the linked exports also preserve implementation and partial scope-review evidence. The later alignment experiment is recorded separately in [its report](reports/experiments/y-alignment-experiment.md). CREDITS.md credits the Lepsius digital edition, font and Claude Code artwork contributions. The edition was published in 1842 and is in the public domain; faithful scans create no new copyright. The HUD font is "Old Fax" by George Blackwell, under CC BY 4.0. The existing PNGs' precise PDF-to-export crop history is not recorded. The baseline has not been retuned since the arena fix; it now wins all three development cases. A baseline that strong may leave little room for the model to do better on held-out cases. On the final held-out suite the baseline won 6/6, history=0 won 0/6, and history=2 won 2/6; one stochastic episode per case/seed/condition and unequal provider failures limit generalization and causal claims.
 
 The student must write their own interpretation of model failures/history, design decisions and actual peer observations. If partner notes have not arrived by November 6, state that and link the notes you gave.
 
 ## Review fixes — November 4
 
 The step budget now caps long look actions, and replay restores complete reset settings. These adapter fixes do not change the selected prompt or observation schema. Historical live traces retain their original hashes and results; no paid reruns or held-out evaluations were performed for these fixes. New summaries report actual policy history capacity, derived-motion availability and optional event-memory capacity. After these fixes, `python -m unittest discover -s tests -v` passed all 29 tests in 29.262 seconds outside the sandbox; the added regressions cover the capped look, experimental/legacy reset replay, and baseline history metadata.
+
+## Frame-reporting correction
+
+A development regression reproduced a terminal frame overcount (2,376 reported versus 2,375 simulated). New traces record actual simulation frames from observed time and retain charged-step frames separately as `nominal_simulation_frame`. Saved evaluation traces are not rewritten; their historical `simulation_frame` field is nominal. Exact evaluated runner source is available at commit `aee02a6` (players/run.py), matching the frozen configuration. The logging-only correction changes that file hash, not model decisions or gameplay. All 41 final evidence files were verified present in that commit.

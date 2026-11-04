@@ -9,11 +9,18 @@ from players.engine import Engine
 
 class RunnerTests(unittest.TestCase):
     def test_baseline_summary_reports_actual_history_capacity(self):
+        trace = io.StringIO()
         with Engine() as engine:
-            summary = run.episode(engine, 'spell31', 30, 'baseline', self.args(), {}, io.StringIO())
+            summary = run.episode(engine, 'spell31', 30, 'baseline', self.args(), {}, trace)
         self.assertEqual(summary['history'], 10)
         self.assertTrue(summary['derived_motion_in_observation'])
         self.assertEqual(summary['memory_events_capacity'], 0)
+        final_step = [json.loads(line) for line in trace.getvalue().splitlines()
+                      if json.loads(line)['type'] == 'step'][-1]
+        self.assertEqual(final_step['simulation_frame'],
+                         round(final_step['result']['observation']['time'] * 60))
+        self.assertEqual(final_step['nominal_simulation_frame'], final_step['step'] * 6)
+        self.assertLess(final_step['simulation_frame'], final_step['nominal_simulation_frame'])
 
     def args(self, **changes):
         values = dict(history=2, model='test-model', episode_timeout=30, max_calls=2,

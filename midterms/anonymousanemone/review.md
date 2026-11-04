@@ -1,6 +1,6 @@
-# Independent review — pending
+# Independent reviews and implementation responses
 
-This implementation session cannot independently review its own code. Use a fresh read-only Codex session (or another assistant), with no instruction to approve. Paste the following task and commit its actual findings here or link the PR review.
+The original read-only review task is retained below. Actual separate-review findings and implementation responses follow; these do not approve a course gate or merge.
 
 > Review the Crocodiles midterm in read-only mode. Do not edit files. You did not implement this code. Read AGENTS.md, README.md, suite.json and skills/crocodile-evaluation/SKILL.md; invoke the crocodile-evaluation skill by name. Assess the rule/source map against inherited combat, the five operations, hidden-state boundaries, action validation, seeded determinism, victory/loss, all budget/timeout paths, fallback reporting, baseline fairness and the generated course workflow's boundaries. Run the deterministic tests if permitted; use development cases only. Do not spend API funds or run held-out cases. Report concrete findings with severity and file/line evidence, tests run, what was checked, and remaining uncertainty. Finding no issues is acceptable when supported. Do not certify live trials, source permissions, human feedback or student authorship that you cannot inspect.
 
@@ -50,3 +50,37 @@ and passed afterward. Frozen prompt hash still matches agent-config.json.
 This focused fix review does not replace the broader submission review or a
 student/instructor gate decision. Concurrent held-out evaluation files from
 another session were excluded from this fix task and left untouched.
+
+## Follow-up review — November 4, after evaluation and report cleanup
+
+Reviewer: separate read-only Codex task `/root/rules_fix_review`. Reviewed the
+working tree based on commit `aee02a6`, including the uncommitted reporting fix.
+Game hash remains `f08e6aea82a27010f29b03c9073c5ca26e539fd5ac16813d374ef23d8f036bd5`.
+
+Initial follow-up finding:
+
+> [should fix] README.md:9/160/197, MIDTERM-CHECKLIST.md:30 and EVALUATION.md:1/155/175 still mark completed held-out work pending and suggest rerunning consumed seeds.
+
+Response: replaced pending status with completed results, marked the held-out
+seeds consumed, and removed instructions to repeat them as fresh validation.
+All 41 final evidence files were already committed by the student at `aee02a6`.
+A frame-reporting regression failed before the fix (2,376 versus 2,375 frames).
+New logs use actual simulated time and separately record nominal frames;
+historical evaluation artifacts and their original hashes remain unchanged.
+The evaluated runner source can be recovered from `aee02a6`.
+
+Reviewer’s final follow-up findings:
+
+> No findings in the current uncommitted fixes.
+>
+> All 41 final evidence files are present byte-for-byte at aee02a6. Every evaluated player-source hash matches that commit. The sole current source-hash difference is the documented run.py logging correction. Actual frame reporting uses the encounter clock, which advances per simulation tick without resetting between waves. Completed held-out status is consistent across the changed readiness docs. git diff --check passes.
+>
+> Read-only review; no edits, commits, gameplay, paid calls, or independent test runs.
+
+The implementation session owns the automated test result; the separate reviewer
+owns the read-only findings above. Human acceptance, source permissions, student
+authorship, peer experience, current CI and submission remain separate evidence.
+
+Validation after the frame-reporting fix: all 29 deterministic tests passed in
+35.751 seconds outside the sandbox. No paid or held-out episodes were run for
+these fixes, and no commit was made by the assistant.

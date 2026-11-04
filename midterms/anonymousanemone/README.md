@@ -1,0 +1,294 @@
+# Crocodiles: spells 31 and 32
+
+A self-contained midterm excerpt of your original game, [Totenbuch](https://github.com/anonymousanemone/totenbuch-game): survive the crocodiles, align the spear, and reserve heka for red opponents. Design choice: **original game**. Implementation starting point: **your own existing codebase**. This midterm extracts two complete encounters from that original game and uses historical artwork as its visual source.
+
+## Scope
+
+[Game rules, core loop and interfaces](GAME.md) provides a short submission-ready description based on the implemented source. Interface screenshots are pending.
+
+For the October 26 checkpoint, see [current readiness and remaining blockers](reports/session7-readiness.md). [GitHub deterministic CI passed all 14 tests](https://github.com/anonymousanemone/game-dev-f26/actions/runs/40396786117). A live model episode and its comparison still need the funded API key.
+
+Two complete encounters: spell 31's one-sided tutorial and mixed-color waves, and spell 32's two-sided fight. Each can be won or lost independently. Three declared evaluation situations use these two games; the third starts spell 32 at the lowest permitted vertical position. Included: existing crocodile combat, cropped artwork, human play, authoritative five-operation interface, baseline, live model adapter, deterministic tests and trace playback.
+
+The game is a direct extraction of `godot/scenes/dangers.tscn`. The retained nodes,
+positions, textures, offsets, camera and papyrus are copied verbatim. Original
+walking/click-to-enter interaction, HUD, Journal, Hint, spear animation, arena
+opening/closing, health signs and defeat presentation are retained. The other
+encounter groups, carried breath/life objects and their movement/combat code are
+removed. Walking is bounded to the two crocodile vignettes. Completing both ends
+this excerpt; the original HUD's menu/continuation returns to this excerpt's intro.
+The original full strip bitmap is retained so source coordinates and caption art
+remain unchanged; the other encounters have no active actors or code.
+
+The earlier replacement scenes and resources have been removed. Historical runs
+from those discarded implementations are not validation of this extraction.
+
+The suite was declared on 2026-10-26 before player tuning. Keep `suite.json` and update the Week 3 scope thread if this changes your prior commitment. No held-out cases have been run during setup.
+
+## Setup and play
+
+All commands below start in **this folder**, `midterms/<github-login>/` after packaging, or `Documents/School/gameAI/midterm-crocodiles/` in the standalone copy. Requires Python 3.10+ (standard library only) and [Godot 4.7.2](https://godotengine.org/download/archive/4.7.2-stable/). No Python packages or API key are needed for local play, baseline, or tests.
+
+On macOS:
+
+```bash
+export GODOT=/Applications/Godot.app/Contents/MacOS/Godot
+"$GODOT" --headless --path godot --editor --import --quit
+"$GODOT" --path godot
+```
+
+On Linux/Windows, set `GODOT` to the executable or put `godot` on PATH. Open
+`godot/project.godot`, then **`scenes/dangers.tscn`** in the editor.
+
+Play exactly as in Dangers: click Begin, walk right to left with arrows or by
+clicking the papyrus, and click crocodiles to enter their encounter. In combat,
+up/down (or W/S) moves the spear-bearer; left/right (or A/D) turns him in spell 32.
+Space thrusts; hold Shift for red crocodiles only. Escape leaves an encounter.
+The original HUD provides restart, Journal and Hint. Three bites lose; using heka
+against an ordinary crocodile loses, and an escaping crocodile can steal the word.
+Turn back every crocodile to win an encounter; complete both to finish the excerpt.
+
+## Classmate play: Record session
+
+Launch the game normally using **Setup and play** above. On the intro card, click
+**Record session**, beside **Begin**. This starts the normal scroll game and saves
+into **./playtrace/** automatically. Plain **Begin** starts an unrecorded session.
+
+A **Recording · Stop** button appears in the top bar. Click it to finish saving
+while continuing to play, or close the game window to finish the recording.
+**Escape retains its normal meaning: leave the encounter.** It does not end this
+session recording. Restart, Journal, Hint, walking and further encounter attempts
+remain part of the session until you stop or close it. A new recording begins
+from the intro after returning to Menu or relaunching the game.
+
+This mode keeps the original native controls: movement responds each frame, and
+Space thrusts on a new key press. Holding Space does not auto-repeat. It records
+actual frame timing, including exact binary frame deltas, rather than sampling
+all controls every 100 ms. Preparing the build archive happens while the intro
+is still paused. Each frame, input command and result is flushed to disk. A crash
+may leave a partial last row or no final summary; earlier complete rows remain.
+
+Each session produces a uniquely named `human-session-....jsonl` actions/state
+file plus a matching `.jsonl.build.zip` containing the Godot source and artwork.
+The terminal prints its path. Both stay in **./playtrace/**, so nothing needs to
+be copied out of `/tmp`. Build ZIPs are Git-ignored and remain local; back them up
+if needed. API keys, installed dependencies and import caches are excluded.
+
+### Watch or verify the recording
+
+From this project folder:
+
+```bash
+python -m players.replay --latest-human
+```
+
+Or give the replay executor the specific actions file:
+
+```bash
+python -m players.replay playtrace/YOUR_FILENAME.jsonl
+```
+
+It executes the saved inputs in the same original Godot scene and checks every
+recorded native frame's gameplay state. It stops on a mismatch. Space pauses or
+resumes; Right advances one native frame; 1/2/3 selects 0.25×/1×/2× speed; Escape
+exits. For fixed-step agent traces, Right advances one six-frame action instead.
+The replay detects which trace format it is reading.
+
+To verify without watching:
+
+```bash
+python -m players.replay --latest-human --verify
+```
+
+The JSONL preserves session/build identity, input commands and mouse world
+coordinates, movement/facing/heka state, pauses, frame timing, encounter state,
+health, progress, outcomes, dialogue, Journal position, and interruption reason.
+Trusted audit state is saved for analysis and never passed to a model policy.
+The build and exact Godot version are checked before replay. The archive excludes
+the engine executable, so keep access to the same Godot release too.
+
+If the game source has changed, restore the matching archive into a new folder
+outside this project, import it, and replay using the archived script:
+
+```bash
+unzip playtrace/YOUR_FILENAME.jsonl.build.zip -d /tmp/crocodiles-restored-attempt1
+"$GODOT" --headless --path /tmp/crocodiles-restored-attempt1/godot --editor --import --quit
+"$GODOT" --path /tmp/crocodiles-restored-attempt1/godot --script res://scripts/replay.gd -- --replay="$PWD/playtrace/YOUR_FILENAME.jsonl"
+```
+
+Replay reconstructs and verifies gameplay; it is not a pixel-identical video
+capture or a recording of spoken comments. Keep screenshots and screen recordings
+outside the project. Label playback **human session replay**, and write actual
+classmate questions separately in [PEER-NOTES.md](PEER-NOTES.md).
+
+### Optional fixed-step combat recorder
+
+For a human attempt at the same 0.1-second cadence used by automated players:
+
+```bash
+"$GODOT" --path godot --script res://scripts/human_trace.gd -- --case=spell31
+```
+
+This older diagnostic mode opens combat directly, skips scroll navigation and
+opening presentation, samples held keys every six 1/60-second frames, repeats
+thrust requests while Space is held, and disables HUD navigation. Escape ends
+that attempt. It also saves automatically under `./playtrace/` and supports the
+same replay commands. Use the intro's **Record session** button for normal play.
+
+For a README-only audit, let the classmate follow setup and play without coaching.
+Their questions identify missing instructions. No human playtest is claimed by
+an automated recording fixture or by the presence of this feature.
+
+## Editor/source layout
+
+Use the original scene tree:
+
+- `actors/spell31_crocs` and `actors/spell32_crocs`: the original selectable sprites,
+  spear-bearers, overlays and heka signs, with unchanged transforms and metadata.
+- `Papyrus`, `Strip`, `Avatar`, `Camera`, `Overlay`, `HUD` and `CaptionRegions`:
+  retained original nodes. The original HUD and opening arena are built by the
+  original shared scripts, as they are in Totenbuch; no replacement UI is used.
+- `scripts/dangers/dangers.gd`: the original scene controller with unused
+  encounter/inventory/movement paths removed.
+- `scripts/dangers/crocodiles.gd`: the original combat, with seeded lane shuffling
+  and a small input hook for the separate evaluation wrapper.
+- `scripts/dangers/danger_encounters.gd`: only the original e31/e32 dictionaries.
+- `assets/dangers/level.json`, `registry.json`, `puzzles.json` and
+  `animation/spearers.json`: original source data limited to the retained encounters.
+
+Runtime actor placement is read from the original scene transforms/metadata.
+The original combat still animates and spawns copies as before. The independent
+`episode.gd` adapter wraps this actual scene; it does not substitute another layout.
+[Extraction evidence](reports/direct-extraction.json) records the original hashes
+of all retained scene blocks and copied artwork/font files.
+
+## Test and evaluate
+
+```bash
+python -m unittest discover -s tests -v
+python -m players.run --policy baseline --split development
+```
+
+The second command writes configuration, JSONL action traces, local build archives and summaries under `playtrace/`. The preserved setup comparison is linked from [EVALUATION.md](EVALUATION.md).
+
+Live trials are prepared but **have not been run**. The model player uses **Gemini 3.5 Flash-Lite on Vertex AI** (`gemini-3.5-flash-lite`, global endpoint), paid from the course Google Cloud credit. Prices from the [Vertex AI pricing page](https://cloud.google.com/model-garden/pricing), checked November 3, 2026: $0.30 input and $2.50 output per million tokens. Output includes reasoning ("thinking") tokens, which the player counts as output. The adapter, `players/model.py`, calls the Vertex `generateContent` REST endpoint with Python's standard library and a JSON response schema. It sends no tools, repository contents or hidden state. All model actions come from the model response.
+
+### Set up the live player privately
+
+1. Use the same Google Cloud project and sign-in as the course starter. Its check, `uv run --frozen python -m course_game.setup_check --provider vertex --headless`, should pass first. If you have not signed in on this machine, run `gcloud auth application-default login`. The player reads those Application Default Credentials (`~/.config/gcloud/application_default_credentials.json`, or the file named by `GOOGLE_APPLICATION_CREDENTIALS`). No API key is stored in this project.
+2. On a fresh clone, run `cp .env.example .env`. Open `.env` and fill in `GOOGLE_CLOUD_PROJECT=` with your project ID. Values already exported in your shell, such as `GOOGLE_CLOUD_PROJECT` from the starter setup, take precedence over `.env`. `.env` is Git-ignored and excluded from packaging.
+3. From this project folder, run:
+
+```bash
+python -m players.checkpoint
+```
+
+The runner reads `.env` directly; no `source` command or Python dependency is required. This command runs the baseline and the live model on the same spell32/development-seed-30 episode, saves both under `./playtrace/`, and writes [the comparison report](reports/session7-comparison.md). Spell32 provides a short game episode that can end in a real win or loss; either outcome is valid evidence. The report states whether the model submitted valid actions and reached such an ending. Limits and provider failures remain visible and are never relabeled as successful gameplay. Use `--case spell31` to choose the tutorial encounter instead.
+
+The `.env.example` records the model, dated prices and $10 maximum. A conservative reservation before each call covers the input byte bound plus message overhead and the full output-token cap. Reservations, including failed calls, count across every episode in one runner invocation; it stops before a call would exceed `--max-cost-usd`. This is intentionally more conservative than the reported usage-cost estimate. At these prices the reservation is roughly half a cent per call, mostly for the 1024-token output cap. A full 1200-call episode can therefore reserve several dollars, even though actual usage is usually far lower. Raise `--max-cost-usd` for the six-episode held-out runs, within your remaining credit. The cap resets for a new invocation: do not rerun paid experiments repeatedly without accounting for earlier spend. No automatic retries are made. Provider billing remains the source for actual charges.
+
+The model and dated prices default from `.env`, so a short pilot needs no extra flags:
+
+```bash
+python -m players.run --policy model --split development --case spell31 --max-calls 50
+```
+
+A 50-call pilot will usually hit its call limit before completing spell 31. Use it to inspect transport and cost, not to claim a win. Full episodes can require hundreds of calls. Choose a total spend budget before live execution. Defaults are declared in `suite.json`: 1200 steps/calls, 30 seconds per call and 1800 wall seconds per episode. A failed call counts and submits an explicitly labeled neutral fallback. Invalid actions consume one step and advance neutral simulation. No retries are silently substituted.
+
+After freezing the prompt and heuristic, run the same six held-out case/seed episodes for the baseline and the model with both history settings. Use identical model/budget/price flags for the two model variants:
+
+```bash
+python -m players.run --policy baseline --split held_out
+python -m players.run --policy model --split held_out --history 0 --max-cost-usd BUDGET_USD
+python -m players.run --policy model --split held_out --history 2 --max-cost-usd BUDGET_USD
+```
+
+For visual playback, use the path to an actual episode trace:
+
+```bash
+"$GODOT" --path godot --script res://scripts/replay.gd -- --replay=/ABSOLUTE/PATH/TO/spell31-30.jsonl
+```
+
+This replays recorded actions with the same engine. Label it as replay in a recording; it is not a fresh live trial. No manual move selection is needed. See [RECORDING.md](RECORDING.md) for the recording plan; recording link is pending.
+
+## Machine interface and information boundary
+
+`players.engine.Engine` connects to `godot/scripts/server.gd`, which loads the extracted `scenes/dangers.tscn` and wraps it with `scripts/episode.gd`. The actual original scene owns state and enforces combat. There is no second simulator. Use `Engine.call` with these operations:
+
+| Operation | Arguments | Result |
+|---|---|---|
+| `reset` | `seed`, `case` | Initial observation |
+| `observe` | `player_id=0` | Player-visible observation |
+| `legal_actions` | `player_id=0` | All permitted control combinations, including mistakes |
+| `step` | `player_id=0`, `action` | Validation, visible observation, outcome |
+| `outcome` | none | Ongoing/terminal, reason, score, counts |
+
+Only player 0 exists. Reset before other stateful operations. Action: `{"move": -1|0|1, "face": -1|0|1, "thrust": boolean, "heka": boolean}`. Face must be 0 in spell 31. Thrust during cooldown is permitted but has no effect. The list never filters out a tactically wrong heka choice or chooses a target. The game runs six 1/60-second ticks per action, then freezes during inference. Human play retains the original real-time controls. The evaluation wrapper selects those controls at the declared fixed cadence and skips only the arena opening animation; it preserves original spawning/collision rules. Drawing frames and wall-clock model latency do not advance combat.
+
+Observations include active visible snout positions/directions/colors/dimensions, player position/facing, spear geometry, health, progress, tutorial feedback and simulation time. They exclude RNG, future waves/colors, launch timers, internal velocities and collision-mask queries. Coordinates are a deliberate accessible representation of the visible screen, rather than raw pixels. Velocity is inferred by the baseline from two observations; the model can receive the same two. The baseline has no engine reference. The model receives serialized observation/history, instructions, and no executable tools. The evaluator, not the model, determines victory. Rules and static control meanings are disclosed equally.
+
+## Rule/source map
+
+`design` labels identify your original gameplay rules and midterm-specific choices. `code` labels provide implementation evidence for rules extracted from your existing game. A combined label means an original design choice with a code locator; it does not imply that the mechanic was reconstructed from another game. Historical plates establish visual subject matter, not combat rules. No unverified historical game mechanics are asserted.
+
+| Rule or state | Label | Evidence / specification |
+|---|---|---|
+| Crocodiles, bearer, heka glyphs and captions of spells 31/32 | manual (visual reference) | Lepsius, *Das Todtenbuch der Ägypter* (1842), plate XVI; [digitized volume](https://archiv.ub.uni-heidelberg.de/propylaeumdok/467/1/lepsius_todtenbuch.pdf); see [CREDITS.md](CREDITS.md) |
+| Spell 31 tutorial, waves, red-order choices; spell 32 two-sided mixed waves; counts, speeds, ramp, spacing | design + code | `godot/scripts/dangers/danger_encounters.gd`, original e31/e32 dictionaries |
+| Movement speed, lane spacing, snout geometry, silhouette strike and grace distance | design + code | `godot/scripts/dangers/crocodiles.gd`, constants, `_move_bearer`, `_croc_head`, `_solid_of`, `_croc_strike` |
+| Spell 32 movement starts must be at least half the larger crocodile's body farther from the bearer than every approaching crocodile, across both sides and all heights; returning crocodiles wait for the same clearance. Base speed is reduced to 120 plate px/s (180 world px/s at scale 1.5), retaining the 1% ramp. | design | User's spacing/difficulty correction; `crocodiles.gd`, `_croc_clear` and `_croc_resume`; `danger_encounters.gd`, e32. Deterministic fixtures in `spacing_checks.gd`. |
+| Plain/heka color match; heka on ordinary foe loses; red foe resists plain strike | design + code | Same file, `_croc_strike`, `_croc_takes_word` |
+| Three health; bites, escape/word theft; tutorial bite grace | design + code | Same file, `_croc_bites`, `_crocs`, `_croc_dies` |
+| Last drawn crocodile waits until others are gone; waves complete only when all are turned | design + code | Same file, `_croc_launch`, `_croc_break`, `_croc_next_wave` |
+| Thrust timing 0.07+0.18 seconds, health 3, scale 1.5 | design + code | Original shared Dangers constants in `godot/scripts/dangers/dangers.gd` |
+| Original scroll/arena presentation and editor placement; removal of unused encounters; standalone completion | design | `godot/scenes/dangers.tscn`; original `_arena_setup`, `_croc_open`, `_place_frame`; excerpt scope above |
+| Episode seed owns every lane shuffle | design | `scripts/dangers/crocodiles.gd`, `_crocs_start`; fixes the original unseeded `Array.shuffle` |
+| Initial health, pose, tutorial state and low-start situation | design + code | `scripts/episode.gd`, `reset`; `suite.json`; low-start changes only initial y |
+| Control vocabulary, validation, neutral invalid action, cooldown behavior | design | `scripts/episode.gd`, `legal_actions`, `step`; original `_croc_thrust` |
+| Fixed ticks, steps/calls/timeouts, terminal lock, no automatic retry | design | `scripts/episode.gd`, `step`, `outcome`; `players/run.py`, `episode`; `suite.json` |
+| Score is number of crocodiles turned back; victory is whole encounter completed | design + code | Original `_won_if`; `scripts/episode.gd`, `outcome`; inherited wave completion |
+| Observation fields, conservative visibility and no hidden schedules | design | `scripts/episode.gd`, `observe`; tests in `tests/test_game.py` |
+| Heuristic baseline and bounded-history/observation-only comparison | design | `players/baseline.py`, `players/model.py`, `suite.json` |
+| JSON numeric controls were incorrectly rejected before the fix | observed | `reports/regression.md`; `test_json_numeric_regression` |
+
+### State, actions and outcomes at a glance
+
+| Required element | Implemented meaning | Source evidence |
+|---|---|---|
+| Key state | Bearer position/facing, health, spear thrust, visible crocodile position/color/direction, tutorial and encounter progress | [Observation fields](godot/scripts/episode.gd), `observe`; [combat updates](godot/scripts/dangers/crocodiles.gd), `_crocs` |
+| Legal actions | Up/neutral/down, left/unchanged/right facing in spell 32, thrust on/off, heka on/off; spell 31 requires unchanged facing. Legal choices include tactical mistakes. | [Action enumeration and validation](godot/scripts/episode.gd), `legal_actions` and `step` |
+| Outcomes | Win after all crocodiles are turned back; lose through health depletion or word theft; stop at the action limit | [Terminal checks and outcome fields](godot/scripts/episode.gd), `step` and `outcome`; [bite and theft rules](godot/scripts/dangers/crocodiles.gd), `_croc_bites` and `_croc_takes_word` |
+
+Unresolved usability question: can a new player distinguish the red heka cue and understand that using heka on an ordinary crocodile is fatal without coaching? This needs a real silent playtest; source inspection cannot answer it.
+
+### Acceptance trace: opening the spell 31 lesson
+
+This is a short worked example of **expected** behavior for later checks, not a recorded human/model trial. Use development seed 30 and the fixed-step interface. Its outcome is an ongoing lesson with the first crocodile approaching; it does not claim an encounter victory.
+
+| Step | Operation / legal action | Expected state change and outcome |
+|---|---|---|
+| 0 | `reset(seed=30, case="spell31")` | Health is 3, score is 0, tutorial is `thrust`, and outcome is `ongoing`. |
+| 1 | `{"move":0,"face":0,"thrust":true,"heka":false}` | Action is valid. The practice thrust begins and advances the lesson to `first`, launching the first ordinary crocodile. Six frames pass; health remains 3, score remains 0, and the episode is ongoing. |
+| 2 | `{"move":0,"face":0,"thrust":false,"heka":false}` | Action is valid. Another six frames pass. The initial thrust is still completing; the crocodile approaches. No hit or health loss is expected this early. |
+| 3 | `{"move":0,"face":0,"thrust":false,"heka":false}` | Action is valid. Total simulated time is about 0.3 seconds; the 0.25-second thrust cycle has finished. Health is 3, score is 0, tutorial remains `first`, and outcome remains `ongoing`. |
+
+Evidence: [reset, fixed ticks and observations](godot/scripts/episode.gd); [practice-thrust transition](godot/scripts/dangers/dangers.gd), `_croc_thrust`; [first launch and thrust completion](godot/scripts/dangers/crocodiles.gd), `_crocs`. A later acceptance example can cover a full win or loss using an actual saved trace.
+
+## Evidence and hand-in
+
+Historical image source: **Carl Richard Lepsius, *Das Todtenbuch der Ägypter*, Leipzig: Wigand, 1842**, plate XVI, spells 31–32. Heidelberg's catalog credits **Dr. Marcus Müller, Totenbuch-Projekt, University of Bonn**, with supplying the digital version, hosted by **Universitätsbibliothek Heidelberg / Propylaeum-DOK**. [Persistent citation](https://doi.org/10.11588/propylaeumdok.00000467). The edition was published in 1842 and is in the public domain, and faithful scans of it create no new copyright. [CREDITS.md](CREDITS.md) gives the legal basis for this and the provenance of the exported artwork. HUD font: "Old Fax" by George Blackwell, CC BY 4.0 ([source](https://georgeblackwell.itch.io/old-fax)).
+
+- [Evaluation and current results](EVALUATION.md)
+- [Credits, reuse terms and extraction provenance](CREDITS.md), [source manifest](reports/source-manifest.json)
+- [Agent-team log prompts; student authorship still required](AGENT-TEAM.md)
+- [Reusable evaluation skill](skills/crocodile-evaluation/SKILL.md), [session evidence](reports/skill-sessions.md)
+- [Independent review task](review.md), [peer playtest notes](PEER-NOTES.md)
+- [Recording plan and link field](RECORDING.md), [remaining checklist](MIDTERM-CHECKLIST.md)
+
+Stage the course-repository files from this folder (login inferred from the source repository owner; change it if your course login differs):
+
+```bash
+python submission/package.py --login anonymousanemone --course-repo /PATH/TO/game-dev-f26
+```
+
+This creates only `midterms/anonymousanemone/` and `.github/workflows/midterm-anonymousanemone.yml`. It refuses to overwrite an existing submission or workflow, excludes caches, and never commits/pushes. Run setup/tests from the copied folder. The workflow imports Godot and runs deterministic checks without API secrets; its GitHub execution remains pending until the course PR exists. Then create a branch such as `anonymousanemone/midterm`, review the changes, push and open one PR targeting the course repository's `main`. Use [submission/PR.md](submission/PR.md) for the description. Submit that PR URL on CourseWorks by November 7, 11:59 p.m. The complete source belongs in the PR, not only a link to this standalone repository.

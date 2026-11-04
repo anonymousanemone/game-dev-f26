@@ -1,0 +1,22 @@
+{
+  "date": "20261026T184527216889Z",
+  "game_version": "1630152c2d86d837ce845fb570283996616eea95f54a171cbef6fa6b6c33b720",
+  "suite_sha256": "ec3c1399d77b9bbfdacef14246234a20421a1e6540ec55d618cbbe35a756c752",
+  "prompt_sha256": "19644df97fbc09ce3b04477667ea7b9fed379a017af40785dd8a9a6fc0e6de2d",
+  "arguments": {
+    "policy": "baseline",
+    "model": "gpt-6-luna",
+    "split": "development",
+    "case": null,
+    "history": 2,
+    "max_calls": 1200,
+    "call_timeout": 30,
+    "episode_timeout": 1800,
+    "out": "/Users/sophial/Documents/School/GameAI/midterm-crocodiles/playtrace",
+    "max_cost_usd": 10.0,
+    "input_price": 0.1,
+    "output_price": 0.5,
+    "price_date": "2026-10-26",
+    "price_source": "https://developers.openai.com/api/docs/pricing"
+  }
+}

@@ -1,0 +1,1922 @@
+--- original/godot/scenes/dangers.tscn
++++ godot/scenes/dangers.tscn
+@@ -15,30 +15,8 @@
+ [ext_resource type="Texture2D" uid="uid://d4idrct0e2jmb" path="res://assets/dangers/figures/c32b.png" id="actor_7"]
+ [ext_resource type="Texture2D" uid="uid://x6uhllgmjh4g" path="res://assets/dangers/figures/c32c.png" id="actor_8"]
+ [ext_resource type="Texture2D" uid="uid://dn6u0uyhrsck8" path="res://assets/dangers/figures/c32d.png" id="actor_9"]
+-[ext_resource type="Texture2D" uid="uid://dpu3eaughcpnc" path="res://assets/dangers/figures/snake33.png" id="actor_12"]
+-[ext_resource type="Texture2D" uid="uid://d2s384xaqov6v" path="res://assets/dangers/figures/snake35.png" id="actor_15"]
+-[ext_resource type="Texture2D" uid="uid://gk1dvw3c3at5" path="res://assets/dangers/figures/beetle36.png" id="actor_17"]
+-[ext_resource type="Texture2D" uid="uid://cg7qtiqhn6pyt" path="res://assets/dangers/figures/snake37.png" id="actor_20"]
+-[ext_resource type="Texture2D" uid="uid://r5iadpjru7tp" path="res://assets/dangers/figures/glyph37_left.png" id="actor_22"]
+-[ext_resource type="Texture2D" uid="uid://csd0iguc44gjx" path="res://assets/dangers/figures/glyph37_right.png" id="actor_23"]
+-[ext_resource type="Texture2D" uid="uid://cgc6th4k1we7k" path="res://assets/dangers/figures/apep.png" id="actor_25"]
+-[ext_resource type="Texture2D" uid="uid://dm28p612b20te" path="res://assets/dangers/figures/snake40.png" id="actor_27"]
+-[ext_resource type="Texture2D" uid="uid://co4y4wt26sg2u" path="res://assets/dangers/figures/donkey40.png" id="actor_30"]
+-[ext_resource type="Texture2D" uid="uid://s8q4vq2npg63" path="res://assets/dangers/figures/bundle41.png" id="actor_31"]
+ [ext_resource type="Texture2D" uid="uid://d0t26bvaoppbp" path="res://assets/dangers/figures/heka_e31_hekat.png" id="actor_32"]
+ [ext_resource type="Texture2D" uid="uid://dlpx8xhhwjk3g" path="res://assets/dangers/figures/heka_e32_hekat.png" id="actor_33"]
+-[ext_resource type="Texture2D" uid="uid://b7s8ei6iu3t2d" path="res://assets/dangers/figures/sheaf41_stalks.png" id="actor_34"]
+-[ext_resource type="Texture2D" uid="uid://didsik25eeqjk" path="res://assets/dangers/figures/sheaf41_band1.png" id="actor_35"]
+-[ext_resource type="Texture2D" uid="uid://c8usdlg5mapar" path="res://assets/dangers/figures/sheaf41_band2.png" id="actor_36"]
+-[ext_resource type="Texture2D" uid="uid://boc6fk1rma2d" path="res://assets/dangers/figures/sheaf41_band3.png" id="actor_37"]
+-[ext_resource type="Texture2D" uid="uid://drefhujtidcxn" path="res://assets/dangers/figures/sheaf41_band4.png" id="actor_38"]
+-[ext_resource type="Texture2D" uid="uid://bftd2d5yexo3a" path="res://assets/dangers/figures/snake41.png" id="actor_39"]
+-[ext_resource type="Texture2D" uid="uid://d1s867gtn2x2n" path="res://assets/dangers/figures/tail40.png" id="actor_40"]
+-[ext_resource type="Texture2D" uid="uid://caaupi53ipkai" path="res://assets/dangers/figures/ankh38.png" id="actor_ankh38"]
+-[ext_resource type="Texture2D" uid="uid://day6vrpv8mydw" path="res://assets/dangers/figures/breath_giver.png" id="actor_breath_giver"]
+-[ext_resource type="Texture2D" uid="uid://h6c1gy6e1nm" path="res://assets/dangers/figures/sail38.png" id="actor_sail38"]
+-[ext_resource type="Texture2D" uid="uid://cva558u57ppvk" path="res://assets/dangers/figures/glyph38_breath.png" id="actor_glyph38_breath"]
+-
+ [sub_resource type="ShaderMaterial" id="ShaderMaterial_papyrus"]
+ shader = ExtResource("6_papyrus")
+ shader_parameter/base = Color(0.906, 0.839, 0.682, 1)
+@@ -60,95 +38,11 @@
+ atlas = ExtResource("7_sheet")
+ region = Rect2(1008, 415, 336, 415)
+ 
+-[sub_resource type="AtlasTexture" id="Atlas_spear33_pole"]
+-atlas = ExtResource("7_sheet")
+-region = Rect2(3696, 830, 336, 415)
+-
+-[sub_resource type="AtlasTexture" id="Atlas_spear33"]
+-atlas = ExtResource("7_sheet")
+-region = Rect2(1008, 830, 336, 415)
+-
+-[sub_resource type="AtlasTexture" id="Atlas_spear35"]
+-atlas = ExtResource("7_sheet")
+-region = Rect2(1008, 1245, 336, 415)
+-
+-[sub_resource type="AtlasTexture" id="Atlas_spear35_pole"]
+-atlas = ExtResource("7_sheet")
+-region = Rect2(3696, 1245, 336, 415)
+-
+-[sub_resource type="AtlasTexture" id="Atlas_spear36_pole"]
+-atlas = ExtResource("7_sheet")
+-region = Rect2(3696, 1660, 336, 415)
+-
+-[sub_resource type="AtlasTexture" id="Atlas_spear36"]
+-atlas = ExtResource("7_sheet")
+-region = Rect2(1008, 1660, 336, 415)
+-
+-[sub_resource type="AtlasTexture" id="Atlas_spear37"]
+-atlas = ExtResource("7_sheet")
+-region = Rect2(1008, 2075, 336, 415)
+-
+-[sub_resource type="AtlasTexture" id="Atlas_spear37_pole"]
+-atlas = ExtResource("7_sheet")
+-region = Rect2(3696, 2075, 336, 415)
+-
+-[sub_resource type="AtlasTexture" id="Atlas_spear39"]
+-atlas = ExtResource("7_sheet")
+-region = Rect2(1008, 2490, 336, 415)
+-
+-[sub_resource type="AtlasTexture" id="Atlas_spear39_pole"]
+-atlas = ExtResource("7_sheet")
+-region = Rect2(3696, 2490, 336, 415)
+-
+-[sub_resource type="AtlasTexture" id="Atlas_spear40"]
+-atlas = ExtResource("7_sheet")
+-region = Rect2(1008, 2905, 336, 415)
+-
+-[sub_resource type="AtlasTexture" id="Atlas_spear40_pole"]
+-atlas = ExtResource("7_sheet")
+-region = Rect2(3696, 2905, 336, 415)
+-
+-[sub_resource type="AtlasTexture" id="Atlas_spear41"]
+-atlas = ExtResource("7_sheet")
+-region = Rect2(1008, 3320, 336, 415)
+-
+-[sub_resource type="AtlasTexture" id="Atlas_spear41_pole"]
+-atlas = ExtResource("7_sheet")
+-region = Rect2(3696, 3320, 336, 415)
+-
+-[sub_resource type="AtlasTexture" id="AtlasTexture_column"]
+-atlas = ExtResource("2_strip")
+-region = Rect2(561, 180, 274, 366)
+-
+ [sub_resource type="RectangleShape2D" id="inspect_caption_e31"]
+ size = Vector2(1478, 130)
+ 
+ [sub_resource type="RectangleShape2D" id="inspect_caption_e32"]
+ size = Vector2(1224, 130)
+-
+-[sub_resource type="RectangleShape2D" id="inspect_caption_e33"]
+-size = Vector2(259, 130)
+-
+-[sub_resource type="RectangleShape2D" id="inspect_caption_e35"]
+-size = Vector2(345, 130)
+-
+-[sub_resource type="RectangleShape2D" id="inspect_caption_e36"]
+-size = Vector2(223, 130)
+-
+-[sub_resource type="RectangleShape2D" id="inspect_caption_e37"]
+-size = Vector2(230, 130)
+-
+-[sub_resource type="RectangleShape2D" id="inspect_caption_e38"]
+-size = Vector2(466, 130)
+-
+-[sub_resource type="RectangleShape2D" id="inspect_caption_e39"]
+-size = Vector2(837, 130)
+-
+-[sub_resource type="RectangleShape2D" id="inspect_caption_e40"]
+-size = Vector2(856, 130)
+-
+-[sub_resource type="RectangleShape2D" id="inspect_caption_e41"]
+-size = Vector2(510, 130)
+ 
+ [node name="Dangers" type="Node2D" unique_id=1241147454]
+ script = ExtResource("1_lvl")
+@@ -296,340 +190,6 @@
+ metadata/actor_id = "heka_e32_hekat"
+ metadata/size = Vector2(186, 105)
+ 
+-[node name="spell33_lunging_snake" type="Node" parent="actors" unique_id=1464283828]
+-
+-[node name="snake" type="Node2D" parent="actors/spell33_lunging_snake" unique_id=172769499]
+-position = Vector2(3752.5, 526)
+-metadata/actor_id = "snake33"
+-metadata/size = Vector2(159, 267)
+-metadata/_edit_group_ = true
+-metadata/registry_id = "e33"
+-
+-[node name="sprite" type="Sprite2D" parent="actors/spell33_lunging_snake/snake" unique_id=730432309]
+-texture = ExtResource("actor_12")
+-centered = false
+-offset = Vector2(-79.5, -267)
+-
+-[node name="spear_glow" type="Sprite2D" parent="actors/spell33_lunging_snake" unique_id=1058481692]
+-visible = false
+-position = Vector2(3839, 529)
+-texture = SubResource("Atlas_spear33_pole")
+-centered = false
+-offset = Vector2(-168, -385)
+-metadata/actor_id = "spear33_pole"
+-metadata/size = Vector2(182, 342)
+-
+-[node name="spear_bearer" type="Sprite2D" parent="actors/spell33_lunging_snake" unique_id=1017911836]
+-position = Vector2(3839, 529)
+-texture = SubResource("Atlas_spear33")
+-centered = false
+-offset = Vector2(-168, -385)
+-metadata/actor_id = "spear33"
+-metadata/size = Vector2(182, 342)
+-
+-[node name="spell35_creeping_snake" type="Node" parent="actors" unique_id=1953030127]
+-
+-[node name="snake" type="Node2D" parent="actors/spell35_creeping_snake" unique_id=2049290271]
+-position = Vector2(3408.5, 530)
+-metadata/actor_id = "snake35"
+-metadata/size = Vector2(205, 65)
+-metadata/_edit_group_ = true
+-metadata/registry_id = "e35"
+-
+-[node name="sprite" type="Sprite2D" parent="actors/spell35_creeping_snake/snake" unique_id=510369252]
+-texture = ExtResource("actor_15")
+-centered = false
+-offset = Vector2(-102.5, -65)
+-
+-[node name="spear_bearer" type="Sprite2D" parent="actors/spell35_creeping_snake" unique_id=538353956]
+-position = Vector2(3531, 529)
+-texture = SubResource("Atlas_spear35")
+-centered = false
+-offset = Vector2(-168, -385)
+-metadata/actor_id = "spear35"
+-metadata/size = Vector2(204, 341)
+-
+-[node name="spear_glow" type="Sprite2D" parent="actors/spell35_creeping_snake" unique_id=1528942426]
+-visible = false
+-position = Vector2(3531, 529)
+-texture = SubResource("Atlas_spear35_pole")
+-centered = false
+-offset = Vector2(-168, -385)
+-metadata/actor_id = "spear35_pole"
+-metadata/size = Vector2(204, 341)
+-
+-[node name="spell36_beetle" type="Node" parent="actors" unique_id=1803195938]
+-
+-[node name="beetle" type="Sprite2D" parent="actors/spell36_beetle" unique_id=1198026479]
+-position = Vector2(3115, 516)
+-texture = ExtResource("actor_17")
+-centered = false
+-offset = Vector2(-50, -57)
+-metadata/actor_id = "beetle36"
+-metadata/size = Vector2(100, 57)
+-metadata/registry_id = "e36"
+-
+-[node name="spear_glow" type="Sprite2D" parent="actors/spell36_beetle" unique_id=1793759005]
+-visible = false
+-position = Vector2(3204, 529)
+-texture = SubResource("Atlas_spear36_pole")
+-centered = false
+-offset = Vector2(-168, -385)
+-metadata/actor_id = "spear36_pole"
+-metadata/size = Vector2(142, 355)
+-
+-[node name="spear_bearer" type="Sprite2D" parent="actors/spell36_beetle" unique_id=906200164]
+-position = Vector2(3204, 529)
+-texture = SubResource("Atlas_spear36")
+-centered = false
+-offset = Vector2(-168, -385)
+-metadata/actor_id = "spear36"
+-metadata/size = Vector2(142, 355)
+-
+-[node name="spell37_twin_snakes" type="Node" parent="actors" unique_id=1752249385]
+-
+-[node name="snake" type="Sprite2D" parent="actors/spell37_twin_snakes" unique_id=679962303]
+-position = Vector2(2885.5, 528)
+-texture = ExtResource("actor_20")
+-centered = false
+-offset = Vector2(-52.5, -70)
+-metadata/actor_id = "snake37"
+-metadata/size = Vector2(105, 70)
+-metadata/registry_id = "e37"
+-
+-[node name="spear_bearer" type="Sprite2D" parent="actors/spell37_twin_snakes" unique_id=186429424]
+-position = Vector2(2956, 528)
+-texture = SubResource("Atlas_spear37")
+-centered = false
+-offset = Vector2(-168, -385)
+-metadata/actor_id = "spear37"
+-metadata/size = Vector2(132, 328)
+-
+-[node name="left_sign" type="Sprite2D" parent="actors/spell37_twin_snakes" unique_id=378070272]
+-position = Vector2(2832, 132)
+-texture = ExtResource("actor_22")
+-centered = false
+-offset = Vector2(-18, -74)
+-metadata/actor_id = "glyph37_left"
+-metadata/size = Vector2(36, 74)
+-
+-[node name="right_sign" type="Sprite2D" parent="actors/spell37_twin_snakes" unique_id=2075939703]
+-position = Vector2(2858.5, 129)
+-texture = ExtResource("actor_23")
+-centered = false
+-offset = Vector2(-16.5, -72)
+-metadata/actor_id = "glyph37_right"
+-metadata/size = Vector2(33, 72)
+-
+-[node name="spear_glow" type="Sprite2D" parent="actors/spell37_twin_snakes" unique_id=821865462]
+-visible = false
+-position = Vector2(2956, 528)
+-texture = SubResource("Atlas_spear37_pole")
+-centered = false
+-offset = Vector2(-168, -385)
+-metadata/actor_id = "spear37_pole"
+-metadata/size = Vector2(132, 328)
+-
+-[node name="spell38_breath" type="Node" parent="actors" unique_id=533871507]
+-
+-[node name="giver" type="Sprite2D" parent="actors/spell38_breath" unique_id=1742285]
+-position = Vector2(2550.5, 528)
+-texture = ExtResource("actor_breath_giver")
+-centered = false
+-offset = Vector2(-228.5, -479)
+-metadata/source_layer_id = "1111"
+-metadata/registry_id = "e38"
+-metadata/actor_id = "breath_giver"
+-metadata/size = Vector2(457, 479)
+-
+-[node name="ankh" type="Sprite2D" parent="actors/spell38_breath" unique_id=929133635]
+-position = Vector2(2593, 323)
+-texture = ExtResource("actor_ankh38")
+-centered = false
+-offset = Vector2(-16, -67)
+-metadata/actor_id = "ankh38"
+-metadata/size = Vector2(32, 67)
+-metadata/registry_id = "e38"
+-
+-[node name="sail" type="Sprite2D" parent="actors/spell38_breath" unique_id=1736169436]
+-position = Vector2(2606.5, 374)
+-texture = ExtResource("actor_sail38")
+-centered = false
+-offset = Vector2(-30.5, -49)
+-metadata/actor_id = "sail38"
+-metadata/size = Vector2(61, 49)
+-metadata/registry_id = "e38"
+-
+-[node name="breath_sign" type="Sprite2D" parent="actors/spell38_breath" unique_id=1395720461]
+-position = Vector2(2652, 135)
+-texture = ExtResource("actor_glyph38_breath")
+-centered = false
+-offset = Vector2(-33, -58)
+-metadata/actor_id = "glyph38_breath"
+-metadata/size = Vector2(66, 58)
+-
+-[node name="spell39_apep" type="Node" parent="actors" unique_id=833552771]
+-
+-[node name="apep" type="Node2D" parent="actors/spell39_apep" unique_id=1007985309]
+-position = Vector2(1815.5, 527)
+-metadata/actor_id = "apep"
+-metadata/size = Vector2(493, 41)
+-metadata/_edit_group_ = true
+-metadata/registry_id = "e39"
+-
+-[node name="sprite" type="Sprite2D" parent="actors/spell39_apep/apep" unique_id=1058762504]
+-texture = ExtResource("actor_25")
+-centered = false
+-offset = Vector2(-246.5, -41)
+-
+-[node name="spear_bearer" type="Sprite2D" parent="actors/spell39_apep" unique_id=1758193344]
+-position = Vector2(2137, 527)
+-texture = SubResource("Atlas_spear39")
+-centered = false
+-offset = Vector2(-168, -385)
+-metadata/actor_id = "spear39"
+-metadata/size = Vector2(228, 340)
+-
+-[node name="spear_glow" type="Sprite2D" parent="actors/spell39_apep" unique_id=1020994494]
+-visible = false
+-position = Vector2(2137, 527)
+-texture = SubResource("Atlas_spear39_pole")
+-centered = false
+-offset = Vector2(-168, -385)
+-metadata/actor_id = "spear39_pole"
+-metadata/size = Vector2(228, 340)
+-
+-[node name="spell40_donkey" type="Node" parent="actors" unique_id=1429942516]
+-
+-[node name="snake" type="Sprite2D" parent="actors/spell40_donkey" unique_id=1888149106]
+-position = Vector2(1133, 467)
+-texture = ExtResource("actor_27")
+-centered = false
+-offset = Vector2(-58, -91)
+-metadata/actor_id = "snake40"
+-metadata/size = Vector2(116, 91)
+-metadata/registry_id = "e40"
+-
+-[node name="spear_bearer" type="Sprite2D" parent="actors/spell40_donkey" unique_id=641745771]
+-position = Vector2(1299, 532)
+-texture = SubResource("Atlas_spear40")
+-centered = false
+-offset = Vector2(-168, -385)
+-metadata/actor_id = "spear40"
+-metadata/size = Vector2(276, 352)
+-
+-[node name="donkey" type="Sprite2D" parent="actors/spell40_donkey" unique_id=594604207]
+-position = Vector2(1061.5, 532)
+-texture = ExtResource("actor_30")
+-centered = false
+-offset = Vector2(-173.5, -221)
+-metadata/actor_id = "donkey40"
+-metadata/size = Vector2(347, 221)
+-metadata/registry_id = "e40"
+-
+-[node name="tail" type="Sprite2D" parent="actors/spell40_donkey" unique_id=372533289]
+-position = Vector2(1250.5, 557)
+-texture = ExtResource("actor_40")
+-centered = false
+-offset = Vector2(-24.5, -31)
+-metadata/actor_id = "tail40"
+-metadata/size = Vector2(49, 31)
+-metadata/registry_id = "e40"
+-
+-[node name="spear_glow" type="Sprite2D" parent="actors/spell40_donkey" unique_id=1876403730]
+-visible = false
+-position = Vector2(1299, 532)
+-texture = SubResource("Atlas_spear40_pole")
+-centered = false
+-offset = Vector2(-168, -385)
+-metadata/actor_id = "spear40_pole"
+-metadata/size = Vector2(276, 352)
+-
+-[node name="spell41_sheaf" type="Node" parent="actors" unique_id=2114336771]
+-
+-[node name="spear_bearer" type="Sprite2D" parent="actors/spell41_sheaf" unique_id=464171459]
+-position = Vector2(390.5, 531)
+-texture = SubResource("Atlas_spear41")
+-centered = false
+-offset = Vector2(-167.5, -385)
+-metadata/actor_id = "spear41"
+-metadata/size = Vector2(205, 339)
+-
+-[node name="sheaf" type="Sprite2D" parent="actors/spell41_sheaf" unique_id=1907539415]
+-position = Vector2(254, 530)
+-texture = ExtResource("actor_31")
+-centered = false
+-offset = Vector2(-61, -102)
+-metadata/actor_id = "bundle41"
+-metadata/size = Vector2(122, 102)
+-metadata/registry_id = "e41"
+-
+-[node name="loose_stalks" type="Sprite2D" parent="actors/spell41_sheaf" unique_id=672198337]
+-visible = false
+-position = Vector2(258, 530)
+-texture = ExtResource("actor_34")
+-centered = false
+-offset = Vector2(-30, -102)
+-metadata/actor_id = "sheaf41_stalks"
+-metadata/size = Vector2(60, 102)
+-
+-[node name="band1" type="Sprite2D" parent="actors/spell41_sheaf" unique_id=1257827531]
+-visible = false
+-position = Vector2(254, 440)
+-texture = ExtResource("actor_35")
+-centered = false
+-offset = Vector2(-61, -12)
+-metadata/actor_id = "sheaf41_band1"
+-metadata/size = Vector2(122, 12)
+-
+-[node name="band2" type="Sprite2D" parent="actors/spell41_sheaf" unique_id=634732813]
+-visible = false
+-position = Vector2(254.5, 455)
+-texture = ExtResource("actor_36")
+-centered = false
+-offset = Vector2(-58.5, -13)
+-metadata/actor_id = "sheaf41_band2"
+-metadata/size = Vector2(117, 13)
+-
+-[node name="band3" type="Sprite2D" parent="actors/spell41_sheaf" unique_id=559405644]
+-visible = false
+-position = Vector2(253, 472)
+-texture = ExtResource("actor_37")
+-centered = false
+-offset = Vector2(-54, -13)
+-metadata/actor_id = "sheaf41_band3"
+-metadata/size = Vector2(108, 13)
+-
+-[node name="band4" type="Sprite2D" parent="actors/spell41_sheaf" unique_id=1682301729]
+-visible = false
+-position = Vector2(251.5, 484)
+-texture = ExtResource("actor_38")
+-centered = false
+-offset = Vector2(-49.5, -11)
+-metadata/actor_id = "sheaf41_band4"
+-metadata/size = Vector2(99, 11)
+-
+-[node name="snake" type="Node2D" parent="actors/spell41_sheaf" unique_id=1095735655]
+-position = Vector2(250.5, 481)
+-metadata/actor_id = "snake41"
+-metadata/size = Vector2(139, 116)
+-metadata/_edit_group_ = true
+-metadata/registry_id = "e41"
+-
+-[node name="sprite" type="Sprite2D" parent="actors/spell41_sheaf/snake" unique_id=1085154016]
+-texture = ExtResource("actor_39")
+-centered = false
+-offset = Vector2(-69.5, -116)
+-
+-[node name="spear_glow" type="Sprite2D" parent="actors/spell41_sheaf" unique_id=2056126854]
+-visible = false
+-position = Vector2(390.5, 531)
+-texture = SubResource("Atlas_spear41_pole")
+-centered = false
+-offset = Vector2(-167.5, -385)
+-metadata/actor_id = "spear41_pole"
+-metadata/size = Vector2(205, 339)
+-
+ [node name="Overlay" type="Node2D" parent="." unique_id=759531365]
+ 
+ [node name="Avatar" type="Node2D" parent="." unique_id=1686742080]
+@@ -638,30 +198,9 @@
+ script = ExtResource("3_avatar")
+ metadata/size = Vector2(110, 267)
+ 
+-[node name="CarryAnkh" type="Marker2D" parent="Avatar" unique_id=1950775912]
+-position = Vector2(-38, -233)
+-
+-[node name="CarryBreath" type="Marker2D" parent="Avatar" unique_id=779738191]
+-position = Vector2(-35, -236)
+-
+ [node name="Sprite" type="Sprite2D" parent="Avatar" unique_id=1033025849]
+ texture = ExtResource("4_avatar_tex")
+ offset = Vector2(0, -133.5)
+-
+-[node name="Column" type="Node2D" parent="." unique_id=429431950]
+-z_index = 6
+-position = Vector2(561, 180)
+-metadata/_edit_lock_ = true
+-
+-[node name="papyrus" type="ColorRect" parent="Column" unique_id=1445488544]
+-material = SubResource("ShaderMaterial_papyrus")
+-offset_right = 274.0
+-offset_bottom = 366.0
+-mouse_filter = 2
+-
+-[node name="ink" type="Sprite2D" parent="Column" unique_id=1726722826]
+-texture = SubResource("AtlasTexture_column")
+-centered = false
+ 
+ [node name="Camera" type="Camera2D" parent="." unique_id=1184860775]
+ position = Vector2(5939.622, 398.43243)
+@@ -694,90 +233,3 @@
+ [node name="Shape" type="CollisionShape2D" parent="CaptionRegions/caption_e32" unique_id=1373629798]
+ shape = SubResource("inspect_caption_e32")
+ 
+-[node name="caption_e33" type="Area2D" parent="CaptionRegions" unique_id=1486119435]
+-position = Vector2(3793.5, 115)
+-collision_layer = 0
+-collision_mask = 0
+-monitoring = false
+-monitorable = false
+-metadata/registry_id = "caption_e33"
+-
+-[node name="Shape" type="CollisionShape2D" parent="CaptionRegions/caption_e33" unique_id=1924441294]
+-shape = SubResource("inspect_caption_e33")
+-
+-[node name="caption_e35" type="Area2D" parent="CaptionRegions" unique_id=1817984899]
+-position = Vector2(3470.5, 115)
+-collision_layer = 0
+-collision_mask = 0
+-monitoring = false
+-monitorable = false
+-metadata/registry_id = "caption_e35"
+-
+-[node name="Shape" type="CollisionShape2D" parent="CaptionRegions/caption_e35" unique_id=2089119513]
+-shape = SubResource("inspect_caption_e35")
+-
+-[node name="caption_e36" type="Area2D" parent="CaptionRegions" unique_id=822735037]
+-position = Vector2(3165.5, 115)
+-collision_layer = 0
+-collision_mask = 0
+-monitoring = false
+-monitorable = false
+-metadata/registry_id = "caption_e36"
+-
+-[node name="Shape" type="CollisionShape2D" parent="CaptionRegions/caption_e36" unique_id=1484292060]
+-shape = SubResource("inspect_caption_e36")
+-
+-[node name="caption_e37" type="Area2D" parent="CaptionRegions" unique_id=128969514]
+-position = Vector2(2918, 115)
+-collision_layer = 0
+-collision_mask = 0
+-monitoring = false
+-monitorable = false
+-metadata/registry_id = "caption_e37"
+-
+-[node name="Shape" type="CollisionShape2D" parent="CaptionRegions/caption_e37" unique_id=1541562878]
+-shape = SubResource("inspect_caption_e37")
+-
+-[node name="caption_e38" type="Area2D" parent="CaptionRegions" unique_id=740898598]
+-position = Vector2(2549, 115)
+-collision_layer = 0
+-collision_mask = 0
+-monitoring = false
+-monitorable = false
+-metadata/registry_id = "caption_e38"
+-
+-[node name="Shape" type="CollisionShape2D" parent="CaptionRegions/caption_e38" unique_id=1121716153]
+-shape = SubResource("inspect_caption_e38")
+-
+-[node name="caption_e39" type="Area2D" parent="CaptionRegions" unique_id=653746893]
+-position = Vector2(1876.5, 115)
+-collision_layer = 0
+-collision_mask = 0
+-monitoring = false
+-monitorable = false
+-metadata/registry_id = "caption_e39"
+-
+-[node name="Shape" type="CollisionShape2D" parent="CaptionRegions/caption_e39" unique_id=1992179464]
+-shape = SubResource("inspect_caption_e39")
+-
+-[node name="caption_e40" type="Area2D" parent="CaptionRegions" unique_id=896196762]
+-position = Vector2(1009, 115)
+-collision_layer = 0
+-collision_mask = 0
+-monitoring = false
+-monitorable = false
+-metadata/registry_id = "caption_e40"
+-
+-[node name="Shape" type="CollisionShape2D" parent="CaptionRegions/caption_e40" unique_id=158369173]
+-shape = SubResource("inspect_caption_e40")
+-
+-[node name="caption_e41" type="Area2D" parent="CaptionRegions" unique_id=1828862830]
+-position = Vector2(305, 115)
+-collision_layer = 0
+-collision_mask = 0
+-monitoring = false
+-monitorable = false
+-metadata/registry_id = "caption_e41"
+-
+-[node name="Shape" type="CollisionShape2D" parent="CaptionRegions/caption_e41" unique_id=1379499435]
+-shape = SubResource("inspect_caption_e41")
+--- original/godot/scripts/dangers/dangers.gd
++++ godot/scripts/dangers/dangers.gd
+@@ -1,33 +1,10 @@
+-## Spells 31-42: dangers on the road (Lepsius, Todtenbuch pl. XVI-XIX).
+-##
+-## The scroll reads right to left. The player (the adoring deceased of spell 30) walks left
+-## through the vignettes. Each vignette with a creature is an encounter: walking into it
+-## offers its introduction; clicking a creature takes its spear-bearer’s place and starts
+-## the fight. Space thrusts. The spell-38 gate waits until the preceding dangers are overcome. Solving an encounter puts the vignette back as it is drawn on the plate.
+-## Positions come from assets/dangers/level.json, written by tools/cut_dangers300.py from the
+-## hand-made 300-dpi strip bod31-42.mdp. Distances below are in 200-dpi plate pixels and are
+-## multiplied by `unit` (level.json `scale`).
+-## Combat behavior lives in the per-minigame scripts; this scene owns shared state,
+-## walking, taking the breath of life, progression, and arena presentation.
++## Original Dangers scene and behavior, restricted to the two crocodile encounters.
++## Scene transforms remain authoritative; shared camera, HUD and arena presentation are preserved.
+ extends Node2D
+ 
+ const CROCODILES := preload("res://scripts/dangers/crocodiles.gd")
+-const TWO_SNAKES := preload("res://scripts/dangers/two_snakes.gd")
+-const CREEPING_SNAKE := preload("res://scripts/dangers/creeping_snake.gd")
+-const BEETLES := preload("res://scripts/dangers/beetles.gd")
+-const LUNGING_SNAKE := preload("res://scripts/dangers/lunging_snake.gd")
+-const APEP := preload("res://scripts/dangers/apep.gd")
+-const DONKEY := preload("res://scripts/dangers/donkey.gd")
+-const SHEAF := preload("res://scripts/dangers/sheaf.gd")
+ 
+ var crocodiles = CROCODILES.new(self)
+-var two_snakes = TWO_SNAKES.new(self)
+-var creeping_snake = CREEPING_SNAKE.new(self)
+-var beetles = BEETLES.new(self)
+-var lunging_snake = LUNGING_SNAKE.new(self)
+-var apep = APEP.new(self)
+-var donkey = DONKEY.new(self)
+-var sheaf = SHEAF.new(self)
+ 
+ 
+ const SCROLL_CAMERA := preload("res://scripts/scroll_camera.gd")
+@@ -37,16 +14,8 @@
+ const FIGURE_MASK := preload("res://scripts/figure_mask.gd")
+ const SHEET_TEX := "res://assets/dangers/animation/spearers.png"
+ const ASSET := "res://assets/dangers/figures/%s.png"
+-const AFTER_CHOICE := ["e39", "e40", "e41"]
+-const LIFE_GAME_CLUE := 60.0       ## active seconds in one encounter, across visits
+-const LIFE_TOTAL_CLUE := 120.0     ## active seconds across all three encounters
+-const LIFE_FLASH := 0.8
+-const BESIDE := 50.0
+-const FIGHTS := ["crocs", "lunge", "twin", "creep", "roach", "apep", "donkey", "sheaf"]
+-const ARENA_FIGHTS := ["crocs", "roach", "lunge", "creep", "twin", "apep", "donkey", "sheaf"]   ## the vignette opens out across the screen
+-## Debug: true opens the road, so you can walk past spell 38 with dangers still undone (also
+-## `-- --open-road` on the command line). Keep it false for play.
+-const DEBUG_OPEN_ROAD := true
++const FIGHTS := ["crocs"]
++const ARENA_FIGHTS := ["crocs"]   ## the vignette opens out across the screen
+ 
+ const ENCOUNTERS := preload("res://scripts/dangers/danger_encounters.gd").ENCOUNTERS
+ const GLOW := UI.Glow.DANGER
+@@ -65,28 +34,17 @@
+ var _hints = preload("res://scripts/puzzles.gd").new()
+ var solved := {}         ## encounter id -> true
+ var _section := ""       ## the encounter whose vignette you are walking through
+-var objects := {}
+-var _object_press: MoveableObject
+-var _object_press_screen := Vector2.ZERO
+-var _object_dragging := false
+-
+-var items: Array[String] = []
++
+ var bites := 0
+ var finished := false
+ var journal: Array[String] = []
+-var _life_scores := {}
+-var _life_times := {}
+-var _life_total := 0.0
+ var _stats := {}         ## each creature fought: {attempts, time (s of active fighting)}, from the first fight on
+ var _focused := true     ## the game window has the focus (time away from it is not fighting time)
+-var _life_clue_given := false
+-var _life_clue_hold := 0.0
+-var current := {}        ## first unsolved encounter; spell 38 gates progress beyond it
++var current := {}        ## first unsolved crocodile encounter
+ var fight := {}          ## state of the running fight, empty when walking
+ var rng := RandomNumberGenerator.new()
+ 
+ var _time := 0.0
+-var _roach_need := -1     ## dev: overrides the number of beetles when set (ROACH_NEED)
+ var _instant := false     ## the autotest skips the crocodile vignette's opening and closing
+ var _arena: Node2D        ## the opened-out crocodile vignette, between the strip and the actors
+ var _arena_cover: ColorRect
+@@ -98,25 +56,17 @@
+ const FLESH_PATH := "res://assets/dangers/figures/flesh.png"   ## the flesh sign that counts his health (supplied, not cut)
+ const FLESH_GAP := 6.0          ## strip px between signs, drawn at their native asset size
+ var _flesh_tex: Texture2D = _ink_from(load(FLESH_PATH)) if ResourceLoader.exists(FLESH_PATH) else null
+-var gate := {}           ## a "gate" encounter (spell 38): the way into it stays shut while one before it is undone
+-var _bump_time := -10.0
+ var _heka_signs: Array = []      ## flattened once from level.heka
+ var _session := 0
+-var _wipe: CanvasLayer          ## the breath signs sweeping the level away at the end (`_breath_wipe`)
+ var _fight_tweens: Array[Tween] = []
+ var _hover := []                ## the actors glowing under the pointer
+ var _caption := {}              ## the encounter whose caption glows under the pointer
+ var _caption_glow: Sprite2D
+ 
+ @onready var avatar: Node2D = $Avatar
+-@onready var _item_poses := {"ankh38": $Avatar/CarryAnkh, "sail38": $Avatar/CarryBreath}
+ @onready var camera: Camera2D = $Camera
+ @onready var hud: CanvasLayer = $HUD
+ @onready var overlay: Node2D = $Overlay
+-## The column of signs between spells 41 and 40 (the papyrus and the strip's ink there, drawn
+-## again over him): walking on, he passes behind it. Hidden while a fight is open.
+-@onready var column: Node2D = $Column
+-
+ 
+ func _ready() -> void:
+ 	level = JSON.parse_string(FileAccess.get_file_as_string(DATA_PATH))
+@@ -140,13 +90,6 @@
+ 		actor.set_meta("home", actor.position)
+ 		var size: Vector2 = actor.get_meta("size")
+ 		rects[id] = Rect2(actor.position - Vector2(size.x / 2.0, size.y), size)
+-	for id in _item_poses:
+-		var item := MoveableObject.new()
+-		add_child(item)
+-		item.setup(id, _picture(actors[id]))
+-		item.carriable = true
+-		item.description_requested.connect(_describe_item)
+-		objects[id] = item
+ 	var avatar_size: Vector2 = avatar.get_meta("size")
+ 	rects.avatar = Rect2(avatar.position - Vector2(avatar_size.x / 2.0, avatar_size.y), avatar_size)
+ 	for b in level.boxes:
+@@ -186,18 +129,17 @@
+ 	_arena_lines = Node2D.new()
+ 	_arena.add_child(_arena_lines)
+ 	_arena_lines.draw.connect(_draw_arena_lines)
+-	avatar.bumped.connect(_on_bumped)
+ 	_arena.visible = false
+ 	hud.setup(self, {
+ 		"title": "Dangers on the Road",
+ 		"journal_hint": "Each creature you overcome is recorded here.",
+-		"intro_title": "Spells 31–42: Dangers on the Road",
+-		"intro_body": "Crocodiles, snakes, beetles, and Apep guard the road. Turn them back and take the breath of life.\n\nWalk [b]right to left[/b] with [←] [→] or click the papyrus. Click a creature to learn its rule and take up the spear. [esc] leaves a fight.",
++		"intro_title": "Spells 31–32: Dangers on the Road",
++		"intro_body": "Crocodiles guard the road. Turn them back with the spear.\n\nWalk [b]right to left[/b] with [←] [→] or click the papyrus. Click a creature to learn its rule and take up the spear. [esc] leaves a fight.",
+ 		"outro_title": "The road is clear",
+ 	})
+ 	hud.hint_pressed.connect(hint)
+ 	hud.restart_pressed.connect(reset)
+-	hud.menu_pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/menu.tscn"))
++	hud.menu_pressed.connect(func(): get_tree().reload_current_scene())
+ 	reset()
+ 	_maybe_run_cli()
+ 
+@@ -229,27 +171,15 @@
+ 	heka_known = false
+ 	solved.clear()
+ 	_section = ""
+-	_object_press = null
+-	_object_dragging = false
+-	for item in objects.values():
+-		item.reset()
+-	items.clear()
+ 	journal.clear()
+-	_life_scores.clear()
+-	_life_times.clear()
+-	_life_total = 0.0
+ 	_stats.clear()
+-	_life_clue_given = false
+-	_life_clue_hold = 0.0
+ 	bites = 0
+ 	finished = false
+ 	fight = {}
+ 	rng.seed = 30
+ 	for n in actors:
+ 		_restore(n)
+-		if n in _item_poses:
+-			actors[n].z_index = 0
+-		actors[n].visible = not n.begins_with("spear") and not n.begins_with("sheaf41_")   # the sheaf's pieces show only in its fight
++		actors[n].visible = not n.begins_with("spear")
+ 	avatar.visible = true
+ 	avatar.set_process(true)
+ 	avatar.stop()
+@@ -261,28 +191,16 @@
+ 	_update_camera(1.0)
+ 
+ 
+-# ---------------------------------------------------------------- walking and gates
++# ---------------------------------------------------------------- walking
+ 
+ func _refresh() -> void:
+ 	current = {}
+ 	for e in ENCOUNTERS:
+-		if e.kind in ["take", "note", "end"]:
+-			continue
+ 		if not solved.has(e.id):
+ 			current = e
+ 			break
+-	# he walks through every vignette (a fight starts only on clicking its creature), but not into a
+-	# gate vignette while one before it is still undone: its man blocks the way. The barrier is not drawn.
+-	gate = {}
+-	var args := OS.get_cmdline_user_args()
+-	var open_road := (DEBUG_OPEN_ROAD or "--open-road" in args) and not "--autotest" in args   # the tests check the real road
+-	for e in ENCOUNTERS:
+-		if e.get("gate", false) and not open_road and not current.is_empty() and ENCOUNTERS.find(current) <= ENCOUNTERS.find(e):
+-			gate = e
+-			break
+-	avatar.min_x = gate_x() + 20.0 * unit if not gate.is_empty() else 40.0 * unit
++	avatar.min_x = span(ENCOUNTERS[-1]).x + 40.0 * unit
+ 	avatar.max_x = level.width - 40.0 * unit
+-
+ 
+ func span(e: Dictionary) -> Vector2:
+ 	var a := INF
+@@ -305,92 +223,8 @@
+ 
+ 
+ ## The uncarried item at `p` that can be taken (the nearest, where two are close together), or "".
+-func _item_at(p: Vector2) -> String:
+-	var best := ""
+-	for e in ENCOUNTERS:
+-		if e.kind == "take":
+-			for it in e.items:
+-				if it in items:
+-					continue
+-				var r := actor_rect(it)
+-				if r.grow(12 * unit).has_point(p) and (best == "" or r.get_center().distance_to(p) < actor_rect(best).get_center().distance_to(p)):
+-					best = it
+-	return best
+-
+-
+-## The "take" encounter an item belongs to.
+-func _taking(item: String) -> Dictionary:
+-	for e in ENCOUNTERS:
+-		if e.kind == "take" and item in e.items:
+-			return e
+-	return {}
+-
+-
+-## The near (right-hand) edge of the gate vignette, which he cannot pass yet (0 when open).
+-func gate_x() -> float:
+-	return span(gate).y if not gate.is_empty() else 0.0
+-
+-
+ func walk_then(x: float, then := Callable()) -> void:
+-	var tx := clampf(x, avatar.min_x, avatar.max_x)
+-	avatar.walk_to(tx, func():
+-		if tx - x > 120.0 * unit:
+-			_blocked()
+-		elif then.is_valid():
+-			then.call())
+-
+-
+-func _on_bumped() -> void:
+-	_blocked()
+-
+-
+-func _blocked() -> void:
+-	if gate.is_empty() or _time - _bump_time < 2.5:
+-		return
+-	_bump_time = _time
+-	say("Scribe", _hints.message("dangers.blocked"))
+-
+-
+-func _describe_item(object_id: String, description_key: String) -> void:
+-	if _descriptions.entries.has(description_key):
+-		_descriptions.show(description_key, hud)
+-	else:
+-		# Individual item descriptions are not currently in the registry.
+-		var label: String = {"ankh38": "Ankh", "sail38": "Breath"}[object_id]
+-		say(label, label)
+-
+-
+-func _carried_item_input(event: InputEvent) -> bool:
+-	if _object_press != null:
+-		if event.is_action_pressed("ui_cancel"):
+-			_object_press.cancel_hold()
+-			_object_press = null
+-			_object_dragging = false
+-			return true
+-		if event is InputEventMouseMotion:
+-			if not _object_dragging and event.position.distance_to(_object_press_screen) > 8.0:
+-				_object_press.hold()
+-				_object_dragging = true
+-				_object_press.request_description()
+-			if _object_dragging:
+-				_object_press.move_held(get_global_mouse_position())
+-			return true
+-		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+-			if not event.pressed:
+-				_object_press.cancel_hold()
+-				_object_press = null
+-				_object_dragging = false
+-			return true
+-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+-		for id in items:
+-			if objects[id].contains_point(get_global_mouse_position()):
+-				_object_press = objects[id]
+-				_object_press_screen = event.position
+-				_object_dragging = false
+-				_object_press.request_description()
+-				return true
+-	return false
+-
++	avatar.walk_to(clampf(x, avatar.min_x, avatar.max_x), then)
+ 
+ func _unhandled_input(event: InputEvent) -> void:
+ 	if hud.is_blocking() or finished:
+@@ -399,26 +233,9 @@
+ 		leave_fight()
+ 		get_viewport().set_input_as_handled()
+ 		return
+-	if fight.is_empty() and _carried_item_input(event):
+-		return
+-	# Space thrusts in the fights that open out (holding Shift lends the thrust heka)
++	# Original crocodile controls.
+ 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SPACE:
+-		if not fight.is_empty() and fight.kind == "sheaf":
+-			sheaf._sheaf_act()                # strikes at the band he leans to
+-		elif not fight.is_empty() and fight.kind in ARENA_FIGHTS:
+-			_croc_thrust()
+-		elif not fight.is_empty() and fight.kind == "donkey":
+-			donkey._donkey_click(get_global_mouse_position())
+-		get_viewport().set_input_as_handled()
+-		return
+-	# [↑] [↓] lean spell 41's bearer to the band above or below
+-	if not fight.is_empty() and fight.kind == "sheaf" and (event.is_action_pressed("ui_up") or event.is_action_pressed("ui_down")):
+-		sheaf._sheaf_aim(-1 if event.is_action_pressed("ui_up") else 1)
+-		get_viewport().set_input_as_handled()
+-		return
+-	# [→] hops spell 39's bearer back from a large wave, [←] forward to the fold again
+-	if not fight.is_empty() and fight.kind == "apep" and (event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right")):
+-		apep._apep_step(1 if event.is_action_pressed("ui_right") else -1)
++		if not fight.is_empty(): _croc_thrust()
+ 		get_viewport().set_input_as_handled()
+ 		return
+ 	if event is InputEventMouseMotion:
+@@ -431,9 +248,6 @@
+ 		if _heka_at(p) != "":
+ 			heka_known = true
+ 			say("Scribe", _hints.message("dangers.heka_controls"))
+-			return
+-		if fight.is_empty() and _clue_sign_at(p) != "":
+-			say("Scribe", _hints.message("dangers.clue_signs"))
+ 			return
+ 		if not fight.is_empty():
+ 			fight_click(p)
+@@ -447,10 +261,6 @@
+ 					_set_hover([])
+ 					start_fight(f))
+ 			return
+-		var it := _item_at(p)
+-		if it != "":
+-			walk_then(actor_rect(it).end.x + BESIDE * unit, take.bind(_taking(it), it))
+-			return
+ 		var c := _caption_at(p)
+ 		if not c.is_empty():
+ 			_descriptions.show("caption_" + c.id, hud)
+@@ -490,8 +300,6 @@
+ 	var h := _heka_at(p)              # part for whole: a heka word glows alone; the rest of its caption, the whole
+ 	if h != "":
+ 		return [h]
+-	if fight.is_empty() and _clue_sign_at(p) != "":
+-		return [_clue_sign_at(p)]
+ 	if not fight.is_empty():
+ 		for n in _targets():
+ 			if actor_rect(n).grow(8 * unit).has_point(p):
+@@ -500,9 +308,6 @@
+ 	var f := _fight_at(p)
+ 	if not f.is_empty():
+ 		return _creatures(f)
+-	var it := _item_at(p)
+-	if it != "":
+-		return [it]
+ 	var subject := _inspection_at(p)
+ 	return [subject] if subject != "" else []
+ 
+@@ -520,7 +325,7 @@
+ 
+ ## The spell whose caption, in the top register, is under the pointer (its heka and clue signs are their own).
+ func _caption_at(p: Vector2) -> Dictionary:
+-	if _heka_at(p) != "" or _clue_sign_at(p) != "":
++	if _heka_at(p) != "":
+ 		return {}
+ 	for e in ENCOUNTERS:
+ 		if e.has("caption") and _caption_rect(e).has_point(p):
+@@ -533,7 +338,7 @@
+ 
+ 
+ ## A caption glows like the creatures: the strip's drawing in its frame, and those of its signs
+-## that are sprites of their own (the heka words, spell 37's snake signs).
++## that are sprites of their own (the heka words).
+ func _set_caption_hover(e: Dictionary) -> void:
+ 	if e == _caption:
+ 		return
+@@ -594,20 +399,15 @@
+ 		t.tween_callback(g.hide)
+ 
+ 
+-## The creatures you click to take up the spear against encounter `e`, with what the creature is
+-## drawn on (they glow together): the donkey and its tail under spell 40's snake, spell 41's sheaf.
++## The crocodiles clicked to take up this encounter’s spear.
+ func _creatures(e: Dictionary) -> Array:
+-	var out: Array = e.foes if e.has("foes") else [e.foe]
+-	for k in ["donkey", "tail", "bundle"]:
+-		if e.get(k) is String and actors.has(e[k]):   # (spell 33's `tail` is a timing)
+-			out.append(e[k])
+-	return out
++	return e.foes
+ 
+ 
+ ## The unsolved fight (on this side of the gate) whose creature is at `p`, or {}.
+ func _fight_at(p: Vector2) -> Dictionary:
+ 	for e in ENCOUNTERS:
+-		if not e.kind in FIGHTS or solved.has(e.id) or span(e).y <= gate_x():
++		if not e.kind in FIGHTS or solved.has(e.id):
+ 			continue
+ 		for n in _creatures(e):
+ 			if actors[n].visible and actors[n].modulate.a > 0.1 and actor_rect(n).grow(8 * unit).has_point(p):
+@@ -616,11 +416,7 @@
+ 
+ 
+ func _targets() -> Array:
+-	match fight.kind:
+-		"crocs", "roach", "lunge", "creep", "twin", "apep", "sheaf": return []
+-		"donkey": return [fight.e.foe]
+ 	return []
+-
+ 
+ func _process(delta: float) -> void:
+ 	_time += delta
+@@ -628,8 +424,6 @@
+ 		_check_position()
+ 	if not fight.is_empty():
+ 		_update_fight(delta)
+-	_follow_items()
+-	column.visible = fight.is_empty()
+ 	_update_camera(delta)
+ 	overlay.queue_redraw()
+ 	var pulse := 0.5 + 0.5 * sin(_time * 5.0)
+@@ -637,12 +431,6 @@
+ 		# on the scroll the heka signs always flash red; clicking one tells what they are for
+ 		for nm in _all_heka():
+ 			actors[nm].modulate = Color(Color.WHITE.lerp(RED_CROC, pulse), actors[nm].modulate.a)
+-		# and spell 38's breath sign, until one of the signs he holds out is taken
+-		actors.glyph38_breath.modulate = Color.WHITE.lerp(RED_CROC, 0.0 if solved.has("e38") else pulse)
+-		# and spell 37's snake signs, until its snakes are struck; clicking one hints they matter
+-		for e in ENCOUNTERS:
+-			for nm in e.get("signs", []):
+-				actors[nm].modulate = Color.WHITE.lerp(RED_CROC, 0.0 if solved.has(e.id) else pulse)
+ 	elif fight.kind == "crocs":
+ 		if not fight.lost:
+ 			for nm in _heka_words(fight.e.id):
+@@ -652,7 +440,7 @@
+ 
+ 
+ ## Say a vignette's line each time you walk into it while its danger is still there (a fight waits
+-## for a click on the creature), and end the level at spell 42 once everything before it is done.
++## for a click on the creature), and finish once both crocodile encounters are overcome.
+ func _check_position() -> void:
+ 	var x := avatar.position.x
+ 	var here_now := ""
+@@ -668,145 +456,18 @@
+ 		finish()
+ 
+ 
+-## Take `item` from encounter `e`, returning the previous sign to the giver's hand.
+-func take(e: Dictionary, item := "") -> void:
+-	if item == "":
+-		item = e.items[0]
+-	if item in items:
+-		return
+-	for previous in items:
+-		objects[previous].reset()
+-	items.clear()
+-	items.append(item)
+-	objects[item].wear(avatar, _item_poses[item].transform)
+-	_follow_items()
+-	_solve(e, item)
+-
+-
+-## Signs sit on the walking figure at their authored poses, mirrored and bobbing with him.
+-func _follow_items() -> void:
+-	for item in items:
+-		var object: MoveableObject = objects[item]
+-		if object.state == MoveableObject.State.WORLD:
+-			object.wear(avatar, _item_poses[item].transform)
+-		object.follow()
+-		if object.state == MoveableObject.State.HELD:
+-			object.move_held(get_global_mouse_position())
+-		object.sprite.visible = avatar.visible
+-
+-
+-## `item`: what was taken (its picture goes in the Journal, and `won` may say per item).
+-func _solve(e: Dictionary, item := "") -> void:
++## Record a completed crocodile encounter.
++func _solve(e: Dictionary) -> void:
+ 	solved[e.id] = true
+-	if item != "":
+-		var item_name: String = {"ankh38": "the ankh", "sail38": "the breath sign"}[item]
+-		say("Scribe", _hints.message("interaction.pick_up") % item_name)
+-	else:
+-		say("Scribe", _hints.text("dangers." + e.id, "success"))
+-	if _stats.has(e.id):
+-		_journal_fight(e.id)
+-	else:
+-		var pic: String = e.foes[0] if e.kind == "crocs" else e.get("foe", item)
+-		_descriptions.remember(e.id, hud, journal, load(ASSET % pic), _descriptions.journal_total(), "settled")
++	say("Scribe", _hints.text("dangers." + e.id, "success"))
++	_journal_fight(e.id)
+ 	_refresh()
+ 
+-
+ func finish() -> void:
+-	if finished or "ankh38" in items:
+-		return
++	if finished: return
+ 	finished = true
+ 	_refresh()
+-	say("Scribe", _hints.message("dangers.finished"))
+-	var revision: int = _session
+-	get_tree().create_timer(1.2, false).timeout.connect(func():
+-		if revision == _session and finished:
+-			_breath_wipe())
+-
+-
+-const WIPE_SAILS := 7           ## breath signs in the column that sweeps the level away
+-const WIPE_GROW := 0.7          ## the first one grows to the middle of the screen (s)
+-const WIPE_GATHER := 0.5        ## then it shrinks off to the right, and the others join it (s)
+-const WIPE_SWEEP := 0.9         ## the column sweeps across, papyrus behind it; once more over the next level (s)
+-
+-
+-## The end of the level (in place of an outro): the breath sign grows out of his hands (or comes in
+-## from the right if he carries none), shrinks off to the right where six more join it, and the
+-## column sweeps right to left, covering the scene with papyrus. The next level opens under it, and
+-## the column sweeps across once more, taking the papyrus with it. The layer sits on the root, so it
+-## outlives this scene.
+-func _breath_wipe() -> void:
+-	var vs := get_viewport().get_visible_rect().size
+-	var tex: Texture2D = _picture(actors.sail38).texture
+-	var start := Rect2(Vector2(vs.x + vs.y * 0.1, vs.y * 0.5), Vector2(0.0, vs.y * 0.08))   # centre, and height
+-	if "sail38" in items:
+-		var held: Sprite2D = objects.sail38.sprite
+-		var xf := held.get_global_transform_with_canvas()
+-		var r := held.get_rect()
+-		start = Rect2(xf * r.get_center(), Vector2(0.0, xf.basis_xform(Vector2(0.0, r.size.y)).length()))
+-		held.modulate.a = 0.0
+-	_wipe = _sweep(get_tree(), tex, start, vs, weakref(self), _session)
+-
+-
+-## The wipe itself (static: it runs on after this scene is gone). `me`/`revision`: the level that
+-## began it, which must still be finished, and not reset, when the papyrus covers the screen.
+-static func _sweep(tree: SceneTree, tex: Texture2D, start: Rect2, vs: Vector2, me: WeakRef, revision: int) -> CanvasLayer:
+-	var layer := CanvasLayer.new()
+-	layer.layer = 128
+-	layer.process_mode = Node.PROCESS_MODE_ALWAYS
+-	tree.root.add_child(layer)
+-	var paper := ColorRect.new()
+-	paper.color = UI.CREAM
+-	paper.size = Vector2.ZERO
+-	layer.add_child(paper)
+-	var aspect := tex.get_size().x / tex.get_size().y
+-	var row_h := vs.y / WIPE_SAILS * 1.15
+-	var edge := row_h * aspect * 0.5
+-	var col_x := vs.x - edge * 1.2                   # where the column gathers, at the right
+-	var sails: Array[Sprite2D] = []
+-	for i in WIPE_SAILS:
+-		var s := Sprite2D.new()
+-		s.texture = tex
+-		layer.add_child(s)
+-		sails.append(s)
+-	var lead := sails[WIPE_SAILS / 2]
+-	var height := func(s: Sprite2D, h: float): s.scale = Vector2.ONE * h / tex.get_size().y
+-	var slot := func(i: int) -> float: return (i + 0.5) * vs.y / WIPE_SAILS
+-	var waiting := func(i: int) -> float: return vs.x + edge * (3.0 + 2.0 * (i % 2))   # the six off to the right
+-	for i in WIPE_SAILS:
+-		sails[i].position = start.position if sails[i] == lead else Vector2(waiting.call(i), slot.call(i))
+-		height.call(sails[i], start.size.y if sails[i] == lead else row_h)
+-	var t := layer.create_tween()
+-	t.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+-	t.tween_method(func(k: float):
+-		lead.position = start.position.lerp(vs * 0.5, k)
+-		height.call(lead, lerpf(start.size.y, vs.y * 0.7, k)), 0.0, 1.0, WIPE_GROW).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+-	t.tween_method(func(k: float):
+-		for i in WIPE_SAILS:
+-			if sails[i] == lead:
+-				lead.position = (vs * 0.5).lerp(Vector2(col_x, slot.call(i)), k)
+-				height.call(lead, lerpf(vs.y * 0.7, row_h, k))
+-			else:
+-				sails[i].position.x = lerpf(waiting.call(i), col_x, k), 0.0, 1.0, WIPE_GATHER).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+-	# right to left: first the papyrus trails the column, covering what it has passed; then, over the
+-	# next level, the column comes again and takes the papyrus ahead of it away
+-	var sweep := func(k: float, covering: bool):
+-		var x := lerpf(col_x if covering else vs.x + edge, -edge * 1.5, k)
+-		for i in WIPE_SAILS:
+-			sails[i].position = Vector2(x + (i % 2) * edge * 0.3, slot.call(i))
+-		paper.position = Vector2(maxf(x, 0.0), 0.0) if covering else Vector2.ZERO
+-		paper.size = Vector2(vs.x - maxf(x, 0.0), vs.y) if covering else Vector2(clampf(x, 0.0, vs.x), vs.y)
+-	t.tween_method(sweep.bind(true), 0.0, 1.0, WIPE_SWEEP).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+-	t.tween_callback(func():
+-		var level = me.get_ref()
+-		if level == null or level._session != revision or not level.finished:
+-			t.kill()                    # the level was left or reset under it
+-			layer.queue_free()
+-			return
+-		tree.root.get_node("Scroll").finish(level.scene_file_path.get_file().get_basename()))
+-	t.tween_method(sweep.bind(false), 0.0, 1.0, WIPE_SWEEP).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+-	t.tween_callback(layer.queue_free)
+-	return layer
+-
++	hud.show_outro(_hints.message("dangers.finished"))
+ 
+ func hint() -> void:
+ 	if finished:
+@@ -817,21 +478,19 @@
+ 			phase = "heka"
+ 		say("Hint", _hints.advance("dangers." + fight.e.id, phase))
+ 		return
+-	var nearby := here(FIGHTS + ["take"])
++	var nearby := here(FIGHTS)
+ 	if not nearby.is_empty():
+-		say("Hint", _hints.advance("dangers." + nearby.id, "choose") if nearby.kind == "take" else _hints.find("dangers." + nearby.id, "nearby"))
++		say("Hint", _hints.find("dangers." + nearby.id, "nearby"))
+ 		return
+ 	# Resolve unfinished work from current state, including when a later vignette is solved first.
+ 	for encounter in ENCOUNTERS:
+-		if encounter.kind in FIGHTS + ["take"] and not solved.has(encounter.id):
++		if encounter.kind in FIGHTS and not solved.has(encounter.id):
+ 			say("Hint", _hints.find("dangers." + encounter.id, "right" if avatar.position.x < span(encounter).x else "default"))
+ 			return
+ 
+ 
+ ## In a fight, what the scribe would say is said under the danger's name (`tag`).
+ func say(who: String, text: String) -> void:
+-	if _life_clue_hold > 0.0 and who == "Scribe":
+-		return
+ 	if who == "Scribe" and not fight.is_empty():
+ 		who = fight.e.get("tag", who)
+ 	hud.say(who, text, "minigame")
+@@ -841,6 +500,7 @@
+ 
+ func _fight_tween(node: Node = null) -> Tween:
+ 	var tween := (node if node else self).create_tween()
++	if has_meta("fixed_step"): tween.pause()
+ 	_fight_tweens = _fight_tweens.filter(func(t): return t.is_valid())
+ 	_fight_tweens.append(tween)
+ 	return tween
+@@ -859,7 +519,6 @@
+ 	_session += 1
+ 	avatar.stop()
+ 	avatar.visible = false
+-	_follow_items()
+ 	avatar.set_process(false)
+ 	actors[e.spear].visible = true
+ 	_set_hover([])
+@@ -870,30 +529,12 @@
+ 	match e.kind:
+ 		"crocs":
+ 			crocodiles._crocs_start(e)
+-		"twin":
+-			two_snakes._twin_start(e)
+-		"roach":
+-			beetles._roach_start(e)
+-		"lunge":
+-			lunging_snake._lunge_start(e)
+-		"creep":
+-			creeping_snake._creep_start(e)
+-		"apep":
+-			apep._apep_start(e)
+-		"donkey":
+-			donkey._donkey_start(e)
+-		"sheaf":
+-			sheaf._sheaf_start(e)
+-	if endless():
+-		_life_scores.get_or_add(e.id, 0)
+ 	_stats.get_or_add(e.id, {"attempts": 0, "time": 0.0}).attempts += 1     # each start is an attempt, Esc and back too
+ 	_journal_fight(e.id)
+ 	say("Scribe", _hints.text("dangers." + e.id, "instructions"))
+ 
+ 
+ func end_fight() -> void:
+-	if endless():
+-		return
+ 	if fight.kind in ARENA_FIGHTS:
+ 		if not _instant and not fight.get("closing", false):
+ 			_crocs_close()
+@@ -918,7 +559,6 @@
+ 	if fight.is_empty() or fight.get("closing", false):
+ 		return
+ 	_kill_fight_tweens()
+-	_life_clue_hold = 0.0
+ 	var e: Dictionary = fight.e
+ 	var out := func():
+ 		if fight.kind in ARENA_FIGHTS:
+@@ -981,38 +621,22 @@
+ 
+ 
+ func _update_fight(dt: float) -> void:
+-	_life_clue_hold = maxf(0.0, _life_clue_hold - dt)
+ 	fight.ankh_flash = maxf(0.0, float(fight.get("ankh_flash", 0.0)) - dt)
+ 	fight.t += dt
+ 	match fight.kind:
+ 		"crocs": crocodiles._crocs(dt)
+-		"twin": two_snakes._twin(dt)
+-		"creep": creeping_snake._creep(dt)
+-		"roach": beetles._roach(dt)
+-		"lunge": lunging_snake._lunge(dt)
+-		"apep": apep._apep(dt)
+-		"donkey": donkey._donkey(dt)
+-		"sheaf": sheaf._sheaf(dt)
+ 	_tick_stats(dt)
+-	_tick_life(dt)
+ 
+ 
+ func fight_click(p: Vector2) -> void:
+-	if not fight.kind in ARENA_FIGHTS:
+-		_thrust()
+ 	match fight.kind:
+ 		"crocs": crocodiles._crocs_click(p)
+-		"twin": two_snakes._twin_click(p)
+-		"creep": creeping_snake._creep_click(p)
+-		"roach": beetles._roach_click(p)
+-		"lunge": lunging_snake._lunge_click(p)
+-		"apep": apep._apep_click(p)
+-		"donkey": donkey._donkey_click(p)
+-
+-
+ ## End the fight after a short beat, unless it already ended (the autotest ends it at once).
+ func _won_if(done: bool) -> void:
+ 	if not done:
++		return
++	if has_meta("fixed_step"):
++		set_meta("episode_won", true)
+ 		return
+ 	var id: String = fight.e.id
+ 	var session := _session
+@@ -1027,7 +651,6 @@
+ const CROC_THRUST := 10.0       ## and then runs it out this far past where it is drawn (spearers.json reach)
+ const CROC_HEALTH := 3           ## bites he can take; the last one and he crumbles (the fight starts over)
+ const THRUST_TIME := [0.07, 0.18]   ## from drawn back to the full strike, and back to drawn back
+-const THRUST_DOWN := 0.5        ## (Apep, the Merti snakes) the point strikes once this far into the full thrust
+ ## Red is #B55B3C. The sprites are drawn in ink (46, 29, 16), so the modulate that turns ink into
+ ## that red is the ratio of the two.
+ const RED_CROC := UI.INK_TINT   ## red crocodiles, heka word and spear
+@@ -1039,7 +662,7 @@
+ ## The opened-out vignette every fight uses: its frame (the double lines round the picture and the
+ ## caption band) moves out to the edges of the screen, the lines keeping the thickness they have
+ ## while walking; the caption moves to the middle of the band, at the size it has while walking
+-## (the wide fights, crocodiles and beetles, zoom out and it shrinks with them).
++## (the crocodile fights zoom out and it shrinks with them).
+ ## Everything else steps out of the way. The frame is worked out on the screen
+ ## (`fight.frame0`, as drawn, to `fight.frame1`, opened out) and drawn into the world each frame
+ ## (_place_frame). `both`: he stands in the middle and can turn (else the double line behind him
+@@ -1125,7 +748,7 @@
+ 	# everything else on screen steps out of the way
+ 	fight.hidden = []
+ 	for nm in actors:
+-		if actors[nm].visible and not nm in items and not nm in keep and nm != e.spear and nm != e.spear + "_pole" and not nm in _heka_words(e.id):
++		if actors[nm].visible and not nm in keep and nm != e.spear and nm != e.spear + "_pole" and not nm in _heka_words(e.id):
+ 			fight.hidden.append(nm)
+ 	_arena.visible = true
+ 	actors[e.spear + "_pole"].visible = true
+@@ -1154,25 +777,6 @@
+ 	for c in fight.get("crocs", []):
+ 		if c.s == "wait":
+ 			c.node.position = c.home.lerp(c.start, k)
+-	if fight.kind == "roach":
+-		var r0: Dictionary = fight.roach      # the drawn one runs out from (and back to) where it is drawn
+-		if not r0.darting:
+-			beetles._roach_place(r0, r0.home_c.lerp(r0.c0, k))
+-		if fight.get("closing", false) and r0.gone:
+-			r0.node.modulate = Color(1, 1, 1, 1.0 - k)
+-		for a in fight.copies:                # the others (and a swarm) fade in and out
+-			if is_instance_valid(a):
+-				a.modulate.a = k * float(a.get_meta("alpha", 1.0))
+-	if fight.kind == "lunge":         # it draws back from where it is drawn to where it waits
+-		lunging_snake._lunge_place()
+-	if fight.kind == "twin":          # they turn to face him; the copy on his right fades in
+-		two_snakes._twin_place()
+-	if fight.kind == "apep":
+-		apep._apep_place()
+-	if fight.kind == "sheaf":
+-		sheaf._sheaf_place()
+-	if fight.kind == "donkey":
+-		donkey._donkey_place()
+ 	for nm in fight.hidden:
+ 		actors[nm].modulate.a = 1.0 - k
+ 	_place_bearer()
+@@ -1185,13 +789,10 @@
+ 		a.position = a.get_meta("home").lerp(fight.pos, fight.open)
+ 		_picture(a).flip_h = fight.facing > 0
+ 	# the spear rests drawn back; a thrust runs it out past where it is drawn and draws it back again
+-	if fight.kind == "sheaf":
+-		sheaf._sheaf_pose(_spear_out())     # he leans in to the band (spell 41's own sheets)
+-	else:
+-		_bearer_pose(e.spear, _spear_out())
++	_bearer_pose(e.spear, _spear_out())
+ 	# bitten: the body flushes red; heka: the spear is red (each on its own)
+ 	actors[e.spear].modulate = Color.WHITE.lerp(HURT, clampf(fight.red / 0.8, 0.0, 1.0))
+-	var heka: bool = Input.is_key_pressed(KEY_SHIFT) and fight.open >= 1.0
++	var heka: bool = crocodiles._holding_heka() and fight.open >= 1.0
+ 	actors[e.spear + "_pole"].modulate = RED_CROC if heka else Color.WHITE
+ 	_picture(actors[e.spear + "_pole"]).visible = heka
+ 
+@@ -1211,38 +812,6 @@
+ 
+ 
+ ## Only post-choice encounters read these modes (those with `hard_ready` in danger_encounters.gd).
+-func hard() -> bool:
+-	return not fight.is_empty() and fight.e.id in AFTER_CHOICE and not "sail38" in items and fight.e.get("hard_ready", false)
+-
+-
+-func endless() -> bool:
+-	return not fight.is_empty() and fight.e.id in AFTER_CHOICE and "ankh38" in items
+-
+-
+-## A damaging mistake flashes the ankh instead of consuming health or ending the fight.
+-func _life_mistake() -> bool:
+-	if not endless():
+-		return false
+-	fight.ankh_flash = LIFE_FLASH
+-	return true
+-
+-
+-## A fight that would have been won goes on (the ankh): it flashes red.
+-func _life_cycle() -> void:
+-	fight.ankh_flash = LIFE_FLASH
+-
+-
+-## Count successful actions, independently of each encounter's repeating progress cycle.
+-func _life_hit() -> void:
+-	if not endless():
+-		return
+-	var id: String = fight.e.id
+-	_life_scores[id] = int(_life_scores.get(id, 0)) + 1
+-	_journal_fight(id)
+-
+-
+-## The journal entry of creature `id` once it has been fought: its description, how often and how long
+-## it has been fought, and (the ankh) its score. Updated quietly.
+ func _journal_fight(id: String) -> void:
+ 	if not _descriptions.entries[id].get("journal", true):
+ 		return
+@@ -1252,8 +821,6 @@
+ 	var note := _descriptions.text(id, "settled" if solved.has(id) else "default")
+ 	if _stats.has(id):
+ 		note += "\n\n" + _stats_text(_stats[id])
+-	if _life_scores.has(id):
+-		note += "\n\n" + _hints.text("dangers." + id, "feedback", "life_score") % int(_life_scores[id])
+ 	var pic: String = e.foes[0] if e.kind == "crocs" else e.foe
+ 	hud.add_journal_entry(_descriptions.entries[id].name, note, load(ASSET % pic), journal.size(),
+ 		_descriptions.journal_total(), _descriptions.key(id))
+@@ -1291,19 +858,6 @@
+ 		_journal_fight(fight.e.id)
+ 
+ 
+-func _tick_life(dt: float) -> void:
+-	if not endless() or not _fight_active():
+-		return
+-	var id: String = fight.e.id
+-	_life_times[id] = float(_life_times.get(id, 0.0)) + dt
+-	_life_total += dt
+-	if not _life_clue_given and (_life_times[id] >= LIFE_GAME_CLUE or _life_total >= LIFE_TOTAL_CLUE):
+-		_life_clue_given = true
+-		say("Scribe", _hints.message("dangers.life_clue"))
+-		_life_clue_hold = 6.0
+-
+-
+-## The heka signs in the caption of encounter `id` (cut by tools/cut_dangers300.py, one set per vignette).
+ func _heka_words(id: String) -> Array:
+ 	var h = level.get("heka", {})
+ 	return h.get(id, []) if h is Dictionary else h
+@@ -1321,18 +875,6 @@
+ 	return _heka_signs
+ 
+ 
+-## The sign (in the caption of a fight not yet won, as spell 37's snakes) showing at `p`, or "".
+-func _clue_sign_at(p: Vector2) -> String:
+-	for e in ENCOUNTERS:
+-		if solved.has(e.id):
+-			continue
+-		for nm in e.get("signs", []):
+-			if actors[nm].visible and actor_rect(nm).grow(6 * unit).has_point(p):
+-				return nm
+-	return ""
+-
+-
+-## The spear-bearer crumbles away (scripts/dangers/dissolve.gdshader).
+ func _disintegrate(e: Dictionary) -> void:
+ 	var mat := ShaderMaterial.new()
+ 	mat.shader = DISSOLVE
+@@ -1375,12 +917,6 @@
+ 	for c in fight.get("crocs", []):
+ 		if c.s != "thief":
+ 			c.s = "gone"
+-	if fight.kind == "roach":       # the drawn one runs back to where it is drawn as the vignette closes
+-		fight.roach.darting = false
+-		fight.roach.c0 = fight.roach.c
+-		for a in fight.copies:
+-			if is_instance_valid(a):
+-				a.set_meta("alpha", a.modulate.a)
+ 	fight.pos = fight.stand
+ 	fight.facing = -1
+ 	var t := _fight_tween()
+@@ -1395,16 +931,6 @@
+ 
+ func _crocs_cleanup() -> void:
+ 	_kill_fight_tweens()
+-	if fight.kind == "lunge":
+-		lunging_snake._lunge_undress()
+-	if fight.kind == "creep":
+-		creeping_snake._creep_undress()
+-	if fight.kind == "apep":
+-		apep._apep_undress()
+-	if fight.kind == "sheaf":
+-		sheaf._sheaf_undress()
+-	if fight.kind == "donkey":
+-		donkey._donkey_undress()
+ 	for nm in _all_heka() + fight.get("signs", []):
+ 		_restore(nm)
+ 	for a in fight.get("copies", []):
+@@ -1508,7 +1034,6 @@
+ 	return Vector2(x0, x1) if x1 > x0 else Vector2(cell.position.x, cell.end.x)
+ 
+ 
+-const ROACH_FREEZE := 0.5      ## the pause after a catch, to show it
+ 
+ 
+ ## How far along its line the spear point is now (plate px; 0 as drawn): held out while pinned;
+@@ -1525,14 +1050,8 @@
+ ## Where the spear point rests in a fight (plate px along its line): drawn back; against Apep, a step
+ ## further in with every wave pressed down, as drawn once he lies still.
+ func _spear_rest() -> float:
+-	if fight.get("kind", "") == "apep":
+-		return -CROC_PREP * (1.0 - float(fight.hits) / float(fight.e.need))
+ 	return -CROC_PREP
+ 
+-
+-## The spear point `t` s into a thrust. In a fight it rests drawn back (up its line, or `rest`); a
+-## thrust only runs it out, to CROC_THRUST past where it is drawn at THRUST_TIME[0], then draws it
+-## back again.
+ static func _spear_at(t: float, rest := -CROC_PREP) -> float:
+ 	if t < 0.0:
+ 		return rest
+@@ -1581,13 +1100,6 @@
+ 
+ 
+ ## The time into a thrust (s) from which, and until which, its point presses a wave down.
+-func _thrust_down_span() -> Vector2:
+-	var rest := _spear_rest()
+-	var deep := CROC_THRUST * THRUST_DOWN
+-	return Vector2(THRUST_TIME[0] * (deep - rest) / (CROC_THRUST - rest),
+-		THRUST_TIME[0] + THRUST_TIME[1] * (CROC_THRUST - deep) / (CROC_THRUST - rest))
+-
+-
+ func _bite(key: String) -> void:
+ 	bites += 1
+ 	_feedback_once(key, _feedback_text(key))
+@@ -1602,14 +1114,6 @@
+ 
+ 
+ ## A thrust where he stands as drawn (the fights where the creature is clicked): his spear only.
+-func _thrust() -> void:
+-	var nm: String = fight.e.spear
+-	var total: float = THRUST_TIME[0] + THRUST_TIME[1]
+-	_fight_tween().tween_method(func(t: float): _bearer_pose(nm, _spear_at(t)), 0.0, total, total)
+-
+-
+-# ---------------------------------------------------------------- helpers
+-
+ func actor_rect(n: String) -> Rect2:
+ 	var a: Node2D = actors[n]
+ 	var size: Vector2 = a.get_meta("size") * a.scale.abs()
+@@ -1617,28 +1121,6 @@
+ 
+ 
+ ## Struck: it flushes red and fades back, as the bearer does when bitten.
+-func _hurt(n: CanvasItem) -> void:
+-	var previous: Tween = n.get_meta("hurt_tween") if n.has_meta("hurt_tween") else null
+-	if previous and previous.is_valid():
+-		previous.kill()
+-	var tween := n.create_tween()
+-	n.set_meta("hurt_tween", tween)
+-	tween.tween_method(func(v: float):
+-		if is_instance_valid(n) and not n.is_queued_for_deletion():
+-			n.modulate = Color(Color.WHITE.lerp(HURT, v), n.modulate.a), 1.0, 0.0, 0.8)
+-
+-
+-func _flash(n: CanvasItem) -> void:
+-	UI.flash(n)
+-
+-
+-func _shake(n: Node2D) -> void:
+-	var t := create_tween()
+-	for i in 4:
+-		t.tween_property(n, "rotation", 0.04 if i % 2 == 0 else -0.04, 0.05)
+-	t.tween_property(n, "rotation", 0.0, 0.05)
+-
+-
+ func _update_camera(delta: float) -> void:
+ 	var vp := get_viewport_rect().size
+ 	var top: float = hud.top_height()
+@@ -1651,6 +1133,7 @@
+ 		var s := span(fight.e)
+ 		focus = (s.x + s.y) / 2.0
+ 	focus = SCROLL_CAMERA.clamp_horizontal(focus, vis_w, level.width)
++	focus = maxf(focus, span(ENCOUNTERS[-1]).x + vis_w / 2.0)
+ 	var k := SCROLL_CAMERA.smoothing(delta, 0.002)
+ 	var y := SCROLL_CAMERA.vertical_center(_view_height(), top, bottom, z, VIEW_TOP)
+ 	if not fight.is_empty() and fight.kind in ARENA_FIGHTS:
+@@ -1676,7 +1159,7 @@
+ func _draw_overlay() -> void:
+ 	if fight.is_empty():
+ 		return
+-	if fight.kind in ["crocs", "lunge", "creep", "twin", "apep", "sheaf", "donkey"]:
++	if fight.kind == "crocs":
+ 		_draw_flesh_health()
+ 
+ 
+@@ -1696,10 +1179,7 @@
+ 			for e in ENCOUNTERS:
+ 				if n > 0 and not e.kind in ["note", "end"]:
+ 					solved[e.id] = true
+-					if e.kind == "take":
+-						items.append(e.items[0])
+-					else:
+-						actors[e.spear].visible = true
++					actors[e.spear].visible = true
+ 					n -= 1
+ 			_refresh()
+ 		elif a.begins_with("--at="):
+@@ -1708,8 +1188,6 @@
+ 	for a in args:   # dev: another random seed (the roach's and crocodiles' paths)
+ 		if a.begins_with("--seed="):
+ 			rng.seed = a.trim_prefix("--seed=").to_int()
+-	if OS.has_environment("ROACH_NEED"):   # dev: try the roach fight with another number of catches
+-		_roach_need = OS.get_environment("ROACH_NEED").to_int()
+ 	if "--croc-bot" in args:   # dev: let the stand-in player fight the next crocodile vignette
+ 		hud.dismiss_intro()
+ 		Engine.time_scale = 2.0
+@@ -1760,17 +1238,9 @@
+ 
+ 
+ func _draw_flesh_health() -> void:
+-	if endless():
+-		var image: Texture2D = _picture(actors.ankh38).texture
+-		var size := image.get_size()
+-		var at := _arena_rect().position + Vector2(28.0, 26.0)
+-		var flash := float(fight.get("ankh_flash", 0.0))
+-		var tint := Color.WHITE.lerp(RED_CROC, flash / LIFE_FLASH)
+-		overlay.draw_texture_rect(image, Rect2(at, size), false, Color(tint, fight.open))
+-		return
+-	# his health (against the Eater of the Ass, the donkey's): flesh signs in red, top left inside
++	# His health: flesh signs in red, top left inside
+ 	# the opened vignette; a lost one stays faint
+-	var health: int = int(fight.get("donkey_health", fight.get("health", 0)))
++	var health: int = int(fight.get("health", 0))
+ 	var ar := _arena_rect()
+ 	var fs := _flesh_tex.get_size() if _flesh_tex else Vector2(28.0, 28.0)
+ 	for i in CROC_HEALTH:
+@@ -1785,87 +1255,28 @@
+ 
+ func _autotest() -> void:
+ 	hud.dismiss_intro()
+-	var fails: Array[String] = []   # lambdas capture locals by value, so collect into an array
+-	var expect := func(cond: bool, what: String):
+-		print(("PASS " if cond else "FAIL ") + what)
+-		if not cond:
+-			fails.append(what)
++	var failures: Array[String] = []
++	var expect := func(ok: bool, description: String):
++		print(("PASS " if ok else "FAIL ") + description)
++		if not ok: failures.append(description)
+ 	_instant = true
+-
+-	avatar.position.x = span(ENCOUNTERS[0]).y - 100.0 * unit
++	for e in ENCOUNTERS:
++		reset()
++		avatar.position.x = span(e).y - 100.0 * unit
++		_update_camera(1.0)
++		_check_position()
++		expect.call(fight.is_empty(), e.id + " walking into the original vignette does not start combat")
++		expect.call(_fight_at(actor_rect(e.foes[0]).get_center()).get("id") == e.id, e.id + " original creature hit region selects its encounter")
++		start_fight(e)
++		leave_fight()
++		expect.call(fight.is_empty() and not solved.has(e.id) and avatar.visible, e.id + " leaving restores the scroll without solving the encounter")
++		start_fight(e)
++		crocodiles.autotest(e, expect)
++	reset()
++	for e in ENCOUNTERS: _solve(e)
++	avatar.position.x = rects[ENCOUNTERS[-1].spear].get_center().x
+ 	_check_position()
+-	expect.call(fight.is_empty(), "walking into a vignette does not start its fight")
+-	# on the scroll the heka signs flash red, and clicking one explains them
+-	if not _all_heka().is_empty():
+-		var hw: String = _all_heka()[0]
+-		_time = PI / 10.0           # the top of the pulse
+-		_process(0.0)
+-		expect.call(actors[hw].modulate.r > 1.5, "the heka signs flash red on the scroll")
+-		expect.call(_heka_at(actor_rect(hw).get_center()) == hw, "a heka sign on the scroll can be clicked")
+-	# and so do spell 37's snake signs, until its snakes are struck
+-	expect.call(actors.glyph37_left.modulate.r > 1.5 and _clue_sign_at(actor_rect("glyph37_left").get_center()) == "glyph37_left",
+-		"spell 37's snake signs flash red on the scroll and can be clicked")
+-	expect.call(_caption_at(actor_rect("glyph37_right").get_center()).is_empty(), "... apart from their caption")
+-	var e38: Dictionary = ENCOUNTERS.filter(func(x): return x.id == "e38")[0]
+-	expect.call(avatar.min_x < span(ENCOUNTERS[0]).x and avatar.min_x > span(e38).y, "the way is open past unsolved vignettes, but not into spell 38")
+-	for e in ENCOUNTERS:     # all but spell 37 done: 38 is still shut
+-		if e.id == "e37":
+-			break
+-		solved[e.id] = true
+-	_refresh()
+-	expect.call(avatar.min_x > span(e38).y, "the way into spell 38 shut while spell 37 is undone")
+-	solved["e37"] = true
+-	_refresh()
+-	_process(0.0)
+-	expect.call(actors.glyph37_left.modulate == Color.WHITE and _clue_sign_at(actor_rect("glyph37_left").get_center()) == "",
+-		"spell 37's snake signs stop flashing once its snakes are struck")
+-	expect.call(avatar.min_x < span(e38).x, "the choice is optional once the earlier dangers are overcome")
+-	expect.call(_item_at(actor_rect("sail38").get_center()) == "sail38" and _item_at(actor_rect("ankh38").get_center()) == "ankh38",
+-		"the sail and the ankh can each be taken, before the way on opens")
+-	_time = PI / 10.0
+-	_process(0.0)
+-	expect.call(actors.glyph38_breath.modulate.r > 1.5, "spell 38's breath sign flashes red until a sign is taken")
+-	take(e38, "ankh38")
+-	_process(0.0)
+-	expect.call(actors.glyph38_breath.modulate == Color.WHITE, "... and stops once one is taken")
+-	expect.call(solved.has("e38") and items == ["ankh38"] and actors.sail38.visible and _item_at(actor_rect("sail38").get_center()) == "sail38",
+-		"only one sign is carried: the other stays available in the giver's hand")
+-	reset()
+-
+-	for e in ENCOUNTERS:
+-		if e.kind == "take":
+-			take(e)
+-			expect.call(solved.has(e.id), e.id + " item taken")
+-			expect.call(avatar.min_x < span(e).x, e.id + ": the way on opens once it and the dangers before it are done")
+-			continue
+-		if not e.kind in FIGHTS:
+-			continue
+-		avatar.position.x = span(e).y - 100.0 * unit
+-		_check_position()
+-		start_fight(e)
+-		expect.call(fight.get("e", {}).get("id", "") == e.id, e.id + " fight starts on clicking the creature")
+-		leave_fight()
+-		expect.call(fight.is_empty() and not solved.has(e.id) and avatar.visible, e.id + " Esc steps out of the fight, not won")
+-		start_fight(e)
+-		_update_fight(0.1)
+-		expect.call(fight.t > 0.0, e.id + " the fight runs from the click, no Space needed to begin")
+-		match e.kind:
+-			"crocs": crocodiles.autotest(e, expect)
+-			"twin": two_snakes.autotest(e, expect)
+-			"creep": creeping_snake.autotest(e, expect)
+-			"roach": beetles.autotest(e, expect)
+-			"lunge": lunging_snake.autotest(e, expect)
+-			"apep": apep.autotest(e, expect)
+-			"donkey": donkey.autotest(e, expect)
+-			"sheaf": sheaf.autotest(e, expect)
+-		end_fight()  # the real game waits half a second first
+-		expect.call(solved.has(e.id), e.id + " overcome")
+-		var flashed: Array = _box_actors(e).map(func(n): return _picture(actors[n]).get_children().any(func(c): return c.material is ShaderMaterial and (c.material as ShaderMaterial).get_shader_parameter("level") == UI.Glow.SUCCESS))
+-		expect.call(not flashed.is_empty() and flashed.all(func(f): return f), e.id + " won: its figures flash pale green")
+-
+-	expect.call(current.is_empty(), "every danger before spell 42 is overcome")
+-	avatar.position.x = span(ENCOUNTERS[-1]).y - 50.0 * unit
+-	_check_position()
+-	expect.call(finished, "level finished at spell 42")
+-	print("AUTOTEST ", "OK" if fails.is_empty() else "FAILED")
+-	get_tree().quit(0 if fails.is_empty() else 1)
++	expect.call(finished and hud.is_blocking(), "both crocodile encounters lead to the excerpt ending")
++	print("AUTOTEST ", "OK" if failures.is_empty() else "FAILED")
++	get_tree().quit(0 if failures.is_empty() else 1)
++
+--- original/godot/scripts/dangers/crocodiles.gd
++++ godot/scripts/dangers/crocodiles.gd
+@@ -67,7 +67,11 @@
+ 	# the four drawn crocodiles wait spread out on the left, at different heights
+ 	game.fight.crocs = []
+ 	var lanes: Array = game.fight.lanes.duplicate()
+-	lanes.shuffle()
++	for i in range(lanes.size() - 1, 0, -1):
++		var j = game.rng.randi() % (i + 1)
++		var previous = lanes[i]
++		lanes[i] = lanes[j]
++		lanes[j] = previous
+ 	for i in e.foes.size():
+ 		var a: Node2D = game.actors[e.foes[i]]
+ 		var start = Vector2(full.position.x + (0.12 + 0.13 * i) * (game.fight.stand.x - full.position.x), 0.0)
+@@ -158,7 +162,7 @@
+ 
+ 
+ func _holding_heka() -> bool:
+-	return Input.is_key_pressed(KEY_SHIFT) or game.fight.get("force_heka", false)
++	return bool(game.get_meta("midterm_controls").heka) if game.has_meta("midterm_controls") else Input.is_key_pressed(KEY_SHIFT) or game.fight.get("force_heka", false)
+ 
+ 
+ func _crocs(dt: float) -> void:
+@@ -228,6 +232,9 @@
+ 
+ ## The arrow keys (or WASD); ← → only where he can turn.
+ func _keys() -> Vector2:
++	if game.has_meta("midterm_controls"):
++		var action: Dictionary = game.get_meta("midterm_controls")
++		return Vector2(action.face, action.move)
+ 	var mv := Vector2(Input.get_axis("ui_left", "ui_right"), Input.get_axis("ui_up", "ui_down"))
+ 	mv.x += float(Input.is_key_pressed(KEY_D)) - float(Input.is_key_pressed(KEY_A))
+ 	if not game.fight.both:
+--- original/godot/scripts/dangers/danger_encounters.gd
++++ godot/scripts/dangers/danger_encounters.gd
+@@ -1,16 +1,5 @@
+-## Encounter tuning and source-art geometry, in scroll order. Distances use 200-dpi plate pixels.
+ extends RefCounted
+-
+-## Encounters in play order. `boxes` are vignette frames from level.json; `spear` is the
+-## vignette's spear-bearer, who stands in for the player during the fight. `caption` is the frame of
+-## the spell's caption in the top register (strip px, x from and to), with translations in registry.json,
+-## from C. H. S. Davis, The Egyptian Book of the Dead (1894), which translates this papyrus.
+-## `tag`: whose name stands over what is said during the fight (the danger's, not the scribe's).
+ const ENCOUNTERS := [
+-	# crocodiles: `count` is how many must be turned back in all (the four drawn ones, then copies
+-	# of them); `speed` in plate px per second; `at_once` how many crawl at the same time; `red` the
+-	# chance that a crocodile comes red (only a thrust made while holding Shift turns those back; heka on
+-	# an ordinary one loses the fight); `both_sides` they come from left and right, and he turns
+ 	{"id": "e31", "tag": "Crocodiles", "boxes": ["e31"], "kind": "crocs", "spear": "spear31", "task": 0, "tutorial": true,
+ 		"foes": ["c31a", "c31b", "c31c", "c31d"], "first_speed": 120.0, "break": 6.0,
+ 		# `waves` instead of one count: the lesson, a break while the heka word starts to flash, then
+@@ -27,98 +16,4 @@
+ 		# one before (210 -> about 420), and none reaches him within `min_gap` s of the one before
+ 		"waves": [{"count": 14, "speed": 180.0, "ramp": 0.01, "interval": 0.8, "at_once": 2, "red": 0.35, "min_gap": 0.9}],
+ 		"caption": [3944, 5168]},
+-	# the lunging snake: it waits `rest` back from where it is drawn (out of reach) for `idle` s,
+-	# waves its tail (`wave` s, `tail` rad, `wave_hz`), squashes down (`crouch` s) and springs
+-	# (`snap` s) to his front leg. `head_tip`, `head_rect`, `tail_base`: in its picture's pixels.
+-	{"id": "e33", "tag": "Snake", "boxes": ["e33"], "kind": "lunge", "spear": "spear33", "task": 1,
+-		# `marks`: the red mark's radius (plate px) for each strike in turn, smaller each time
+-		"foe": "snake33", "need": 3, "marks": [14.0, 11.0, 8.0], "rest": 33.0, "idle": [1.2, 2.4], "wave": 1.4, "tail": 0.26, "wave_hz": 2.2,
+-		"crouch": 0.35, "snap": 0.16, "head_tip": [122, 218], "head_rect": [68, 205, 58, 25], "tail_base": [28, 172],
+-		"caption": [3664, 3923]},
+-	# the snakes on the ground, fought like the crocodiles of spell 32 (both sides, no red ones). They
+-	# slither in at `slither` plate px/s, a new one every `enter_gap` range of seconds, and rest `rest` plate px from
+-	# him (never more than `at_once` resting). `first` s after the vignette opens, and `next` s after
+-	# each attack ends, one shakes its tail (`shake` s, `tail` rad, `wave_hz`) and darts at him along
+-	# its row at `speed` plate px/s. `need` speared in all. (Its tail and head as it creeps, and the
+-	# pinning: creeping_snake.gd's TURN and STRIKE sheets.)
+-	{"id": "e35", "tag": "Snakes", "boxes": ["e35"], "kind": "creep", "spear": "spear35", "task": 1,
+-		"foe": "snake35", "need": 10, "at_once": 4, "slither": 150.0, "enter_gap": [1.5, 3.0], "rest": [170.0, 250.0],
+-		"first": 1.5, "next": [0.0, 1.5], "shake": 0.8, "tail": 0.15, "wave_hz": 4.0, "speed": 240.0,
+-		"caption": [3298, 3643]},
+-	# the roach: `count` beetles (the drawn one and copies), each to be pinned once by the spear
+-	# point. Each darts at `dart` (plate px/s), rests `rest` s, and every `bait_every` darts stops
+-	# by the spear point on his left or right for `bait_rest` s (a `fake` share of those just out
+-	# of reach), within `range` either side of him. Each may stop at the spear point and get away
+-	# `passes` times (it reddens each time); one more and they multiply over the screen: lost.
+-	{"id": "e36", "tag": "Beetles", "boxes": ["e36"], "kind": "roach", "spear": "spear36", "task": 1,
+-		"foe": "beetle36", "count": 5, "passes": 3, "dart": 1100.0, "rest": [0.15, 0.5], "bait_every": 2,
+-		"bait_rest": [0.35, 0.75], "fake": 0.3, "range": 480.0,
+-		"caption": [3054, 3277]},
+-	# the two Merti snakes: the drawn one on his left and a mirrored copy on his right, both facing him,
+-	# coiled `rest` plate px out from where they are drawn. Every `idle` s one of the two snake signs
+-	# in the caption (`signs`, cut as sprites; left sign, left snake) flashes red for `warn` s; that
+-	# snake squashes down (`crouch` s) and springs (`snap` s) to `bite` plate px past where it is
+-	# drawn, at his foot. A thrust facing it strikes it as it passes where it is drawn (within `reach`
+-	# plate px). Each must be struck `need` times. `warn`, `crouch`, `snap` and `reach` go from the
+-	# first value to the second over the strikes.
+-	{"id": "e37", "tag": "Snakes", "boxes": ["e37"], "kind": "twin", "spear": "spear37", "task": 1,
+-		"foe": "snake37", "need": 2, "rest": 90.0, "bite": 30.0, "idle": [0.84, 1.68], "warn": [0.945, 0.4725],
+-		"crouch": [0.3675, 0.231], "snap": [0.252, 0.1785], "reach": [12.0, 7.0],
+-		"signs": ["glyph37_left", "glyph37_right"],
+-		"caption": [2803, 3033]},
+-	# spell 38: he holds out two signs, the sail (breath) and the ankh (life); only one can be taken
+-	# (`items`, the right one first). The sail eases later fights; the ankh makes them endless.
+-	# Taking neither is allowed after the earlier dangers are overcome.
+-	{"id": "e38", "boxes": ["e38"], "kind": "take", "items": ["sail38", "ankh38"], "task": 2, "gate": true,
+-		"caption": [2316, 2782]},
+-	# Apep: his tail lashes (`lash` s; a large wave's longer) and a wave runs the length of him to the
+-	# fold where the spear point rests, at `speed` plate px/s (first to second value as the barb goes
+-	# in); a new one every `gap` s, at most `most` on his body at once. A medium or large wave never
+-	# reaches the point within `min_gap` s of the one before, or `switch_gap` s if the two want
+-	# different answers. Each medium wave pressed down as its crest reaches the point (`reach` plate px
+-	# either side, first to second value as the barb goes in) drives the barb a step in; `need` steps
+-	# and he lies as drawn. After the first `teach` waves (medium), a `small` share are feints and a
+-	# `large` share must be hopped back from (`dodge` plate px). In hard mode (`hard` overrides) a
+-	# medium wave let past from back there makes him advance `advance` plate px, and one pressed down
+-	# pushes him back half that. Crest `height` and `width` (half, of a medium wave) in plate px.
+-	# The close-up leaves room behind him to hop back and for Apep to advance `room` times. `fold`: in
+-	# his picture's pixels (his head's strike: tools/apep_strike.py).
+-	{"id": "e39", "tag": "Apep", "boxes": ["e39"], "kind": "apep", "hard_ready": true, "spear": "spear39", "task": 3,
+-		"foe": "apep", "need": 6, "speed": [220.0, 380.0], "gap": [2.2, 0.9], "most": 2, "min_gap": 0.8, "switch_gap": 1.0,
+-		"lash": 0.35, "reach": [10.0, 5.0], "height": 12.0, "width": 30.0, "teach": 2, "small": 0.25, "large": 0.38,
+-		"dodge": 40.0, "advance": 16.0, "room": 4,
+-		"hard": {"speed": [260.0, 440.0], "gap": [1.6, 0.7], "most": 3, "min_gap": 0.6, "switch_gap": 0.65},
+-		"fold": 492,
+-		"caption": [1458, 2295]},
+-	# the Eater of the Ass (spell 40): the vignette opens out close up; the snake crawls along the
+-	# donkey's back, from the rump as drawn to the withers (`back`, strip px), at `crawl` plate px/s
+-	# (`hard_speed` times that in hard mode), and the bearer, behind the donkey, steps along with it
+-	# on the same slant ([←] [→], `walk` plate px/s). Every `lift_every` s or so it stops, its coils
+-	# tighten for `warn` s, and it lifts its front (`lift` plate px up the spear's line) for `up` s:
+-	# a thrust then, his point within `reach` plate px of it along the back, strikes it. Not struck,
+-	# it bites the donkey one time in three (in hard mode every time). A `half` share of lifts come
+-	# only partway up. A thrust that misses goes into the donkey; a bite or the spear costs the donkey
+-	# a flesh sign, and the third and it is eaten. `need` strikes and it falls; each tuple goes from
+-	# the first strike to the last. `lift_from`, `lift_to`: where the lift begins and is whole, in
+-	# its picture's px.
+-	{"id": "e40", "tag": "Eater of the Ass", "boxes": ["e40"], "kind": "donkey", "hard_ready": true, "spear": "spear40", "task": 4,
+-		"foe": "snake40", "donkey": "donkey40", "tail": "tail40", "need": 3,
+-		"back": [-110.0, -34.0], "crawl": [24.0, 36.0], "hard_speed": 1.15, "walk": 70.0, "reach": 10.0,
+-		"lift_every": [1.6, 1.1], "warn": [0.45, 0.35], "up": [0.6, 0.4], "half": [0.0, 0.3],
+-		"lift": 9.0, "lift_from": 70.0, "lift_to": 96.0, "tail_root": [1230, 529],
+-		"caption": [581, 1437]},
+-	# the snake in the sheaf (spell 41): the vignette opens out close up; the sheaf stands bound as
+-	# drawn, and the snake is inside, on top of one of its four bands: that band shivers and the
+-	# stalks stir above it; on top of the top band it is out, as drawn. [↑] [↓] lean the bearer to a
+-	# band and Space strikes there: the wrong band and he is bitten. It stays on a band `window` s,
+-	# then moves on (in hard mode, see hard(), it bites first), unseen `gap` s before the next band,
+-	# at random; `need` strikes, the last always at the top band, and it is pinned there. `window`
+-	# goes from the first strike to the last. `top`: the sheaf's top, in its picture's px. Three
+-	# bites (CROC_HEALTH) and he crumbles. SHEAF_CURVE=1 with --autotest prints the hard-mode curve.
+-	{"id": "e41", "tag": "Snake", "boxes": ["e41"], "kind": "sheaf", "hard_ready": true, "spear": "spear41", "task": 5,
+-		"foe": "snake41", "bundle": "bundle41", "need": 5,
+-		"window": [1.2, 1.2], "gap": [0.4, 0.9], "top": 63.0,
+-		"caption": [50, 560]},
+-	{"id": "e42", "boxes": ["e42"], "kind": "end"},
+ ]
+-
+--- original/godot/scripts/puzzles.gd
++++ godot/scripts/puzzles.gd
+@@ -10,7 +10,7 @@
+ 
+ static func _load_catalog() -> Dictionary:
+ 	var catalog := {"messages": JSON.parse_string(FileAccess.get_file_as_string("res://assets/messages.json")), "puzzles": {}}
+-	for level in ["procession", "dangers", "cosmos", "survival", "gates"]:
++	for level in ["dangers"]:
+ 		var content: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://assets/%s/puzzles.json" % level))
+ 		catalog.messages.merge(content.messages)
+ 		catalog.puzzles.merge(content.puzzles)

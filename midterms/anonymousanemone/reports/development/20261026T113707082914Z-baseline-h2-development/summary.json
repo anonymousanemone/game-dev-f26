@@ -1,0 +1,80 @@
+[
+  {
+    "case": "spell31",
+    "seed": 30,
+    "policy": "baseline",
+    "model": null,
+    "history": 2,
+    "calls": 0,
+    "failed_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "estimated_cost_usd": null,
+    "price_date": null,
+    "price_source": null,
+    "input_price_per_million": null,
+    "output_price_per_million": null,
+    "elapsed_seconds": 0.710820500011323,
+    "mean_latency_seconds": 3.070079503640772e-06,
+    "outcome": {
+      "invalid_actions": 0,
+      "reason": "all_crocodiles_defeated",
+      "score": 9,
+      "status": "won",
+      "steps": 249,
+      "terminal": true
+    }
+  },
+  {
+    "case": "spell32",
+    "seed": 30,
+    "policy": "baseline",
+    "model": null,
+    "history": 2,
+    "calls": 0,
+    "failed_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "estimated_cost_usd": null,
+    "price_date": null,
+    "price_source": null,
+    "input_price_per_million": null,
+    "output_price_per_million": null,
+    "elapsed_seconds": 0.5005867920117453,
+    "mean_latency_seconds": 3.957048647862393e-06,
+    "outcome": {
+      "invalid_actions": 0,
+      "reason": "three_bites",
+      "score": 3,
+      "status": "lost",
+      "steps": 64,
+      "terminal": true
+    }
+  },
+  {
+    "case": "spell32_low",
+    "seed": 30,
+    "policy": "baseline",
+    "model": null,
+    "history": 2,
+    "calls": 0,
+    "failed_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "estimated_cost_usd": null,
+    "price_date": null,
+    "price_source": null,
+    "input_price_per_million": null,
+    "output_price_per_million": null,
+    "elapsed_seconds": 0.016148040973348543,
+    "mean_latency_seconds": 3.995458796821736e-06,
+    "outcome": {
+      "invalid_actions": 0,
+      "reason": "three_bites",
+      "score": 1,
+      "status": "lost",
+      "steps": 37,
+      "terminal": true
+    }
+  }
+]

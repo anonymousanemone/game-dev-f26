@@ -1,0 +1,12 @@
+.DS_Store
+.godot/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+playtrace/**/*.build.zip
+playtrace/*.build.zip
+.venv/
+build/
+!/reports/

@@ -109,21 +109,21 @@
     },
     {
       "destination": "godot/assets/dangers/level.json",
-      "destination_sha256": "dfa6fdc0b9b471e5ee20a9303fc22fae5d898a676bd868a4ba5900b843ca0d07",
+      "destination_sha256": "dcb3a40e4f82043720b710c1658004b7f7f3539407d9e8a9c97877253657af5d",
       "source": "godot/assets/dangers/level.json",
       "sha256": "47313bab15bac716b02ea68fa4ace728277fd606dab61da75f509a71c0947c00",
       "unchanged": false
     },
     {
       "destination": "godot/assets/dangers/puzzles.json",
-      "destination_sha256": "e39fb47d2c2a5ffcf20f98c9e947e5e5d07e6f008fb163e71598981ab91d0cc9",
+      "destination_sha256": "b77c2c4286d5ac21bcd99f4ec093567ba25838be4ba876fe3a70b505eca9e763",
       "source": "godot/assets/dangers/puzzles.json",
       "sha256": "9bb89455add7121d706607811abb7239e6289e7fb99f58fa387599318e7b2643",
       "unchanged": false
     },
     {
       "destination": "godot/assets/dangers/registry.json",
-      "destination_sha256": "a627f1980125084b7aaeaf9250781debb8860d354b6827babf582585073eae09",
+      "destination_sha256": "014210ad47fdd2e69953313512b3b9a61ea96b3d4a8c3f34f0c4207d64d02620",
       "source": "godot/assets/dangers/registry.json",
       "sha256": "8f7c55411809c7651acd21f5403789520ef4b2ff2a73cf2ea6a769b4c6d9983c",
       "unchanged": false
@@ -172,7 +172,7 @@
     },
     {
       "destination": "godot/project.godot",
-      "destination_sha256": "fdf05b4932debf7158edaedd08a5ff81922708f3eab221f02bda2681b9b9535f",
+      "destination_sha256": "0e07e702e5dcb1e721b13cfe89a676de6009b73175f35d8a1a9b558f1b13f690",
       "source": "godot/project.godot",
       "sha256": "4e5e81ddfd30cd62407dc985288dfe49f6fb7337f0b4f39ec22f618858dc9166",
       "unchanged": false
@@ -186,7 +186,7 @@
     },
     {
       "destination": "godot/scripts/avatar.gd",
-      "destination_sha256": "8888dbe563743ec58d8d8d36fa1aae6fa7cecd576469b3487b0f02451e864761",
+      "destination_sha256": "ff8891cb0a9209126d080d77aa513a4934d3f0a4f969a7d822eba3bc7c26c122",
       "source": "godot/scripts/avatar.gd",
       "sha256": "ebf141190eb92b0b103fb5275dae50a3d700aa57ba593c5f25c937fb29d62c6e",
       "unchanged": false
@@ -214,7 +214,7 @@
     },
     {
       "destination": "godot/scripts/dangers/dangers.gd",
-      "destination_sha256": "effa7d5b22accf3099b3de746a83ccf532b227fb7e22e4bb42ac63beeb0c0d70",
+      "destination_sha256": "e0865a9910b40242240410a0fc6b5eba5c32aa593a3de6fce4df3be3435bb0d0",
       "source": "godot/scripts/dangers/dangers.gd",
       "sha256": "cbfe99de0d670b6999e10c314110da2823b07906d3d1e1a36118199baeac6e23",
       "unchanged": false
@@ -228,14 +228,14 @@
     },
     {
       "destination": "godot/scripts/descriptions.gd",
-      "destination_sha256": "ae12458f3894abff0929d273819ecc7c850959f497b10c0cf9fd477018139aa1",
+      "destination_sha256": "16755122da56de7a9746ab5df4eb0a76c4d8bfb2ffde1642869db1dceaf9d83e",
       "source": "godot/scripts/descriptions.gd",
       "sha256": "ae12458f3894abff0929d273819ecc7c850959f497b10c0cf9fd477018139aa1",
       "unchanged": true
     },
     {
       "destination": "godot/scripts/episode.gd",
-      "destination_sha256": "72a1a42667a14c5cda62a4738ed1a1e3d1385d00b906088bca0120c5670ad22b",
+      "destination_sha256": "4e19d0b73f5f1f431e5206540c74deb330d5890c7122578afc7cfe34f10a6c76",
       "added_for_midterm": true
     },
     {
@@ -254,14 +254,14 @@
     },
     {
       "destination": "godot/scripts/glow.gdshader",
-      "destination_sha256": "1a7db4f8c2cfef9907918160563893ef6b5db68e28d06acdc6574e14098996a0",
+      "destination_sha256": "a3f86653565869875f8e081e66f96ab4e4576841aade9b520078724482155000",
       "source": "godot/scripts/glow.gdshader",
       "sha256": "1a7db4f8c2cfef9907918160563893ef6b5db68e28d06acdc6574e14098996a0",
       "unchanged": true
     },
     {
       "destination": "godot/scripts/hud.gd",
-      "destination_sha256": "3f445f702c517434011acfed81743412d865772585a091b00fd5b34b61d555ae",
+      "destination_sha256": "7f8daa8fe9e6c2f98182904c48db08985f120a06ac7ac932929d47370776fcff",
       "source": "godot/scripts/hud.gd",
       "sha256": "e380427470552dbfd4d4836db8caa955261082f4435cf1a77f99e2a307c32d75",
       "unchanged": false
@@ -282,7 +282,7 @@
     },
     {
       "destination": "godot/scripts/puzzles.gd",
-      "destination_sha256": "bd44c2dd0718595c9270b4ac7beebce0d37d48b185a095c4bc3e85ca1106f348",
+      "destination_sha256": "8dacee57e7205b54667dca131c384b93086e2dd4a79eea35b1f38a9d97e9536e",
       "source": "godot/scripts/puzzles.gd",
       "sha256": "a79854a26349aac645b898481e17ab0b4c3d4b8442f9af86f2fef809a8ab0e15",
       "unchanged": false
@@ -294,7 +294,7 @@
     },
     {
       "destination": "godot/scripts/scroll.gd",
-      "destination_sha256": "fa395ddc5b47dd2bfeaf493611e58370c19b04633636d91f7642bcad5ee9245e",
+      "destination_sha256": "6c03681eabded19c853427833171f779cf43819df2d74f3f6507a2e1f1de398f",
       "source": "godot/scripts/scroll.gd",
       "sha256": "db5e0051616d0d4a833d48accc541b52693e78c8e2ca3d6422a6f231bfe7b9e7",
       "unchanged": false
@@ -313,7 +313,7 @@
     },
     {
       "destination": "godot/scripts/ui.gd",
-      "destination_sha256": "eba275e20038422381be68ff44c27d01f6d8339088a6d8eea9c597ebc56d04de",
+      "destination_sha256": "e2d28548ec50b7e107745d946f3deb9c376b2b89226019cbbb96641362052aec",
       "source": "godot/scripts/ui.gd",
       "sha256": "eba275e20038422381be68ff44c27d01f6d8339088a6d8eea9c597ebc56d04de",
       "unchanged": true

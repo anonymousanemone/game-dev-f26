@@ -21,7 +21,8 @@ def write_trace(trace, row):
 def version():
     digest = hashlib.sha256()
     for p in sorted((ROOT / 'godot').rglob('*')):
-        if p.is_file() and '.godot' not in p.parts and p.suffix not in ('.import', '.uid'):
+        # Finder's .DS_Store files are not game content and are absent from a fresh clone.
+        if p.is_file() and '.godot' not in p.parts and p.suffix not in ('.import', '.uid') and p.name != '.DS_Store':
             digest.update(str(p.relative_to(ROOT)).encode())
             digest.update(p.read_bytes())
     return digest.hexdigest()
@@ -48,7 +49,7 @@ def episode(engine, case, seed, policy, args, suite, trace, budget=None):
         usage, raw, response_id, error = {}, None, None, None
         before = time.monotonic()
         if policy == 'baseline':
-            action = baseline.choose(observation, history[-1] if history else None)
+            action = baseline.choose(observation, history)
         else:
             model_history = history[-args.history:] if args.history else []
             reserve = model.cost_reservation(observation, model_history, args.model,
@@ -83,7 +84,7 @@ def episode(engine, case, seed, policy, args, suite, trace, budget=None):
             'source': policy, 'fallback': action is None, 'error': error, 'raw': raw,
             'response_id': response_id, 'usage': usage, 'latency_seconds': elapsed, 'result': result})
         history.append(observation)
-        history = history[-2:]
+        history = history[-10:]  # the model sees at most the last 2; the baseline's reaction delay looks back 0.6 s
         observation = result['observation']
         outcome = result['outcome']
     cost = None

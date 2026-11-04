@@ -5,8 +5,8 @@
       "short_name": "The crocodiles",
       "plural": true,
       "descriptions": {
-        "default": "Crocodiles guard the road.",
-        "settled": "They come to take the magic of the deceased. Turned back with the spear."
+        "default": "The crocodiles menacingly side-eye you.",
+        "settled": "The crocodiles menacingly side-eye you, but you've rendered them impotent to do much else."
       }
     },
     "e32": {
@@ -14,20 +14,20 @@
       "short_name": "The crocodiles",
       "plural": true,
       "descriptions": {
-        "default": "Crocodiles wait on both sides.",
-        "settled": "One for each quarter of the sky. Turned back two at a time."
+        "default": "The crocodiles eye you covetously, eager for a meal.",
+        "settled": "The crocodiles stare into the spear, adequately cowed."
       }
     },
     "caption_e31": {
       "name": "Spell 31",
       "descriptions": {
-        "default": "A chapter about repelling the reptiles that come to take off the man's magic charms in the Netherworld."
+        "default": "A chapter about repelling the crocodiles that come to seize the words of magic of a person in the Netherworld."
       }
     },
     "caption_e32": {
       "name": "Spell 32",
       "descriptions": {
-        "default": "A chapter about repelling the crocodiles coming to deprive the deceased from his magic power in the Netherworld."
+        "default": "A chapter about repelling the crocodiles that come to seize the words of magic of his glorified spirit in the Netherworld."
       }
     }
   }

@@ -78,7 +78,7 @@ func run() -> void:
 	for i in 300: game.crocodiles._crocs(1.0 / 60.0)
 	expect(game.fight.wave_launched == 0, "no crocodile comes in 5 s before [space] (%d)" % game.fight.wave_launched)
 	game._croc_thrust()
-	expect(game.fight.tut == "" and game.fight.thrust < 0.0, "[space] starts the fight without striking")
+	expect(game.fight.tut == "" and game.fight.thrust >= 0.0, "[space] starts the fight and strikes, as in spell 31's lesson")
 	# The ending offers another go or quitting.
 	game.leave_fight()
 	game.finish()

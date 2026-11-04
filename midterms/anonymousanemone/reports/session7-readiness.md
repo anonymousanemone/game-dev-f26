@@ -11,7 +11,7 @@ material and is excluded from packaging; it is not submitted as project source.
 | Live model completes an episode with a trace | **Done November 4, after the October 26 checkpoint date.** On the current game, Gemini 3.5 Flash-Lite on Vertex AI played spell32 seed 30 to a loss (three bites, 1 turned back). It made 80 valid model actions with no failed calls or fallbacks, for about $0.036. [Trace](../playtrace/20261104T025635197909Z-model-h2-development/spell32-30.jsonl). Two earlier live trials ran in the narrow headless arena and are reported in EVALUATION.md as history. |
 | First baseline/model comparison | **Done.** [Matched development comparison](session7-comparison.md) of both players on the same episode and game version. One episode each; not held-out evidence. |
 | GitHub CI green on deterministic checks | **Historical checkpoint: 14 tests passed** in the dedicated [midterm workflow](https://github.com/anonymousanemone/game-dev-f26/actions/runs/40396786117), commit `88c9a6d09d3b44512490e4238754b4088977a157`, on the course fork's `anonymousanemone/midterm` branch. The workflow changes only the permitted project folder and one workflow file. |
-| Demo / peer critique | Game launch, human trace recording and action-file replay are documented. Actual classmate observations have not been supplied. |
+| Demo / peer critique | Game launch, human session recording and replay are documented. Actual classmate observations have not been supplied. |
 
 ## In-class commands
 

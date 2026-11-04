@@ -4,12 +4,17 @@ const DT := 1.0 / 60.0
 const FRAMES_PER_ACTION := 6
 const STEP_LIMIT := 1200
 const CASES := ["spell31", "spell32", "spell32_low"]
+## A look at the heka word (the human's click on it) leaves the controls idle this many actions
+## (1.0 s) while the note is read. Assumed, not measured: a stand-in for human reading time.
+const LOOK_STEPS := 10
+const LOOK := {"move": 0, "face": 0, "thrust": false, "heka": false, "look": true}
 var game
 var status := "ongoing"
 var reason := ""
 var steps := 0
 var invalid_actions := 0
 var case_id := "spell31"
+var notes := []          ## what the player has read and would remember (the heka rule, once looked at)
 
 func _init(scene) -> void:
 	game = scene
@@ -33,6 +38,7 @@ func reset(seed: int, situation := "spell31") -> Dictionary:
 	reason = ""
 	steps = 0
 	invalid_actions = 0
+	notes = []
 	case_id = situation
 	var e: Dictionary = game.ENCOUNTERS[0 if situation == "spell31" else 1]
 	game.avatar.position.x = game.rects[e.spear].get_center().x
@@ -59,23 +65,44 @@ func legal_actions(player_id := 0) -> Array:
 			for thrust in [false, true]:
 				for heka in [false, true]:
 					actions.append({"move": move, "face": face, "thrust": thrust, "heka": heka})
+	actions.append(LOOK.duplicate())
 	return actions
 
 func step(player_id: int, action: Variant) -> Dictionary:
 	if player_id != 0: return {"error": "unknown_player"}
 	if status != "ongoing": return {"error": "episode_terminal", "outcome": outcome()}
 	steps += 1
-	var valid: bool = action is Dictionary and action.size() == 4 and action.has_all(["move", "face", "thrust", "heka"])
+	# `look` is optional; when true the other controls are ignored (the hands are off the keys).
+	var valid: bool = action is Dictionary and action.size() == (5 if action.has("look") else 4) and action.has_all(["move", "face", "thrust", "heka"])
+	if valid and action.has("look"):
+		valid = typeof(action.look) == TYPE_BOOL
 	if valid:
 		valid = typeof(action.thrust) == TYPE_BOOL and typeof(action.heka) == TYPE_BOOL and typeof(action.move) in [TYPE_INT, TYPE_FLOAT] and typeof(action.face) in [TYPE_INT, TYPE_FLOAT]
 	if valid:
 		valid = (action.move == -1 or action.move == 0 or action.move == 1) and (action.face == 0 or (game.fight.both and (action.face == -1 or action.face == 1)))
+	var looking: bool = valid and action.get("look", false)
 	var controls := {"move": 0, "face": 0, "thrust": false, "heka": false}
-	if valid: controls = action.duplicate()
-	else: invalid_actions += 1
+	if valid and not looking:
+		controls = action.duplicate()
+		controls.erase("look")
+	elif not valid: invalid_actions += 1
 	game.set_meta("midterm_controls", controls)
-	if controls.thrust: game._croc_thrust()
-	for frame in FRAMES_PER_ACTION:
+	if looking:
+		game.read_heka()
+		if not game.hud._text in notes: notes.append(game.hud._text)
+		steps += LOOK_STEPS - 1
+		_advance(LOOK_STEPS * FRAMES_PER_ACTION)
+	else:
+		if controls.thrust: game._croc_thrust()
+		_advance(FRAMES_PER_ACTION)
+	game.overlay.queue_redraw()
+	if steps >= STEP_LIMIT and status == "ongoing":
+		status = "limit"
+		reason = "step_limit"
+	return {"valid": valid, "observation": observe(), "outcome": outcome()}
+
+func _advance(frames: int) -> void:
+	for frame in frames:
 		if status != "ongoing": break
 		game._time += DT
 		game._update_fight(DT)
@@ -89,11 +116,6 @@ func step(player_id: int, action: Variant) -> Dictionary:
 		elif game.fight.lost:
 			status = "lost"
 			reason = "three_bites" if game.fight.health <= 0 else "word_stolen"
-	game.overlay.queue_redraw()
-	if steps >= STEP_LIMIT and status == "ongoing":
-		status = "limit"
-		reason = "step_limit"
-	return {"valid": valid, "observation": observe(), "outcome": outcome()}
 
 func observe(player_id := 0) -> Dictionary:
 	if player_id != 0: return {"error": "unknown_player"}
@@ -111,6 +133,7 @@ func observe(player_id := 0) -> Dictionary:
 		"y_range": [game.fight.y_range.x, game.fight.y_range.y], "facing": game.fight.facing,
 		"tip": [tip.x, tip.y], "spear_direction": [direction.x, direction.y],
 		"thrusting": game.fight.thrust >= 0, "tutorial": game.fight.tut,
+		"heka_word_glowing": game.fight.get("heka_on", false), "notes": notes.duplicate(),
 		"message": game.hud._text, "crocodiles": visible}
 
 func outcome() -> Dictionary:

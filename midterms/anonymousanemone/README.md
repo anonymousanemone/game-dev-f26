@@ -121,20 +121,6 @@ capture or a recording of spoken comments. Keep screenshots and screen recording
 outside the project. Label playback **human session replay**, and write actual
 classmate questions separately in [PEER-NOTES.md](PEER-NOTES.md).
 
-### Optional fixed-step combat recorder
-
-For a human attempt at the same 0.1-second cadence used by automated players:
-
-```bash
-"$GODOT" --path godot --script res://scripts/human_trace.gd -- --case=spell31
-```
-
-This older diagnostic mode opens combat directly, skips scroll navigation and
-opening presentation, samples held keys every six 1/60-second frames, repeats
-thrust requests while Space is held, and disables HUD navigation. Escape ends
-that attempt. It also saves automatically under `./playtrace/` and supports the
-same replay commands. Use the intro's **Record session** button for normal play.
-
 For a README-only audit, let the classmate follow setup and play without coaching.
 Their questions identify missing instructions. No human playtest is claimed by
 an automated recording fixture or by the presence of this feature.
@@ -236,9 +222,9 @@ This replays recorded actions with the same engine. Label it as replay in a reco
 | `step` | `player_id=0`, `action` | Validation, visible observation, outcome |
 | `outcome` | none | Ongoing/terminal, reason, score, counts |
 
-Only player 0 exists. Reset before other stateful operations. Action: `{"move": -1|0|1, "face": -1|0|1, "thrust": boolean, "heka": boolean}`. Face must be 0 in spell 31. Thrust during cooldown is permitted but has no effect. The list never filters out a tactically wrong heka choice or chooses a target. The game runs six 1/60-second ticks per action, then freezes during inference. Human play retains the original real-time controls. The evaluation wrapper selects those controls at the declared fixed cadence and skips only the arena opening animation; it preserves original spawning/collision rules. Drawing frames and wall-clock model latency do not advance combat. Headless runs use the project's 1280×720 viewport (set in `episode.gd`), because the arena's width follows the viewport's aspect ratio.
+Only player 0 exists. Reset before other stateful operations. Action: `{"move": -1|0|1, "face": -1|0|1, "thrust": boolean, "heka": boolean}`, with an optional `"look": boolean`. Face must be 0 in spell 31. `look: true` is the agent's version of a human clicking the glowing heka word: the game shows the same shift-rule message, the other controls are ignored and the bearer stands idle for 10 actions (1.0 s, an assumed reading time) while the crocodiles keep coming. It counts as 10 steps. Thrust during cooldown is permitted but has no effect. The list never filters out a tactically wrong heka choice or chooses a target. The game runs six 1/60-second ticks per action, then freezes during inference. Human play retains the original real-time controls. The evaluation wrapper selects those controls at the declared fixed cadence and skips only the arena opening animation; it preserves original spawning/collision rules. Drawing frames and wall-clock model latency do not advance combat. Headless runs use the project's 1280×720 viewport (set in `episode.gd`), because the arena's width follows the viewport's aspect ratio.
 
-Observations include active visible snout positions/directions/colors/dimensions, player position/facing, spear geometry, health, progress, tutorial feedback and simulation time. They exclude RNG, future waves/colors, launch timers, internal velocities and collision-mask queries. Coordinates are a deliberate accessible representation of the visible screen, rather than raw pixels. Velocity is inferred by the baseline from two observations; the model can receive the same two. The baseline has no engine reference. The model receives serialized observation/history, instructions, and no executable tools. The evaluator, not the model, determines victory. Rules and static control meanings are disclosed equally.
+Observations include active visible snout positions/directions/colors/dimensions, player position/facing, spear geometry, health, progress, tutorial feedback, simulation time, whether the heka word is glowing (`heka_word_glowing`) and `notes`: the text of anything the player has read by looking, kept for the rest of the episode. They exclude RNG, future waves/colors, launch timers, internal velocities and collision-mask queries. Coordinates are a deliberate accessible representation of the visible screen, rather than raw pixels. Velocity is inferred by the baseline from two observations; the model can receive the same two. The baseline has no engine reference. The model receives serialized observation/history, instructions, and no executable tools. The evaluator, not the model, determines victory. Control meanings are disclosed equally, but the heka rule is not: the model's prompt does not say which crocodiles need heka, so the model has to discover it in the game (the glowing word, `look`, the scribe's hints), as a human does. The baseline keeps that rule built in as an informed reference.
 
 ## Rule/source map
 
@@ -269,7 +255,8 @@ Observations include active visible snout positions/directions/colors/dimensions
 | Required element | Implemented meaning | Source evidence |
 |---|---|---|
 | Key state | Bearer position/facing, health, spear thrust, visible crocodile position/color/direction, tutorial and encounter progress | [Observation fields](godot/scripts/episode.gd), `observe`; [combat updates](godot/scripts/dangers/crocodiles.gd), `_crocs` |
-| Legal actions | Up/neutral/down, left/unchanged/right facing in spell 32, thrust on/off, heka on/off; spell 31 requires unchanged facing. Legal choices include tactical mistakes. | [Action enumeration and validation](godot/scripts/episode.gd), `legal_actions` and `step` |
+| Legal actions | Up/neutral/down, left/unchanged/right facing in spell 32, thrust on/off, heka on/off; spell 31 requires unchanged facing. Plus one `look` action (read the heka word; 1.0 s idle). Legal choices include tactical mistakes. | [Action enumeration and validation](godot/scripts/episode.gd), `legal_actions` and `step` |
+| Heka discovery | A human learns the shift rule by clicking the glowing heka word; an agent by `look`. Both call the same `read_heka`. The 1.0 s look cost is assumed, not measured. | design + code: [read_heka](godot/scripts/dangers/dangers.gd), [look handling](godot/scripts/episode.gd) `step` |
 | Outcomes | Win after all crocodiles are turned back; lose through health depletion or word theft; stop at the action limit | [Terminal checks and outcome fields](godot/scripts/episode.gd), `step` and `outcome`; [bite and theft rules](godot/scripts/dangers/crocodiles.gd), `_croc_bites` and `_croc_takes_word` |
 
 Unresolved usability question: can a new player distinguish the red heka cue and understand that using heka on an ordinary crocodile is fatal without coaching? This needs a real silent playtest; source inspection cannot answer it.

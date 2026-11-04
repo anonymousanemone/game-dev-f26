@@ -15,17 +15,20 @@ MAX_OUTPUT_TOKENS = 1024
 TOKEN_URL = 'https://oauth2.googleapis.com/token'
 
 PROMPT = '''You play Crocodiles. Return one JSON object with exactly move (-1 up, 0 still,
-1 down), face (-1 left, 0 unchanged, 1 right), thrust (boolean), heka (boolean).
-In spell31 face must be 0. Each action lasts 0.1 simulation seconds. Thrust lands
-0.0833s after initiation and cooldown lasts 0.25s. Spear reach extends 15 world
-pixels along spear_direction from tip. Align vertically with an approaching
-crocodile and thrust while the spear reaches its snout or silhouette. Hold heka
-only for red crocodiles; heka against an ordinary crocodile loses. Three bites
-lose. Letting a crocodile escape after heka activates loses. During tutorial
-"thrust", thrust to begin. Movement speed is 390 world pixels/s. The engine
-freezes while you decide. Earlier observations, if supplied, are bounded history;
-use successive positions to estimate velocity. Choose the action yourself.
-Do not provide prose or markdown. No tools are available.'''
+1 down), face (-1 left, 0 unchanged, 1 right), thrust (boolean), heka (boolean: hold
+the magic key during the action), look (boolean). In spell31 face must be 0. Each
+action lasts 0.1 simulation seconds. Thrust lands 0.0833s after initiation and
+cooldown lasts 0.25s. Spear reach extends 15 world pixels along spear_direction
+from tip. Align vertically with an approaching crocodile and thrust while the
+spear reaches its snout or silhouette. Three bites lose. During tutorial "thrust",
+thrust to begin. Movement speed is 390 world pixels/s. look reads the word of power
+shown above the fight, as a player clicking it would; while you read, your other
+controls are ignored for 1.0 s and the crocodiles keep coming. heka_word_glowing
+says when that word glows. message is what the game last said; notes keeps what
+you have read. The engine freezes while you decide. Earlier observations, if
+supplied, are bounded history; use successive positions to estimate velocity.
+Choose the action yourself. Do not provide prose or markdown. No tools are
+available.'''
 
 _token = {'value': None, 'expires': 0.0}
 
@@ -42,9 +45,9 @@ def request_payload(observation, history):
             'responseSchema': {'type': 'OBJECT', 'properties': {
                 'move': {'type': 'INTEGER', 'minimum': -1, 'maximum': 1},
                 'face': {'type': 'INTEGER', 'minimum': face_range[0], 'maximum': face_range[1]},
-                'thrust': {'type': 'BOOLEAN'}, 'heka': {'type': 'BOOLEAN'}},
-                'required': ['move', 'face', 'thrust', 'heka'],
-                'propertyOrdering': ['move', 'face', 'thrust', 'heka']}}}
+                'thrust': {'type': 'BOOLEAN'}, 'heka': {'type': 'BOOLEAN'}, 'look': {'type': 'BOOLEAN'}},
+                'required': ['move', 'face', 'thrust', 'heka', 'look'],
+                'propertyOrdering': ['move', 'face', 'thrust', 'heka', 'look']}}}
 
 
 def cost_reservation(observation, history, model, input_price, output_price):

@@ -30,7 +30,7 @@ class GameTests(unittest.TestCase):
     def test_legal_actions_and_invalid_handling(self):
         self.engine.call('reset', seed=30)
         actions = self.engine.call('legal_actions')
-        self.assertEqual(len(actions), 12)
+        self.assertEqual(len(actions), 13)  # 12 control combinations plus one look
         for action in [dict(WAIT, face=1), dict(WAIT, move=.5), dict(WAIT, thrust=1),
                        dict(WAIT, move=True), dict(WAIT, extra=1), {}, None]:
             result = self.engine.call('step', action=action)
@@ -39,6 +39,33 @@ class GameTests(unittest.TestCase):
         self.assertEqual(result['outcome']['steps'], 7)
         self.assertAlmostEqual(result['observation']['time'], .7)
         self.assertEqual(self.engine.call('observe', player_id=1), {'error': 'unknown_player'})
+
+    def test_heka_discovery_by_looking(self):
+        # Like a human clicking the glowing word: the rule is learned in the game, not given.
+        o = self.engine.call('reset', seed=30, case='spell32')
+        self.assertTrue(o['heka_word_glowing'])
+        self.assertEqual(o['notes'], [])
+        look = dict(WAIT, look=True)
+        self.assertIn(look, self.engine.call('legal_actions'))
+        y = o['player_y']
+        # Reading takes the hands off the keys: other controls are ignored for the whole look.
+        r = self.engine.call('step', action=dict(look, move=1, thrust=True))
+        self.assertTrue(r['valid'])
+        self.assertEqual(r['outcome']['steps'], 10)
+        self.assertEqual(r['observation']['player_y'], y)
+        self.assertFalse(r['observation']['thrusting'])
+        notes = r['observation']['notes']
+        self.assertEqual(len(notes), 1)
+        self.assertIn('[shift]', notes[0])
+        # The note is remembered after later messages; looking again adds nothing.
+        r = self.engine.call('step', action=look)
+        self.assertEqual(r['observation']['notes'], notes)
+        self.assertFalse(self.engine.call('step', action=dict(WAIT, look=1))['valid'])
+        # Without a look the rule is never noted.
+        o = self.engine.call('reset', seed=30, case='spell32')
+        for _ in range(20):
+            o = self.engine.call('step', action=WAIT)['observation']
+        self.assertEqual(o['notes'], [])
 
     def test_deterministic_seeded_replay(self):
         def play():
@@ -59,7 +86,7 @@ class GameTests(unittest.TestCase):
             elif isinstance(value, list):
                 for v in value: inspect(v)
         inspect(o)
-        self.assertEqual(len(self.engine.call('legal_actions')), 36)
+        self.assertEqual(len(self.engine.call('legal_actions')), 37)  # 36 control combinations plus one look
 
     def test_step_limit_and_terminal_lock(self):
         self.engine.call('reset', seed=30, case='spell31')
@@ -71,14 +98,28 @@ class GameTests(unittest.TestCase):
 
     def test_baseline_complete_successful_path(self):
         observation = self.engine.call('reset', seed=30, case='spell31')
-        previous = None
+        history = []
         for _ in range(1200):
-            result = self.engine.call('step', action=choose(observation, previous))
+            result = self.engine.call('step', action=choose(observation, history))
             self.assertTrue(result['valid'])
-            previous, observation = observation, result['observation']
+            history, observation = (history + [observation])[-10:], result['observation']
             if result['outcome']['terminal']: break
         self.assertEqual(result['outcome']['status'], 'won')
         self.assertEqual(result['outcome']['score'], 9)
+
+    def test_baseline_reacts_only_after_human_reaction_time(self):
+        # Student recordings: a new crocodile is acted on about 0.6 s after it appears.
+        def seen(time, x):
+            return {'tutorial': '', 'time': time, 'both_sides': False, 'player_x': 500.0,
+                    'tip': [400.0, 300.0], 'facing': -1, 'thrusting': False,
+                    'crocodiles': [{'snout': [x, 300.0], 'direction': 1, 'red': False,
+                                    'width': 200.0, 'height': 80.0}]}
+        empty = dict(seen(0.0, 0.0), crocodiles=[])
+        now = seen(1.0, 395.0)  # aligned and in reach of the tip
+        just_appeared = [dict(empty, time=t / 10) for t in range(4)] + [seen(.4 + t / 10, 239.0 + 26 * t) for t in range(6)]
+        self.assertEqual(choose(now, just_appeared), dict(move=0, face=0, thrust=False, heka=False))
+        visible_long_enough = [seen(.1 * t, 135.0 + 26 * t) for t in range(10)]
+        self.assertTrue(choose(now, visible_long_enough)['thrust'])
 
     def test_original_scene_and_artwork_preserved(self):
         import hashlib
@@ -86,7 +127,8 @@ class GameTests(unittest.TestCase):
         manifest = json.loads((ROOT/'reports/direct-extraction.json').read_text())
         text = (ROOT/'godot/scenes/dangers.tscn').read_text()
         blocks = re.split(r'(?=^\[(?:ext_resource|sub_resource|node)\b)', text, flags=re.M)
-        actual = {block.splitlines()[0]: hashlib.sha256(block.encode()).hexdigest()
+        # Trailing whitespace is ignored: Godot adds or drops blank lines between blocks on save.
+        actual = {block.splitlines()[0]: hashlib.sha256(block.rstrip().encode()).hexdigest()
                   for block in blocks if block.strip()}
         self.assertEqual(actual, manifest['retained_scene_blocks'])
         for name, expected in manifest['original_asset_sha256'].items():

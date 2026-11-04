@@ -18,6 +18,7 @@ const ARENA_FIGHTS := ["crocs"]   ## the vignette opens out across the screen
 
 const ENCOUNTERS := preload("res://scripts/dangers/danger_encounters.gd").ENCOUNTERS
 const GLOW := UI.Glow.DANGER
+const END_BEAT := 0.6          ## s of stillness after the win's glow has faded, before the end screen
 
 var level: Dictionary
 var unit := 1.0          ## strip px per plate px at 200 dpi (level.json `scale`)
@@ -51,9 +52,13 @@ var _strip_img: Image         ## the strip, read once to find where a caption's 
 var heka_known := false        ## the player has clicked a flashing heka sign
 const FLESH_PATH := "res://assets/dangers/figures/flesh.png"   ## the flesh sign that counts his health (supplied, not cut)
 const FLESH_GAP := 6.0          ## strip px between signs, drawn at their native asset size
-var _flesh_tex: Texture2D = _ink_from(load(FLESH_PATH)) if ResourceLoader.exists(FLESH_PATH) else null
+const FLESH_LIFT := 8.0         ## strip px between the top of his head and the signs
+const FLESH_SHIFT := 14.0       ## strip px the signs sit off the middle of his head, away from his spear hand
+var _flesh_tex: Texture2D = _solid_ink_from(load(FLESH_PATH))
+var _head_tops := {}            ## bearer actor name -> the top of his head in his picture (texture px), found once
 var _heka_signs: Array = []      ## flattened once from level.heka
 var _session := 0
+var _glow_end := -1.0     ## game time (_time) at which the last win's success glow has faded out
 var _fight_tweens: Array[Tween] = []
 var _hover := []                ## the actors glowing under the pointer
 var _caption := {}              ## the encounter whose caption glows under the pointer
@@ -166,6 +171,7 @@ func reset() -> void:
 	_section = ""
 	bites = 0
 	finished = false
+	_glow_end = -1.0
 	fight = {}
 	rng.seed = 30
 	for n in actors:
@@ -177,7 +183,7 @@ func reset() -> void:
 	avatar.position = Vector2(rects.avatar.get_center().x, ground)
 	avatar.facing = -1
 	hud.reset_view()
-	hud.say("Scribe", _hints.message("dangers.start"))
+	hud.say("Scribe", "")
 	_refresh()
 	_update_camera(1.0)
 
@@ -238,8 +244,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var p: Vector2 = get_meta("session_mouse", get_global_mouse_position())
 		if _heka_at(p) != "":
-			heka_known = true
-			say("Scribe", _hints.message("dangers.heka_controls"))
+			read_heka()
 			return
 		if not fight.is_empty():
 			fight_click(p)
@@ -438,7 +443,7 @@ func _check_position() -> void:
 		if x < s.y - 20.0 * unit and x > s.x:
 			here_now = e.id
 			if here_now != _section and not solved.has(e.id) and e.kind != "end":
-				say("Scribe", _descriptions.line(e.id, "default", true).text + (" " + _hints.message("dangers.click_to_fight") if e.kind in FIGHTS else ""))
+				say("Scribe", _descriptions.line(e.id, "default", true).text)
 			break
 	_section = here_now
 	if x < span(ENCOUNTERS[-1]).y - 40.0 * unit and current.is_empty():
@@ -455,7 +460,17 @@ func finish() -> void:
 	if finished: return
 	finished = true
 	_refresh()
-	hud.show_outro("")
+	# A win's glow comes up and fades out in the open before the end screen covers the scene.
+	var wait := _glow_end - _time
+	if _instant or wait <= 0.0:
+		hud.show_outro("")
+		return
+	var session := _session
+	var tween := _fight_tween()
+	tween.tween_interval(wait + END_BEAT)
+	tween.tween_callback(func():
+		if session == _session and finished:
+			hud.show_outro(""))
 
 ## In a fight, what the scribe would say is said under the danger's name (`tag`).
 func say(who: String, text: String) -> void:
@@ -522,6 +537,7 @@ func end_fight() -> void:
 		_restore(n)
 	for n in _success_glowers(e):
 		UI.success_flash(_picture(actors[n]))
+	_glow_end = _time + UI.SUCCESS_IN + UI.SUCCESS_OUT
 	avatar.position.x = spear.get_center().x
 	avatar.visible = true
 	avatar.set_process(true)
@@ -557,6 +573,12 @@ func leave_fight() -> void:
 func _box_actors(e: Dictionary) -> Array:
 	var s := span(e)
 	return actors.keys().filter(func(n): return actors[n].get_meta("home").x > s.x and actors[n].get_meta("home").x < s.y)
+
+
+## Clicking a heka word (or an agent's look): the player learns what [shift] does.
+func read_heka() -> void:
+	heka_known = true
+	say("Scribe", _hints.message("dangers.heka_controls"))
 
 
 ## What flashes pale green when `e` is won: its creatures and the spear-bearer, not the heka word or signs.
@@ -796,6 +818,53 @@ static func _ink_from(tex: Texture2D) -> Texture2D:
 	return ImageTexture.create_from_image(img)
 
 
+## `_ink_from`, with whatever the outline encloses filled in solid (the sign's hollow middle).
+static func _solid_ink_from(tex: Texture2D) -> Texture2D:
+	var img := _ink_from(tex).get_image()
+	var w := img.get_width()
+	var h := img.get_height()
+	var open := func(i: int) -> bool: return img.get_pixel(i % w, i / w).a < 0.12
+	var outside := PackedByteArray()
+	outside.resize(w * h)
+	var stack: Array[int] = []
+	for x in w:
+		stack.append(x)
+		stack.append((h - 1) * w + x)
+	for y in h:
+		stack.append(y * w)
+		stack.append(y * w + w - 1)
+	while not stack.is_empty():
+		var i: int = stack.pop_back()
+		if outside[i] or not open.call(i):
+			continue
+		outside[i] = 1
+		var x := i % w
+		if x > 0:
+			stack.append(i - 1)
+		if x < w - 1:
+			stack.append(i + 1)
+		if i >= w:
+			stack.append(i - w)
+		if i < w * (h - 1):
+			stack.append(i + w)
+	var solid: Array[int] = []   # everything the outline holds, up to the soft outer edge
+	for i in w * h:
+		if outside[i]:
+			continue
+		var edge := false
+		for dy in range(-1, 2):
+			for dx in range(-1, 2):
+				var x: int = i % w + dx
+				var y: int = i / w + dy
+				if x < 0 or x >= w or y < 0 or y >= h or outside[y * w + x]:
+					edge = true
+		if not edge:
+			solid.append(i)
+	for i in solid:
+		img.set_pixel(i % w, i / w, Color.WHITE)
+	return ImageTexture.create_from_image(img)
+
+
 func _heka_words(id: String) -> Array:
 	var h = level.get("heka", {})
 	return h.get(id, []) if h is Dictionary else h
@@ -842,9 +911,8 @@ func _arena_lost(e: Dictionary) -> void:
 func _croc_thrust() -> void:
 	if fight.thrust >= 0.0 or fight.open < 1.0 or fight.lost or fight.has("pin"):
 		return
-	if fight.tut == "start":   # this [space] only starts the fight
+	if fight.tut == "start":   # this [space] starts the fight, and thrusts as well (as in the lesson)
 		fight.tut = ""
-		return
 	fight.thrust = 0.0
 	fight.struck = false
 	fight.last_thrust = fight.get("clock", 0.0)
@@ -1162,19 +1230,59 @@ func _maybe_run_cli() -> void:
 
 
 func _draw_flesh_health() -> void:
-	# His health: flesh signs in red, top left inside
-	# the opened vignette; a lost one stays faint
+	# His health: one flesh sign each, in red, in a row just above his head, a little to the side his
+	# hand is not. A lost one is gone and the rest close up around the middle.
 	var health: int = int(fight.get("health", 0))
-	var ar := _arena_rect()
-	var fs := _flesh_tex.get_size() if _flesh_tex else Vector2(28.0, 28.0)
-	for i in CROC_HEALTH:
-		var at := Vector2(ar.position.x + 28.0 + i * (fs.x + FLESH_GAP), ar.position.y + 26.0)
-		var a: float = (1.0 if i < health else 0.22) * fight.open
-		if _flesh_tex:
-			# the picture as given, its dark ink turned red: shown through a red silhouette
-			overlay.draw_texture_rect(_flesh_tex, Rect2(at, fs), false, Color(UI.DANGER, a))
-		else:
-			overlay.draw_circle(at + fs / 2.0, fs.y / 2.0, Color(UI.DANGER, a))
+	if health <= 0:
+		return
+	var fs := _flesh_tex.get_size()
+	var head := _head_world()
+	var left: float = head.x + FLESH_SHIFT * fight.facing - (health * fs.x + (health - 1) * FLESH_GAP) / 2.0
+	for i in health:
+		var at := Vector2(left + i * (fs.x + FLESH_GAP), head.y - FLESH_LIFT - fs.y)
+		overlay.draw_texture_rect(_flesh_tex, Rect2(at, fs), false, Color(UI.DANGER, fight.open))
+
+
+## The top of the bearer's head in the arena (world): his picture's head point, turned with him.
+func _head_world() -> Vector2:
+	var nm: String = fight.e.spear
+	var s := _picture(actors[nm])
+	if not _head_tops.has(nm):
+		_head_tops[nm] = _find_head_top(s.texture.get_image())
+	var top: Vector2 = _head_tops[nm]
+	var r := s.get_rect()
+	return s.global_transform * (r.position + Vector2(r.size.x - top.x if s.flip_h else top.x, top.y))
+
+
+## Where the head tops out in a bearer's picture (texture px): above it only the spear shaft is
+## drawn, so it is the first row whose ink spreads wider than a shaft; its middle is that row's
+## leftmost stroke.
+static func _find_head_top(img: Image) -> Vector2:
+	if img.is_compressed():
+		img.decompress()
+	var used := img.get_used_rect()
+	for y in range(used.position.y, used.end.y):
+		var lo := -1
+		var hi := -1
+		for x in range(used.position.x, used.end.x):
+			if img.get_pixel(x, y).a > 0.3:
+				if lo < 0:
+					lo = x
+				hi = x
+		if hi - lo < 32:
+			continue
+		var right := lo
+		var gap := 0
+		for x in range(lo, hi + 1):
+			if img.get_pixel(x, y).a > 0.3:
+				right = x
+				gap = 0
+			else:
+				gap += 1
+				if gap > 6:
+					break
+		return Vector2((lo + right) / 2.0, y)
+	return Vector2(used.get_center().x, used.position.y)
 
 
 func start_session_recording() -> bool:

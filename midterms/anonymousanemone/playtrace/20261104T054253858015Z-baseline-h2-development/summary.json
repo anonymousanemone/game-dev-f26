@@ -1,0 +1,31 @@
+[
+  {
+    "case": "spell32",
+    "seed": 30,
+    "policy": "baseline",
+    "model": null,
+    "history": 2,
+    "calls": 0,
+    "failed_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "estimated_cost_usd": 0.0,
+    "max_cost_usd": 10.0,
+    "reserved_cost_usd": 0.0,
+    "run_reserved_cost_usd": 0.0,
+    "price_date": "2026-11-03",
+    "price_source": "https://cloud.google.com/model-garden/pricing",
+    "input_price_per_million": 0.3,
+    "output_price_per_million": 2.5,
+    "elapsed_seconds": 0.6917539999703877,
+    "mean_latency_seconds": 1.6222930902605334e-05,
+    "outcome": {
+      "invalid_actions": 0,
+      "reason": "all_crocodiles_defeated",
+      "score": 14,
+      "status": "won",
+      "steps": 189,
+      "terminal": true
+    }
+  }
+]

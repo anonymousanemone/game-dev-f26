@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://dn6u0uyhrsck8" path="res://assets/dangers/figures/c32d.png" id="actor_9"]
 [ext_resource type="Texture2D" uid="uid://d0t26bvaoppbp" path="res://assets/dangers/figures/heka_e31_hekat.png" id="actor_32"]
 [ext_resource type="Texture2D" uid="uid://dlpx8xhhwjk3g" path="res://assets/dangers/figures/heka_e32_hekat.png" id="actor_33"]
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_papyrus"]
 shader = ExtResource("6_papyrus")
 shader_parameter/base = Color(0.906, 0.839, 0.682, 1)
@@ -232,4 +233,3 @@ metadata/registry_id = "caption_e32"
 
 [node name="Shape" type="CollisionShape2D" parent="CaptionRegions/caption_e32" unique_id=1373629798]
 shape = SubResource("inspect_caption_e32")
-

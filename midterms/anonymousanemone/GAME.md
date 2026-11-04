@@ -62,6 +62,6 @@ An agent submits a control combination such as:
 {"move": -1, "face": 0, "thrust": true, "heka": false}
 ```
 
-`move` selects up, neutral or down; `face` selects left, unchanged or right. Spell 31 requires `face: 0`. Each action advances six frames at a fixed 1/60-second step, or 0.1 seconds of simulation. Combat pauses while the model selects its next action.
+`move` selects up, neutral or down; `face` selects left, unchanged or right. An optional `"look": true` reads the glowing heka word, like a human clicking it: the shift rule appears in the message and is kept in `notes`, and the bearer stands idle for 1.0 s. Spell 31 requires `face: 0`. Each action advances six frames at a fixed 1/60-second step, or 0.1 seconds of simulation. Combat pauses while the model selects its next action.
 
 Agents receive structured observations of visible crocodiles, player position and facing, spear geometry, health, progress and feedback. They do not receive RNG state, future spawn schedules or engine objects. The engine validates actions and determines the outcome. See the [README interface specification](README.md#machine-interface-and-information-boundary) for details.

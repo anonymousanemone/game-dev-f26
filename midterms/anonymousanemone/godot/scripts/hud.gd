@@ -47,7 +47,7 @@ func setup(level: Node, cfg: Dictionary) -> void:
 	_build_top_bar()
 	_build_strip()
 	_intro = _build_overlay(cfg.intro_title, cfg.intro_body, "Begin", dismiss_intro)
-	if level.has_method("start_session_recording"):
+	if not OS.has_feature("web") and level.has_method("start_session_recording"):
 		_record_session_button = Button.new()
 		_record_session_button.text = "Record session"
 		_record_session_button.add_theme_font_size_override("font_size", UI.BIG)

@@ -4,7 +4,8 @@
     "session_link": null,
     "session_exports": [
       "reports/sessions/codex-implementation-sessions.md",
-      "reports/sessions/codex-review-and-experiment-session.md"
+      "reports/sessions/codex-review-and-experiment-session.md",
+      "reports/sessions/codex-combat-tuning-session.md"
     ],
     "status": "implementation transcripts exported locally; link committed exports from the actual course PR"
   },

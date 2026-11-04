@@ -4,8 +4,8 @@ __pycache__/
 *.pyc
 .env
 .env.*
-playtrace/**/*.build.zip
-playtrace/*.build.zip
+*.build.zip
 .venv/
 build/
+web_console/runs/
 !/reports/

@@ -1286,6 +1286,7 @@ static func _find_head_top(img: Image) -> Vector2:
 
 
 func start_session_recording() -> bool:
+	if OS.has_feature("web"): return false
 	if session_recorder != null and session_recorder.recording: return true
 	session_recorder = load("res://scripts/session_tape.gd").new(self)
 	add_child(session_recorder)

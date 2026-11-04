@@ -27,11 +27,20 @@ that predates these documentation updates; it does not include later messages.
 
 Instructions: [SKILL.md](../../skills/make-experiment/SKILL.md).
 
-**November 4, 2026 — same session `01a1a54d-…`.** Created the skill, then explicitly
-invoked it for the vertical-alignment question. The
-[transcript](codex-review-and-experiment-session.md),
-[plan/results](../experiments/y-alignment-experiment.md), and linked raw configurations/traces
-provide evidence of one actual use. No second session is claimed for this skill;
-the two-session evidence above belongs to `crocodile-evaluation`.
+1. **November 4, 2026 — Codex `01a1a54d-a53b-7ed1-8278-9086ef65ed8a`.**
+   Created the skill, then explicitly invoked `$make-experiment` for the
+   vertical-alignment question. The [transcript](codex-review-and-experiment-session.md),
+   [plan/results](../experiments/y-alignment-experiment.md), and linked raw
+   configurations/traces provide evidence of actual use.
+2. **November 4, 2026 — Codex `01a1a56c-5747-78a0-8c4f-be245174e43c`.**
+   The [combat-tuning export](codex-combat-tuning-session.md) records the user's
+   explicit `$make-experiment` invocation and the assistant's acknowledgment for
+   the current/combined prompt comparison at 1.0× and 0.75× speed. See the
+   [initial comparison](../experiments/combat-speed-experiment.md) and
+   [full combat report](../experiments/combat-speed-full.md) for results and
+   trial artifacts. This export preserves user and assistant messages; tool
+   calls/results are omitted, as stated in its header.
+
+These are two separate evidenced sessions using `make-experiment` by name.
 
 Link the committed exports and this evidence index from the actual course PR.

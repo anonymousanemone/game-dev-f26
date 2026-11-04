@@ -4,7 +4,7 @@
 
 Starts `players.run --policy model` (the same evaluator, the same live provider call, the same
 budget checks) and follows the trace file it writes, printing every model reply as it arrives.
-When the episode ends it prints the result and the command for part 2 (`players.show`), which
+When the episode ends it prints the result and the command for part 2 (`players.replay`), which
 opens the game window and replays this exact trace.
 
 `--policy baseline` runs the scripted baseline instead (no model call, no cost) to rehearse the
@@ -184,7 +184,7 @@ def main():
               + (f", about ${cost:.4f}" if cost is not None else '')
               + f", mean latency {summary['mean_latency_seconds']:.2f}s")
     print('=' * 72)
-    shown = f"python -m players.show {trace.relative_to(ROOT)}"
+    shown = f"python -m players.replay {trace.relative_to(ROOT)} --resolution 1600x900"
     print(f"\n{BOLD}Part 2 - open the game window and replay this episode:{RESET}\n\n    {shown}\n")
     if args.open_replay or (not args.no_prompt and sys.stdin.isatty()):
         if not args.open_replay:
@@ -193,7 +193,7 @@ def main():
             except (KeyboardInterrupt, EOFError):
                 print()
                 return
-        subprocess.call([sys.executable, '-m', 'players.show', str(trace)], cwd=ROOT)
+        subprocess.call([sys.executable, '-m', 'players.replay', str(trace), '--resolution', '1600x900'], cwd=ROOT)
 
 
 if __name__ == '__main__':

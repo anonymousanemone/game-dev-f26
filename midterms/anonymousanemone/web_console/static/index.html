@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crocodiles · Agent console</title>
+<link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+</head>
+<body>
+<header><span>TOTENBUCH / SPELLS 31 &amp; 32</span><h1>Watch the agent. Replay the encounter.</h1><p>Run the existing evaluator, follow its decisions, then watch those recorded actions in the original game.</p></header>
+<main>
+<form id="controls">
+<label>Encounters<select id="case"><option value="both">Spell 31 + Spell 32 · seed 30</option></select></label>
+<label>Player<select id="policy"><option value="model">Live model · Vertex</option><option value="baseline">Baseline · no model calls</option></select></label>
+<label>Model history<select id="history"><option value="2">2 observations</option><option value="0">0 observations</option></select></label>
+<p id="model-settings"></p>
+<button id="run" type="submit">Run agent</button>
+</form>
+<p id="status" role="status">Ready · development seed 30</p>
+<section class="panels">
+<div><h2>Live terminal</h2><pre id="terminal" tabindex="0" aria-label="Run output"></pre></div>
+<div><h2>JSONL records <a id="download" hidden download="trace.jsonl">Download trace</a></h2><pre id="json" tabindex="0" aria-label="Raw JSONL records"></pre></div>
+</section>
+<section><div class="replay-heading"><h2>Visual replay</h2><label>Episode<select id="replay-episode" disabled></select></label><button id="replay" disabled>Show replay</button></div><p>Click inside the replay for controls: Space pauses, Right steps, 1 / 2 / 3 selects speed.</p><iframe id="viewer" title="Recorded encounter replay" hidden allow="autoplay; fullscreen" allowfullscreen></iframe></section>
+<dialog id="confirm-run"><h2>Confirm this run</h2><p id="confirmation-details"></p><p>One attempt per spell, no retries. The shared cap can stop play before an encounter ends. A completed attempt may be a loss.</p><form method="dialog"><button value="cancel">Cancel</button> <button value="confirm">Confirm and run</button></form></dialog>
+</main>
+</body></html>

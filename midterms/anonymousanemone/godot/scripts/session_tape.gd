@@ -17,6 +17,8 @@ func _init(scene = null) -> void:
 	process_priority = 100
 
 func begin(output_path := "") -> bool:
+	# Native filesystem recording is unavailable in every Web export, including itch.io.
+	if OS.has_feature("web"): return false
 	var folder := ProjectSettings.globalize_path("res://../playtrace")
 	if not output_path.is_empty(): folder = output_path.get_base_dir()
 	if DirAccess.make_dir_recursive_absolute(folder) != OK: return false

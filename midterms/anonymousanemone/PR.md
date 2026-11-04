@@ -1,0 +1,31 @@
+GitHub login: **anonymousanemone**
+
+This midterm extracts two complete crocodile encounters (spells 31–32) from my original Godot game, Totenbuch. Humans, the heuristic baseline and the model player use the same authoritative engine; the model selects validated actions through an observation-only interface.
+
+The declared held-out suite contains three starting situations and two seeds each. Across all 18 completed episodes, the baseline won 6/6, Gemini 3.5 Flash-Lite with no explicit history won 0/6, and the same model with two prior observations won 2/6. Both conditions retain motion-derived observation fields. Fourteen provider failures were retained as neutral fallbacks. Estimated returned-usage cost was $1.3998745; conservative reservations totaled $9.6231501 of the authorized $20. No held-out tuning or paid retries are claimed.
+
+Validation: **29 tests passed** in [dedicated Godot deterministic CI](https://github.com/columbia-university-ai-games/game-dev-f26/actions/runs/41857753499) on commit `ae74a5d699b877f11098c3d09c3d610c6d5c0771`. The local course boundary screen passed: only `midterms/anonymousanemone/` and `.github/workflows/midterm-anonymousanemone.yml` are included. Course PR checks passed: dedicated midterm tests, submission boundaries, minigame tests/gallery, and Python 3.11/3.12 starter checks. The optional paid live setup workflow was skipped.
+
+Artifacts:
+
+- [README](https://github.com/anonymousanemone/game-dev-f26/blob/ae74a5d699b877f11098c3d09c3d610c6d5c0771/midterms/anonymousanemone/README.md)
+- [Evaluation](https://github.com/anonymousanemone/game-dev-f26/blob/ae74a5d699b877f11098c3d09c3d610c6d5c0771/midterms/anonymousanemone/EVALUATION.md)
+- [Final evaluation](https://github.com/anonymousanemone/game-dev-f26/blob/ae74a5d699b877f11098c3d09c3d610c6d5c0771/midterms/anonymousanemone/reports/held-out-final.md)
+- [Agent team](https://github.com/anonymousanemone/game-dev-f26/blob/ae74a5d699b877f11098c3d09c3d610c6d5c0771/midterms/anonymousanemone/AGENT-TEAM.md)
+- [Peer notes](https://github.com/anonymousanemone/game-dev-f26/blob/ae74a5d699b877f11098c3d09c3d610c6d5c0771/midterms/anonymousanemone/PEER-NOTES.md)
+- Recording: pending; see the README's Recording and replay section.
+- [Independent review](https://github.com/anonymousanemone/game-dev-f26/blob/ae74a5d699b877f11098c3d09c3d610c6d5c0771/midterms/anonymousanemone/review.md)
+- [Implementation sessions](https://github.com/anonymousanemone/game-dev-f26/blob/ae74a5d699b877f11098c3d09c3d610c6d5c0771/midterms/anonymousanemone/reports/sessions/codex-implementation-sessions.md)
+- [Review/experiment session](https://github.com/anonymousanemone/game-dev-f26/blob/ae74a5d699b877f11098c3d09c3d610c6d5c0771/midterms/anonymousanemone/reports/sessions/codex-review-and-experiment-session.md)
+- [Combat-tuning session — second make-experiment invocation](https://github.com/anonymousanemone/game-dev-f26/blob/ae74a5d699b877f11098c3d09c3d610c6d5c0771/midterms/anonymousanemone/reports/sessions/codex-combat-tuning-session.md)
+- [Skill evidence](https://github.com/anonymousanemone/game-dev-f26/blob/ae74a5d699b877f11098c3d09c3d610c6d5c0771/midterms/anonymousanemone/reports/sessions/skill-sessions.md)
+
+Remaining before ready for review:
+
+- [ ] Complete the student-authored one-page agent-team narrative and personal interpretation/limitations.
+- [ ] Add actual anonymous peer playtest notes given and received.
+- [ ] Record and link a viewable 3–5 minute demonstration showing the game and agent play without manual move selection.
+- [x] Course PR checks passed on ae74a5d; updated local CI evidence is prepared for the student to commit.
+- [ ] Check whether the Week 3 scope thread needs updating; submit this PR URL on CourseWorks by November 7, 11:59 p.m.
+
+This is a draft, not a completed submission or gate approval. Newer uncommitted local web-console and Godot edits are not part of this PR. Historical traces retain their original hashes; the subsequent frame-reporting correction is documented in the evaluation report.

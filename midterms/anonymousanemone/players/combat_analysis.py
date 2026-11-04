@@ -43,6 +43,21 @@ def analyze(folder):
             proxy_wrong_face_thrusts=wrong_face, thrust_requests_while_busy=busy,
             final_health=last['health'], provider_errors=sum(bool(r.get('error')) for r in steps),
             neutral_fallbacks=sum(bool(r.get('fallback')) for r in steps)))
+    # Post-hoc descriptive comparison at the latest step boundary shared by all.
+    if results:
+        boundaries = []
+        for r in results:
+            rows = [json.loads(l) for l in Path(r['trace']).read_text().splitlines() if l.strip()]
+            boundaries.append({x['step'] for x in rows if x.get('type') == 'step'})
+        horizon = max(set.intersection(*boundaries))
+        for r in results:
+            rows = [json.loads(l) for l in Path(r['trace']).read_text().splitlines() if l.strip()]
+            prefix = [x for x in rows if x.get('type') == 'step' and x['step'] <= horizon]
+            if prefix:
+                boundary = prefix[-1]
+                r['common_horizon'] = dict(requested_step=horizon, actual_step=boundary['step'],
+                    score=boundary['result']['outcome']['score'],
+                    health=boundary['result']['observation']['health'])
     return results
 
 

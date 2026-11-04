@@ -21,7 +21,6 @@
 ## Still needs actual evidence / student work
 
 - [x] Record the public-domain basis for the Lepsius edition: published 1842, copyright expired, and faithful scans create no new copyright (§ 68 UrhG; *Bridgeman v. Corel*). Recorded in CREDITS.md.
-- [ ] Optional: record the existing PNGs' precise source/crop chain from plate XVI. No assets have been silently replaced.
 - [x] Record the OldFax.ttf source and reuse terms: "Old Fax" by George Blackwell, CC BY 4.0, credited in CREDITS.md.
 - [ ] Link exported implementation sessions from the actual course PR; local evidence is in reports/codex-implementation-sessions.md and submission/PR.md.
 - [x] Use crocodile-evaluation by name in two separate sessions; see reports/skill-sessions.md and linked exports. make-experiment has one evidenced session so far.

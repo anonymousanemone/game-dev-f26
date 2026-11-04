@@ -26,7 +26,6 @@ window/size/viewport_height=720
 window/size/window_width_override=2000
 window/size/window_height_override=1125
 window/stretch/mode="canvas_items"
-window/stretch/aspect="keep"
 
 [rendering]
 

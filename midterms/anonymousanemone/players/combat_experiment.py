@@ -45,27 +45,29 @@ class SpeedEngine:
         return self.engine.call(op, **kwargs)
 
 
-def run(total_budget, resume=None):
-    if not 0 < total_budget <= 3:
-        raise ValueError('Authorized total is at most $3')
+def run(total_budget, resume=None, full=False):
+    ceiling = 10 if full else 3
+    if not 0 < total_budget <= ceiling:
+        raise ValueError(f'Authorized total is at most ${ceiling}')
     load_env(ROOT / '.env')
     required = ['GOOGLE_CLOUD_PROJECT', 'CROC_INPUT_PRICE', 'CROC_OUTPUT_PRICE',
                 'CROC_PRICE_DATE', 'CROC_PRICE_SOURCE']
     if any(not os.environ.get(k) for k in required):
         raise ValueError('Missing provider configuration or dated prices')
     suite = json.loads((ROOT / 'suite.json').read_text())
-    seeds = [30, 31, 32]
+    seeds = [30] if full else [30, 31, 32]
     assert not set(seeds).intersection(s for c in suite['cases'] for s in c['held_out_seeds'])
     args = SimpleNamespace(model='gemini-3.5-flash-lite', history=2, memory=False,
         lives=3, crocodiles=0, reach_flag=False, max_calls=1200, call_timeout=30,
-        episode_timeout=300, max_cost_usd=total_budget/12,
+        episode_timeout=1800 if full else 300, max_cost_usd=total_budget/(4*len(seeds)),
         input_price=float(os.environ['CROC_INPUT_PRICE']),
         output_price=float(os.environ['CROC_OUTPUT_PRICE']),
         price_date=os.environ['CROC_PRICE_DATE'], price_source=os.environ['CROC_PRICE_SOURCE'])
     if min(args.input_price, args.output_price) < 0:
         raise ValueError('Negative price')
     stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
-    output = ROOT / 'playtrace' / f'{stamp}-combat-speed-experiment'
+    suffix = 'full' if full else 'experiment'
+    output = ROOT / 'playtrace' / f'{stamp}-combat-speed-{suffix}'
     if resume:
         output = ROOT / 'playtrace' / resume
     else:
@@ -119,5 +121,6 @@ if __name__ == '__main__':
     parser.add_argument('--run', action='store_true', required=True)
     parser.add_argument('--total-budget', type=float, required=True)
     parser.add_argument('--resume', help='Existing experiment directory name; completed trials are skipped')
+    parser.add_argument('--full', action='store_true', help='Four fresh seed-30 episodes, up to $10 total')
     options = parser.parse_args()
-    run(options.total_budget, options.resume)
+    run(options.total_budget, options.resume, options.full)

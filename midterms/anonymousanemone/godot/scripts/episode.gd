@@ -15,6 +15,8 @@ var steps := 0
 var invalid_actions := 0
 var case_id := "spell31"
 var notes := []          ## what the player has read and would remember (the heka rule, once looked at)
+var reach_flag := false  ## experiment setting: add `in_reach` to each crocodile
+var _seen := {}          ## visible snouts at the previous observation: crocodile id -> [x, clock]
 
 func _init(scene) -> void:
 	game = scene
@@ -29,9 +31,12 @@ func _init(scene) -> void:
 
 ## `speed_scale` multiplies every wave's crocodile speed (difficulty sweeps; 1.0 = as tuned). It is an
 ## evaluation setting chosen by the caller of reset, not something a player controls. Spell 31's
-## single slow lesson crocodile (`first_speed`) is not scaled.
-func reset(seed: int, situation := "spell31", speed_scale := 1.0) -> Dictionary:
+## single slow lesson crocodile (`first_speed`) is not scaled. `lives` (bites the bearer can take)
+## and `crocodiles` (how many to turn back; one-wave encounters only, 0 = as tuned) are likewise
+## evaluation settings for longer experiments. `reach_flag` adds `in_reach` to each crocodile.
+func reset(seed: int, situation := "spell31", speed_scale := 1.0, lives := 3, crocodiles := 0, reach_flag := false) -> Dictionary:
 	if situation not in CASES: return {"error": "unknown_case"}
+	if crocodiles > 0 and situation == "spell31": return {"error": "crocodiles_needs_one_wave"}
 	game.reset()
 	game.hud.dismiss_intro()
 	game.rng.seed = seed
@@ -42,16 +47,20 @@ func reset(seed: int, situation := "spell31", speed_scale := 1.0) -> Dictionary:
 	steps = 0
 	invalid_actions = 0
 	notes = []
+	_seen = {}
+	self.reach_flag = reach_flag
 	case_id = situation
 	var e: Dictionary = game.ENCOUNTERS[0 if situation == "spell31" else 1]
 	game.avatar.position.x = game.rects[e.spear].get_center().x
 	game._update_camera(1.0)
 	game.start_fight(e)
-	if speed_scale != 1.0:
+	if speed_scale != 1.0 or crocodiles > 0:
 		game.fight.waves = game.fight.waves.map(func(w):
 			var scaled: Dictionary = w.duplicate()
 			scaled.speed = w.speed * speed_scale
+			if crocodiles > 0: scaled.count = crocodiles
 			return scaled)
+	game.fight.health = lives
 	# The human "Press [space] to start" wait is presentation; agents start in the fight as before.
 	if game.fight.tut == "start": game.fight.tut = ""
 	game.say("Scribe", game._hints.text("dangers." + e.id, "instructions"))
@@ -80,6 +89,7 @@ func step(player_id: int, action: Variant) -> Dictionary:
 	if player_id != 0: return {"error": "unknown_player"}
 	if status != "ongoing": return {"error": "episode_terminal", "outcome": outcome()}
 	steps += 1
+	_seen = _visible_snouts()
 	# `look` is optional; when true the other controls are ignored (the hands are off the keys).
 	var valid: bool = action is Dictionary and action.size() == (5 if action.has("look") else 4) and action.has_all(["move", "face", "thrust", "heka"])
 	if valid and action.has("look"):
@@ -125,6 +135,26 @@ func _advance(frames: int) -> void:
 			status = "lost"
 			reason = "three_bites" if game.fight.health <= 0 else "word_stolen"
 
+## Would the spear's stroke, from where it rests to full extension, touch this crocodile where it
+## is now? The game's own strike test (`_croc_strike`) at the current position, without predicting
+## where the crocodile will be when a thrust lands.
+func _in_reach(c: Dictionary) -> bool:
+	var tip0: Vector2 = game.fight.pos + game._tip_offset()
+	var tip: Vector2 = tip0 + game._spear_dir() * game.CROC_THRUST * game.unit
+	var h: Vector2 = game.crocodiles._snout(c)
+	if Geometry2D.get_closest_point_to_segment(h, tip0, tip).distance_to(h) < game.crocodiles.CROC_REACH * game.unit:
+		return true
+	for i in 5:
+		if game.crocodiles._on_croc(c, tip0.lerp(tip, i / 4.0)): return true
+	return false
+
+func _visible_snouts() -> Dictionary:
+	var at := {}
+	for c in game.fight.get("crocs", []):
+		if c.s == "crawl" and c.node.modulate.a >= 0.1:
+			at[c.node.get_instance_id()] = [game.crocodiles._snout(c).x, game.fight.clock]
+	return at
+
 func observe(player_id := 0) -> Dictionary:
 	if player_id != 0: return {"error": "unknown_player"}
 	var visible := []
@@ -132,8 +162,22 @@ func observe(player_id := 0) -> Dictionary:
 		if c.s != "crawl" or c.node.modulate.a < 0.1: continue
 		var snout: Vector2 = game.crocodiles._snout(c)
 		var size: Vector2 = c.node.get_meta("size")
-		visible.append({"snout": [snout.x, snout.y], "direction": c.dir, "red": c.red, "width": size.x, "height": size.y})
+		visible.append({"snout": [snout.x, snout.y], "direction": c.dir, "red": c.red, "width": size.x, "height": size.y,
+			"id": c.node.get_instance_id()})
+		if reach_flag: visible[-1].in_reach = _in_reach(c)
 	var tip: Vector2 = game.fight.pos + game._tip_offset()
+	# Derived only from what is on screen: offsets from the spear tip, the side, and time to reach
+	# the bearer at the motion seen since the previous observation (null until it has been seen moving).
+	for v in visible:
+		var x: float = v.snout[0]
+		v.dx_from_tip = x - tip.x
+		v.dy_from_tip = v.snout[1] - tip.y
+		v.side = "left" if x < game.fight.pos.x else "right"
+		v.seconds_to_bearer = null
+		var was = _seen.get(v.id)
+		if was != null and game.fight.clock > was[1] and absf(x - was[0]) > 0.0:
+			v.seconds_to_bearer = (game.fight.pos.x - x) * v.direction / (absf(x - was[0]) / (game.fight.clock - was[1]))
+		v.erase("id")
 	var direction: Vector2 = game._spear_dir()
 	return {"case": case_id, "time": game.fight.clock, "step_seconds": FRAMES_PER_ACTION * DT,
 		"health": game.fight.health, "killed": game.fight.killed, "total": game.crocodiles._croc_total(),

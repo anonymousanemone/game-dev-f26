@@ -6,8 +6,8 @@ Use these evidence facts to write your account:
 
 | Role | Access and action | Evidence / status |
 |---|---|---|
-| Implementation | Codex read the original Godot project and downloaded assignment; wrote the isolated standalone extraction and midterm tooling; ran local tests and baseline trials. No paid model trials were run. | `AGENTS.md`, source manifest, inherited patch, regression report, deterministic-test report; link/export this implementation session before submission |
-| Reusable skill | `crocodile-evaluation` covers seeded checks, JSON controls, boundaries and honest evaluation evidence. | `skills/crocodile-evaluation/SKILL.md`; first use in this implementation session; a second separate session still needed |
+| Implementation | October 26 Codex sessions extracted the original Godot project and built midterm tooling with local tests/baseline trials, without paid trials. The November 4 session later added the experiment skill/runner and ran the live alignment comparison. | [October 26 sessions](reports/codex-implementation-sessions.md); [November 4 snapshot](reports/codex-review-and-experiment-session.md); [experiment](reports/y-alignment-experiment.md). Link committed evidence from the actual course PR. |
+| Reusable skills | crocodile-evaluation covers seeded checks, JSON controls, boundaries and honest evidence. make-experiment covers controlled experiments and reporting. | [Invocation evidence](reports/skill-sessions.md): two separate sessions for crocodile-evaluation; one actual session for make-experiment. |
 | Independent reviewer | Must be a separate read-only session that did not implement the reviewed code and was not instructed to approve. | `review.md` contains the task; actual review and findings pending |
 
 Write briefly:

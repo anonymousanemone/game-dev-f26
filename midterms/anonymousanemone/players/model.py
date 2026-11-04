@@ -20,12 +20,18 @@ the magic key during the action), look (boolean). In spell31 face must be 0. Eac
 action lasts 0.1 simulation seconds. Thrust lands 0.0833s after initiation and
 cooldown lasts 0.25s. Spear reach extends 15 world pixels along spear_direction
 from tip. Align vertically with an approaching crocodile and thrust while the
-spear reaches its snout or silhouette. Three bites lose. During tutorial "thrust",
+spear reaches its snout or silhouette. You lose when health reaches 0. During tutorial "thrust",
 thrust to begin. Movement speed is 390 world pixels/s. look reads the word of power
 shown above the fight, as a player clicking it would; while you read, your other
 controls are ignored for 1.0 s and the crocodiles keep coming. heka_word_glowing
 says when that word glows. message is what the game last said; notes keeps what
-you have read. The engine freezes while you decide. Earlier observations, if
+you have read. Each crocodile also has dx_from_tip and dy_from_tip (its snout minus
+the spear tip, world pixels), side (left or right of you) and seconds_to_bearer
+(time until its snout reaches you at the speed it was seen moving; null until it
+has been seen moving). in_reach, if present, is true when the spear's thrust would
+touch that crocodile where it is now; it keeps moving before a thrust lands. memory, if supplied, lists what happened earlier in this
+episode, oldest first: your thrusts and looks, crocodiles turned back, bites and
+what the game said. The engine freezes while you decide. Earlier observations, if
 supplied, are bounded history; use successive positions to estimate velocity.
 Choose the action yourself. Do not provide prose or markdown. No tools are
 available.'''
@@ -33,12 +39,13 @@ available.'''
 _token = {'value': None, 'expires': 0.0}
 
 
-def request_payload(observation, history):
+def request_payload(observation, history, memory=None):
     face_range = (-1, 1) if observation['both_sides'] else (0, 0)
     return {
         'systemInstruction': {'parts': [{'text': PROMPT}]},
         'contents': [{'role': 'user', 'parts': [
-            {'text': json.dumps({'history': history, 'observation': observation})}]}],
+            {'text': json.dumps({'history': history, 'observation': observation,
+                                 **({'memory': memory} if memory is not None else {})})}]}],
         'generationConfig': {
             'maxOutputTokens': MAX_OUTPUT_TOKENS,
             'responseMimeType': 'application/json',
@@ -50,8 +57,8 @@ def request_payload(observation, history):
                 'propertyOrdering': ['move', 'face', 'thrust', 'heka', 'look']}}}
 
 
-def cost_reservation(observation, history, model, input_price, output_price):
-    payload = request_payload(observation, history)
+def cost_reservation(observation, history, model, input_price, output_price, memory=None):
+    payload = request_payload(observation, history, memory)
     # UTF-8 byte count bounds text tokens; extra allowance covers message framing.
     # Charge all input at the uncached price, and reserve the full output cap
     # (Gemini bills reasoning tokens as output and counts them against the cap).
@@ -95,11 +102,11 @@ def endpoint(model):
             f'{urllib.parse.quote(location)}/publishers/google/models/{urllib.parse.quote(model)}:generateContent')
 
 
-def choose(observation, history, model, timeout):
+def choose(observation, history, model, timeout, memory=None):
     started = time.monotonic()
     token = access_token(timeout)
     request = urllib.request.Request(endpoint(model),
-        data=json.dumps(request_payload(observation, history)).encode(), headers={
+        data=json.dumps(request_payload(observation, history, memory)).encode(), headers={
             'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json'})
     remaining = max(.01, timeout - (time.monotonic() - started))
     with urllib.request.urlopen(request, timeout=remaining) as response:

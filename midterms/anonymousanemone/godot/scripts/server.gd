@@ -16,7 +16,8 @@ func serve() -> void:
 			result = {"error": "invalid_request"}
 		else:
 			match request.get("op", ""):
-				"reset": result = episode.reset(int(request.get("seed", 30)), request.get("case", "spell31"), float(request.get("speed_scale", 1.0)))
+				"reset": result = episode.reset(int(request.get("seed", 30)), request.get("case", "spell31"), float(request.get("speed_scale", 1.0)),
+					int(request.get("lives", 3)), int(request.get("crocodiles", 0)), bool(request.get("reach_flag", false)))
 				"observe": result = episode.observe(int(request.get("player_id", 0)))
 				"legal_actions": result = episode.legal_actions(int(request.get("player_id", 0)))
 				"step": result = episode.step(int(request.get("player_id", 0)), request.get("action"))

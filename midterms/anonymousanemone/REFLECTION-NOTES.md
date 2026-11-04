@@ -46,6 +46,19 @@ Spell32:
 6. **Discovering heka.** In two sessions the student clicked the heka word 2–3 s after "signs begin to glow red" appeared. In one they clicked before that message, and in another on the scroll before any fight. After clicking, they waited 1.1–3.1 s (about 2.6 s typical) before their next control input. The agent's 1.0 s look cost is at the low end of that, and about 2.5 s would match these recordings better. The student also clicked during a wave break, when looking is cheap; Gemini looked with a crocodile approaching.
 7. **Spell31.** Every spell31 win took 10 thrusts for 9 kills, for the student and the baseline alike. The student's very first attempt was lost with no bites, meaning a word was stolen (a heka mistake or a crocodile that slipped past).
 
+## Does Gemini learn within an episode?
+
+From [the learning experiment](reports/learning-experiment.md) (one episode per setting, development seed 30):
+
+- With 5 lives and 20 crocodiles, no Gemini run did clearly better in its second half than its first. Without memory it turned back none of 20; with an event-log memory it turned back 3, then lost when a crocodile slipped past and stole the word.
+- With memory in the standard game (3 lives, 14 crocodiles) it turned back 1. After reading the shift rule it thrust with heka on 35 steps in a row at a red crocodile 150–290 px away, and its memory filled up with those repeated thrusts.
+- The baseline won 20 of 20 with no bites. Like the agents, it cannot learn across episodes; unlike them, it does not need to.
+- Compare with your own play: you lost your first spell32 attempts and then won, which is the kind of improvement neither agent shows.
+
+## Does a reach flag help?
+
+From [the reach flag experiment](reports/reach-flag-experiment.md): with an `in_reach` flag on each crocodile, Gemini thrust every time the flag was on, but the flag was on for only 2 of its 56 decisions, and it still turned back nothing. A test player that aims like the baseline and thrusts only on the flag won 14 of 14. Gemini's weakness is getting into position (height and facing), not knowing when to press.
+
 ## Limits of these findings
 
 - The recordings store crocodile body positions, not snout positions, so distances in them are not in the same units as the agent traces. Thrusts per kill, timing and bite counts are comparable.
@@ -59,5 +72,5 @@ Spell32:
 - Does the baseline's strength (no bites, wins everything on development cases) help or hurt the comparison you want to make?
 - The baseline now waits 0.4 s (the fast end of your reaction times) before reacting to a crocodile. In the [speed sweep](reports/speed-sweep.md) it stays reliable up to 1.4× the tuned speed, yet you lost first attempts at 1.0×. Does that make it a fairer stand-in for a human, and what does it still do that you don't (exact prediction, no hesitation)?
 - How close is the agent's heka discovery to yours? You kept the look cost at 1.0 s although your recordings show about 2.5 s; why is 1.0 s the right choice?
-- What did you learn from losing your first spell32 attempts, and what does it mean that the agents cannot learn across episodes?
+- What did you learn from losing your first spell32 attempts? What does it mean that the agents do not improve within an episode even with more lives and a memory?
 - How might a first-time player differ from you, and what will the partner playtest add?

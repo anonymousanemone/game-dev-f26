@@ -28,11 +28,41 @@ def version():
     return digest.hexdigest()
 
 
+MEMORY_EVENTS = 60   # the event log keeps the most recent entries
+
+
+def memory_events(before, action, after):
+    """What one step added to the model's event log: its own action and what it was then shown."""
+    t0, t1 = f"t={before['time']:.1f}s", f"t={after['time']:.1f}s"
+    events = []
+    if action and action.get('look'):
+        events.append(f'{t0}: looked at the word of power')
+    elif action and action.get('thrust'):
+        heka = 'on' if action.get('heka') else 'off'
+        if before['crocodiles']:
+            c = min(before['crocodiles'], key=lambda c: abs(c['dx_from_tip']))
+            events.append(f"{t0}: thrust, heka {heka}; nearest crocodile {'red' if c['red'] else 'plain'}, "
+                          f"{c['side']}, dx_from_tip {round(c['dx_from_tip'])}, dy_from_tip {round(c['dy_from_tip'])}")
+        else:
+            events.append(f'{t0}: thrust, heka {heka}; no crocodile visible')
+    if after['killed'] > before['killed']:
+        n = after['killed'] - before['killed']
+        events.append(f"{t1}: {n} crocodile{'s' if n > 1 else ''} turned back (total {after['killed']})")
+    if after['health'] < before['health']:
+        events.append(f"{t1}: bitten, health now {after['health']}")
+    if after['message'] != before['message'] and after['message']:
+        events.append(f"{t1}: game said: {after['message']}")
+    return events
+
+
 def episode(engine, case, seed, policy, args, suite, trace, budget=None):
     if budget is None:
         budget = {'reserved_usd': 0.0}
     initial_reservation = budget['reserved_usd']
-    observation = engine.call('reset', seed=seed, case=case)
+    observation = engine.call('reset', seed=seed, case=case, lives=getattr(args, 'lives', 3),
+                              crocodiles=getattr(args, 'crocodiles', 0),
+                              reach_flag=getattr(args, 'reach_flag', False))
+    memory = [] if getattr(args, 'memory', False) else None
     history = []
     calls = failed_calls = input_tokens = output_tokens = 0
     started = time.monotonic()
@@ -53,7 +83,7 @@ def episode(engine, case, seed, policy, args, suite, trace, budget=None):
         else:
             model_history = history[-args.history:] if args.history else []
             reserve = model.cost_reservation(observation, model_history, args.model,
-                                            args.input_price, args.output_price)
+                                            args.input_price, args.output_price, memory)
             max_cost = getattr(args, 'max_cost_usd', None)
             if max_cost is not None and budget['reserved_usd'] + reserve > max_cost:
                 outcome.update(status='limit', terminal=True, reason='cost_limit')
@@ -62,7 +92,7 @@ def episode(engine, case, seed, policy, args, suite, trace, budget=None):
             calls += 1  # Includes provider errors and timeouts.
             try:
                 action, usage, raw, response_id = model.choose(observation, model_history, args.model,
-                    min(args.call_timeout, max(.01, args.episode_timeout - (before - started))))
+                    min(args.call_timeout, max(.01, args.episode_timeout - (before - started))), memory)
             except Exception as exc:
                 # Store the error type, never provider bodies which might contain credentials.
                 error = type(exc).__name__
@@ -82,7 +112,10 @@ def episode(engine, case, seed, policy, args, suite, trace, budget=None):
             'step': result['outcome']['steps'], 'simulation_frame': result['outcome']['steps'] * 6,
             'wall_elapsed_seconds': time.monotonic() - started,
             'source': policy, 'fallback': action is None, 'error': error, 'raw': raw,
-            'response_id': response_id, 'usage': usage, 'latency_seconds': elapsed, 'result': result})
+            'response_id': response_id, 'usage': usage, 'latency_seconds': elapsed, 'result': result,
+            **({'memory_sent': memory} if memory is not None and policy == 'model' else {})})
+        if memory is not None and 'observation' in result:
+            memory = (memory + memory_events(observation, action, result['observation']))[-MEMORY_EVENTS:]
         history.append(observation)
         history = history[-10:]  # the model sees at most the last 2; the baseline's reaction delay looks back 0.6 s
         observation = result['observation']
@@ -112,6 +145,10 @@ def main():
     parser.add_argument('--split', choices=['development', 'held_out'], default='development')
     parser.add_argument('--case', choices=['spell31', 'spell32', 'spell32_low'])
     parser.add_argument('--history', type=int, choices=[0, 2], default=2)
+    parser.add_argument('--memory', action='store_true', help='Give the model an event log of this episode')
+    parser.add_argument('--reach-flag', action='store_true', help='Experiment: add in_reach to each crocodile')
+    parser.add_argument('--lives', type=int, default=3, help='Evaluation setting: bites the bearer can take')
+    parser.add_argument('--crocodiles', type=int, default=0, help='Evaluation setting: crocodiles to turn back (spell32 cases; 0 = as tuned)')
     parser.add_argument('--max-calls', type=int, default=1200)
     parser.add_argument('--call-timeout', type=float, default=30)
     parser.add_argument('--episode-timeout', type=float, default=1800)

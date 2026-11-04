@@ -235,7 +235,7 @@
     },
     {
       "destination": "godot/scripts/episode.gd",
-      "destination_sha256": "a1066c7ac584b018290f6b42fbb04fc672cbf6414b62dbca2517831b85a089e8",
+      "destination_sha256": "214440be2a07406bd27876f8b3645c64a11ff337ac76f6cf03e73527138f75cd",
       "added_for_midterm": true
     },
     {
@@ -308,7 +308,7 @@
     },
     {
       "destination": "godot/scripts/server.gd",
-      "destination_sha256": "d1addb45f8264f418ceae00a3ec3267b48d2037fd590c2653ab8bf0d026d5f92",
+      "destination_sha256": "1d4d7a9ae2dde439f1ccd301b49ad593db40bb091e6a7f2c4b7e41ddf0eff578",
       "added_for_midterm": true
     },
     {

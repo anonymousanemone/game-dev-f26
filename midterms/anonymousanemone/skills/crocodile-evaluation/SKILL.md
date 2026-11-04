@@ -3,7 +3,8 @@ name: crocodile-evaluation
 description: Validate and report this project's Godot crocodile episodes and observation boundaries without contaminating held-out evaluation cases.
 ---
 
-Use the Godot engine through `players.engine.Engine`; do not implement a second simulator.
+Run commands from `midterms/anonymousanemone/`. Use the Godot engine through
+`players.engine.Engine`; do not implement a second simulator.
 Read `suite.json` before selecting cases. Development uses its development seeds only;
 held-out seeds are for final evaluation after tuning is frozen.
 
@@ -18,7 +19,17 @@ Count failed calls, identify neutral fallbacks, and report live and mocked evide
 
 Before interpreting scores, inspect the observations and legal-action vocabulary for
 spawn timers, future color schedules, RNG state, correct-target hints and hidden velocities.
-Baseline and model must receive the same observations. Never report direct-state rule
+Standard baseline/model comparisons must use the same observation representation.
+Record actual history access and prior knowledge: the baseline retains up to ten
+observations for its reaction delay and knows the heka rule; standard model runs
+use history=0 or 2 and discover that rule. The baseline summary's `history: 2`
+does not describe its full retained history. Optional event memory is a separate
+development variant. Keep speed/lives/count overrides and reach assistance out of
+standard suite results. The existing `--reach-flag` queries the exact engine
+strike/silhouette test and must be labeled privileged assistance, not ordinary
+visible-state input. Labeling a variant experimental does not remove its boundary
+conflicts. Use `skills/make-experiment/SKILL.md` for exploratory plans/comparisons.
+Never report direct-state rule
 fixtures as agent victories. Record game and suite hashes and link raw episode traces.
 
 Report what was actually run. Independent review, two separate skill sessions, live

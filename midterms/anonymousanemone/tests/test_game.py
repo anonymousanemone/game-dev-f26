@@ -81,6 +81,51 @@ class GameTests(unittest.TestCase):
         self.engine.call('reset', seed=30, case='spell32')
         self.assertAlmostEqual(per_step(1.0), normal)
 
+    def test_crocodile_distances_derived_from_the_screen(self):
+        # Precomputed from visible positions so the model need not do coordinate arithmetic.
+        o = self.engine.call('reset', seed=30, case='spell32')
+        while not o['crocodiles']:
+            o = self.engine.call('step', action=WAIT)['observation']
+        first = o['crocodiles'][0]
+        self.assertIsNone(first['seconds_to_bearer'])  # motion not yet seen
+        o = self.engine.call('step', action=WAIT)['observation']
+        c = o['crocodiles'][0]
+        self.assertAlmostEqual(c['dx_from_tip'], c['snout'][0] - o['tip'][0])
+        self.assertAlmostEqual(c['dy_from_tip'], c['snout'][1] - o['tip'][1])
+        self.assertEqual(c['side'], 'left' if c['snout'][0] < o['player_x'] else 'right')
+        moved = abs(c['snout'][0] - first['snout'][0]) / o['step_seconds']
+        expected = (o['player_x'] - c['snout'][0]) * c['direction'] / moved
+        self.assertAlmostEqual(c['seconds_to_bearer'], expected, places=2)
+
+    def test_lives_and_crocodile_count_settings(self):
+        # Evaluation settings for longer learning experiments; defaults are the tuned game.
+        o = self.engine.call('reset', seed=30, case='spell32')
+        self.assertEqual((o['health'], o['total']), (3, 14))
+        o = self.engine.call('reset', seed=30, case='spell32', lives=5, crocodiles=20)
+        self.assertEqual((o['health'], o['total']), (5, 20))
+        self.assertEqual(self.engine.call('reset', seed=30, case='spell31', crocodiles=20),
+                         {'error': 'crocodiles_needs_one_wave'})
+
+    def test_optional_in_reach_flag(self):
+        # Geometry only: the spear's stroke touches the crocodile where it is now (no prediction).
+        o = self.engine.call('reset', seed=30, case='spell32')
+        while not o['crocodiles']:
+            o = self.engine.call('step', action=WAIT)['observation']
+        self.assertNotIn('in_reach', o['crocodiles'][0])  # off unless an experiment asks for it
+        o = self.engine.call('reset', seed=30, case='spell32', reach_flag=True)
+        history, flagged = [], []
+        for _ in range(150):
+            r = self.engine.call('step', action=choose(o, history))
+            history, o = (history + [o])[-10:], r['observation']
+            for c in o['crocodiles']:
+                self.assertIsInstance(c['in_reach'], bool)
+                if c['in_reach']: flagged.append(c)
+            if r['outcome']['terminal']: break
+        self.assertTrue(flagged)
+        for c in flagged:
+            self.assertLess(abs(c['dy_from_tip']), c['height'])
+            self.assertLess(abs(c['dx_from_tip']), c['width'])
+
     def test_deterministic_seeded_replay(self):
         def play():
             self.engine.call('reset', seed=30, case='spell32')

@@ -4,15 +4,15 @@ Automatically assembled from actual run summaries; this is not held-out evaluati
 
 | Player/model | Case/seed | Outcome/reason | Score | Steps | Illegal | Calls/failed | Mean decision seconds | Input/output tokens | Estimated USD |
 |---|---|---|---:|---:|---:|---|---:|---|---:|
-| baseline / heuristic | spell32/30 | won: all_crocodiles_defeated | 14 | 189 | 0 | 0/0 | 0.000016 | 0/0 | 0.000000 |
-| model / gemini-3.5-flash-lite | spell32/30 | lost: three_bites | 0 | 65 | 0 | 56/0 | 0.995914 | 77437/2132 | 0.028561 |
+| baseline / heuristic | spell32/30 | won: all_crocodiles_defeated | 14 | 215 | 0 | 0/0 | 0.000006 | 0/0 | 0.000000 |
+| model / gemini-3.5-flash-lite | spell32/30 | lost: three_bites | 0 | 65 | 0 | 56/0 | 1.465467 | 102736/2144 | 0.036181 |
 
-[Trace](../playtrace/20261104T054253858015Z-baseline-h2-development/spell32-30.jsonl) · [Configuration](../playtrace/20261104T054253858015Z-baseline-h2-development/configuration.json) · [Summary](../playtrace/20261104T054253858015Z-baseline-h2-development/summary.json)
+[Trace](../playtrace/20261104T062200879251Z-baseline-h2-development/spell32-30.jsonl) · [Configuration](../playtrace/20261104T062200879251Z-baseline-h2-development/configuration.json) · [Summary](../playtrace/20261104T062200879251Z-baseline-h2-development/summary.json)
 
 
-[Trace](../playtrace/20261104T054256539690Z-model-h2-development/spell32-30.jsonl) · [Configuration](../playtrace/20261104T054256539690Z-model-h2-development/configuration.json) · [Summary](../playtrace/20261104T054256539690Z-model-h2-development/summary.json)
+[Trace](../playtrace/20261104T062201832076Z-model-h2-development/spell32-30.jsonl) · [Configuration](../playtrace/20261104T062201832076Z-model-h2-development/configuration.json) · [Summary](../playtrace/20261104T062201832076Z-model-h2-development/summary.json)
 
-Game SHA-256: `2080c4bf56fbe2419cdf4f4f2e5f3a2f1c8e1e6cf5eb958e58687f660871c97f`.
+Game SHA-256: `703288e2055d3cfab2aa29f8e4c5c0fc7dc5204d48e62001d0d7cce9b5b4cddb`.
 
 Dated prices: 2026-11-03; [provider price source](https://cloud.google.com/model-garden/pricing). Uncached input prices are used for the estimate; reconcile failed-call billing with the provider.
 

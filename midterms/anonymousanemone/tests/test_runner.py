@@ -1,4 +1,5 @@
 import io
+import json
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
@@ -57,6 +58,31 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(summary['failed_calls'], 2)
         self.assertGreater(budget['reserved_usd'], 0)
         self.assertEqual(summary['reserved_cost_usd'], budget['reserved_usd'])
+
+
+class MemoryTests(unittest.TestCase):
+    """The model's optional event log, built only from its own actions and what it was shown."""
+
+    def test_events_from_one_step(self):
+        from players.run import memory_events
+        croc = {'snout': [300.0, 500.0], 'direction': 1, 'red': False, 'dx_from_tip': -67.0,
+                'dy_from_tip': 9.0, 'side': 'left', 'seconds_to_bearer': 0.7}
+        before = {'time': 2.0, 'health': 3, 'killed': 0, 'message': 'Go.', 'notes': [], 'crocodiles': [croc]}
+        after = dict(before, time=2.1, health=2, killed=1, message='A crocodile earns a snack.')
+        events = memory_events(before, dict(move=0, face=0, thrust=True, heka=False), after)
+        self.assertEqual(events, [
+            't=2.0s: thrust, heka off; nearest crocodile plain, left, dx_from_tip -67, dy_from_tip 9',
+            't=2.1s: 1 crocodile turned back (total 1)',
+            't=2.1s: bitten, health now 2',
+            't=2.1s: game said: A crocodile earns a snack.'])
+        self.assertEqual(memory_events(before, dict(move=1, face=0, thrust=False, heka=False), before), [])
+
+    def test_memory_reaches_the_request_only_when_given(self):
+        from players import model
+        o = {'both_sides': True}
+        self.assertNotIn('memory', json.loads(model.request_payload(o, [])['contents'][0]['parts'][0]['text']))
+        sent = json.loads(model.request_payload(o, [], ['t=1.0s: bitten'])['contents'][0]['parts'][0]['text'])
+        self.assertEqual(sent['memory'], ['t=1.0s: bitten'])
 
 
 class VertexAdapterTests(unittest.TestCase):

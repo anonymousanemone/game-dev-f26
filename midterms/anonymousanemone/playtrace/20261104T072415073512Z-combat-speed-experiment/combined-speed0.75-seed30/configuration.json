@@ -1,0 +1,51 @@
+{
+  "date_utc": "20261104T072703399070Z",
+  "provider": "vertex",
+  "case": "spell32",
+  "split": "exploratory-development",
+  "declared_seeds": [
+    30,
+    31,
+    32
+  ],
+  "total_budget_usd": 3.0,
+  "arguments": {
+    "model": "gemini-3.5-flash-lite",
+    "history": 2,
+    "memory": false,
+    "lives": 3,
+    "crocodiles": 0,
+    "reach_flag": false,
+    "max_calls": 1200,
+    "call_timeout": 30,
+    "episode_timeout": 300,
+    "max_cost_usd": 0.25,
+    "input_price": 0.3,
+    "output_price": 2.5,
+    "price_date": "2026-11-03",
+    "price_source": "https://cloud.google.com/model-garden/pricing"
+  },
+  "game_version": "4691db9ee9c68dfeccd945014cf166b33a10e6c2886a2d78a2a9d80e42effa31",
+  "suite_sha256": "ec3c1399d77b9bbfdacef14246234a20421a1e6540ec55d618cbbe35a756c752",
+  "godot_version": "4.7.2.stable.official.ed1daf0bf",
+  "max_output_tokens": 1024,
+  "player_source_sha256": {
+    "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "alignment_experiment.py": "0f796c4223a7e8ebd4f27ef9b0f75bea1c746d89cf75f0bf815af15f07d3cbe1",
+    "baseline.py": "6ab481133dae41a5b07e493e372fae408e7caaac9b656c3b6ba6015cd7468110",
+    "checkpoint.py": "4b667ae9456b7cb94fdb67717b5f52b4bde110999c3ece4217551811099d20ce",
+    "combat_experiment.py": "330f93e141ed90e908b2a6b4aed8141f2066cfff2ec86808eb2bea6f97c4987c",
+    "config.py": "989a30e1c361ec6d436a494868dc34a67617f1dc2edde47cd2cb714c77e64090",
+    "engine.py": "5f9a47fee4acdc4efb1f3711897bf9847017ca52caf079f5d6f022670f22cc3a",
+    "model.py": "817a05d24c6548e32d0b9595d59991bf388dcd6baf9f779b6a0a54284186ec4a",
+    "replay.py": "279be80fccea44e09164ea8f9966abf08ae115d12e373b3c928d93b2c1c6c1fa",
+    "run.py": "7d4ca21e6215724df0aa620fe791318c1af5d3d04bc58242c3630f0a5c740849",
+    "speed_sweep.py": "e524c9306e8d5aac4f6bea0baf591db5b9c3428b6ea705028f968840f2c423ae",
+    "traces.py": "efd1791f865f23f4516bead772a1f4980740634a7f9085588dc89e0c2a2ff5fa"
+  },
+  "variant": "combined",
+  "speed_scale": 0.75,
+  "seed": 30,
+  "prompt": "You play Crocodiles. Return one JSON object with exactly move (-1 up, 0 still,\n1 down), face (-1 left, 0 unchanged, 1 right), thrust (boolean), heka (boolean: hold\nthe magic key during the action), look (boolean). In spell31 face must be 0. Each\naction lasts 0.1 simulation seconds. Thrust lands 0.0833s after initiation and\ncooldown lasts 0.25s. Spear reach extends 15 world pixels along spear_direction\nfrom tip. Align vertically with an approaching crocodile and thrust while the\nspear reaches its snout or silhouette. You lose when health reaches 0. During tutorial \"thrust\",\nthrust to begin. Movement speed is 390 world pixels/s. look reads the word of power\nshown above the fight, as a player clicking it would; while you read, your other\ncontrols are ignored for 1.0 s and the crocodiles keep coming. heka_word_glowing\nsays when that word glows. message is what the game last said; notes keeps what\nyou have read. Each crocodile also has dx_from_tip and dy_from_tip (its snout minus\nthe spear tip, world pixels), side (left or right of you) and seconds_to_bearer\n(time until its snout reaches you at the speed it was seen moving; null until it\nhas been seen moving). in_reach, if present, is true when the spear's thrust would\ntouch that crocodile where it is now; it keeps moving before a thrust lands. memory, if supplied, lists what happened earlier in this\nepisode, oldest first: your thrusts and looks, crocodiles turned back, bites and\nwhat the game said. The engine freezes while you decide. Earlier observations, if\nsupplied, are bounded history; use successive positions to estimate velocity.\nChoose the action yourself. Do not provide prose or markdown. No tools are\navailable.\nLine up with approaching crocodiles by matching the spear tip's y level to the crocodile's snout y level (dy_from_tip near zero). Positive dy_from_tip means the crocodile is below your spear: move=1 moves down toward it. Negative dy_from_tip means it is above: move=-1 moves up toward it. Use move=0 once lined up; a movement action shifts you about 39 world pixels.\nFor each decision, choose the approaching crocodile with the smallest nonnegative\nseconds_to_bearer; if none has an estimate, use the closest visible snout to the\nbearer. Use that same target for facing, vertical alignment, timing and heka.\nIn spell32 face=-1 for a target on your left and face=1 for one on your right;\nin spell31 keep face=0. Reassess the target on the next observation.\nWhen attacking a red crocodile use heka=true; when attacking an ordinary\ncrocodile use heka=false. Heka on an ordinary crocodile loses the encounter.\nDo not keep heka on indiscriminately after reading the word.\nEstimate target velocity from successive visible snout positions and times.\nPredict its snout position 5/60 seconds ahead, when the thrust lands, and compare\nwith the spear stroke at your chosen facing. Turning changes the tip position:\nreflect tip.x about player_x if you turn. Thrust only when vertically aligned\nand the predicted snout or silhouette will meet the spear stroke. When thrusting\nhold move=0 to preserve alignment. If thrusting is already true, do not request\nanother thrust; use subsequent observations to wait for attack availability.\nReading with look costs 1.0 simulation seconds; avoid reading during an imminent\nattack. No visible target: stay still with thrust=false and heka=false.",
+  "prompt_sha256": "266b037a82f744197692ef37585dcac34e5695fc2729a7c55a8ddb2630ccebf9"
+}

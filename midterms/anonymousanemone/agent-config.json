@@ -2,7 +2,11 @@
   "implementation": {
     "instructions": "AGENTS.md",
     "session_link": null,
-    "status": "implementation present; session link still required"
+    "session_exports": [
+      "reports/codex-implementation-sessions.md",
+      "reports/codex-review-and-experiment-session.md"
+    ],
+    "status": "implementation transcripts exported locally; link committed exports from the actual course PR"
   },
   "reusable_skill": {
     "name": "crocodile-evaluation",
@@ -13,6 +17,12 @@
     "instructions": "review.md",
     "status": "pending separate read-only review; implementation session is not independent"
   },
+  "experiment_skill": {
+    "name": "make-experiment",
+    "instructions": "skills/make-experiment/SKILL.md",
+    "evidence": "reports/skill-sessions.md",
+    "example_report": "reports/y-alignment-experiment.md"
+  },
   "player": {
     "entrypoint": "python -m players.run --policy model --split development --case spell31",
     "adapter": "players/model.py",
@@ -20,7 +30,16 @@
     "default_model": "gemini-3.5-flash-lite",
     "credentials": "Google Application Default Credentials; project/location from private .env or process environment; never player inputs",
     "tools": [],
-    "observations": "visible observations and at most two earlier observations",
+    "observations": "standard model runs: visible observations, persistent read notes, and history=0 or 2 earlier observations; optional exploratory memory adds the most recent 60 observation/action-derived events",
+    "baseline_history": "up to ten earlier observations for reaction-delay tracking; velocity estimation uses the previous observation; baseline summaries currently label history as 2",
+    "standard_settings": {
+      "speed_scale": 1.0,
+      "lives": 3,
+      "crocodiles": 0,
+      "memory": false,
+      "reach_flag": false
+    },
+    "experimental_inputs": "reach_flag uses the exact engine strike/silhouette test and is privileged assistance; exclude it from standard observation-only comparisons",
     "max_cost_usd": 10,
     "trace_directory": "playtrace"
   }

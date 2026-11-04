@@ -155,6 +155,19 @@ class GameTests(unittest.TestCase):
         self.assertEqual(self.engine.call('legal_actions'), [])
         self.assertEqual(self.engine.call('step', action=WAIT)['error'], 'episode_terminal')
 
+    def test_look_stops_at_remaining_step_budget(self):
+        for action in (dict(WAIT, look=True), dict(WAIT, look='invalid')):
+            self.engine.call('reset', seed=30, case='spell31')
+            for _ in range(1195):
+                self.engine.call('step', action=WAIT)
+            result = self.engine.call('step', action=action)
+            expected = 1200 if action['look'] is True else 1196
+            self.assertEqual(result['outcome']['steps'], expected)
+            self.assertAlmostEqual(result['observation']['time'], expected / 10)
+            self.assertEqual(result['valid'], action['look'] is True)
+            if result['valid']:
+                self.assertEqual(result['outcome']['reason'], 'step_limit')
+
     def test_baseline_complete_successful_path(self):
         observation = self.engine.call('reset', seed=30, case='spell31')
         history = []
@@ -185,7 +198,7 @@ class GameTests(unittest.TestCase):
     def test_original_scene_and_artwork_preserved(self):
         import hashlib
         import re
-        manifest = json.loads((ROOT/'reports/direct-extraction.json').read_text())
+        manifest = json.loads((ROOT/'reports/provenance/direct-extraction.json').read_text())
         text = (ROOT/'godot/scenes/dangers.tscn').read_text()
         blocks = re.split(r'(?=^\[(?:ext_resource|sub_resource|node)\b)', text, flags=re.M)
         # Trailing whitespace is ignored: Godot adds or drops blank lines between blocks on save.

@@ -8,6 +8,13 @@ from players.engine import Engine
 
 
 class RunnerTests(unittest.TestCase):
+    def test_baseline_summary_reports_actual_history_capacity(self):
+        with Engine() as engine:
+            summary = run.episode(engine, 'spell31', 30, 'baseline', self.args(), {}, io.StringIO())
+        self.assertEqual(summary['history'], 10)
+        self.assertTrue(summary['derived_motion_in_observation'])
+        self.assertEqual(summary['memory_events_capacity'], 0)
+
     def args(self, **changes):
         values = dict(history=2, model='test-model', episode_timeout=30, max_calls=2,
                       call_timeout=1, input_price=1, output_price=2,
@@ -35,6 +42,8 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(summary['input_tokens'], 200)
         self.assertAlmostEqual(summary['estimated_cost_usd'], .00024)
         self.assertEqual(summary['failed_calls'], 0)
+        self.assertEqual(summary['history'], 0)
+        self.assertTrue(summary['derived_motion_in_observation'])
         self.assertEqual(summary['outcome']['reason'], 'model_call_limit')
 
     def test_episode_timeout_before_first_call(self):

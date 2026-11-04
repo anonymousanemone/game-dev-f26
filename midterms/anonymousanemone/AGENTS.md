@@ -14,7 +14,7 @@ off in standard suite runs; label its historical results separately. Do not
 silently promote privileged inputs into the standard interface.
 
 Automated episodes use 1/60 s fixed ticks: ordinary and invalid actions advance
-up to six frames; `look` idles for up to 60 frames and counts as ten steps.
+up to six frames; `look` idles for up to 60 frames and counts as up to ten steps, capped by the remaining episode budget.
 Simulation stops early on an encounter ending. Native human sessions retain
 actual frame timing and original input semantics, not the fixed action cadence.
 
@@ -40,7 +40,7 @@ matched comparisons and reports. Live experiments require the user's provider,
 model, dated prices and spending authorization plus configured credentials;
 carry remaining allowance across invocations, including failed-call reservations.
 Creating a skill is not evidence of using it; record actual sessions/artifacts in
-`reports/skill-sessions.md` and references in `agent-config.json`.
+`reports/sessions/skill-sessions.md` and references in `agent-config.json`.
 Do not fabricate live trials, independent review, peer notes, skill sessions or a
 student-authored log. Reports must identify remaining work honestly.
 Keep screenshots and preview artifacts outside the project. Do not commit keys,
@@ -53,4 +53,4 @@ textures, metadata, camera, papyrus, HUD and arena animations. Remove only unuse
 encounter sprites and their code/movement. Do not create substitute arenas,
 layout resources or a replacement HUD. The episode adapter wraps the actual
 scene and must preserve its gameplay rules. The original node/resource hashes
-are recorded in `reports/direct-extraction.json`.
+are recorded in `reports/provenance/direct-extraction.json`.

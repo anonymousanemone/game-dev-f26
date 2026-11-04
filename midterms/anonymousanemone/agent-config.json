@@ -3,15 +3,15 @@
     "instructions": "AGENTS.md",
     "session_link": null,
     "session_exports": [
-      "reports/codex-implementation-sessions.md",
-      "reports/codex-review-and-experiment-session.md"
+      "reports/sessions/codex-implementation-sessions.md",
+      "reports/sessions/codex-review-and-experiment-session.md"
     ],
     "status": "implementation transcripts exported locally; link committed exports from the actual course PR"
   },
   "reusable_skill": {
     "name": "crocodile-evaluation",
     "instructions": "skills/crocodile-evaluation/SKILL.md",
-    "evidence": "reports/skill-sessions.md"
+    "evidence": "reports/sessions/skill-sessions.md"
   },
   "independent_review": {
     "instructions": "review.md",
@@ -20,8 +20,8 @@
   "experiment_skill": {
     "name": "make-experiment",
     "instructions": "skills/make-experiment/SKILL.md",
-    "evidence": "reports/skill-sessions.md",
-    "example_report": "reports/y-alignment-experiment.md"
+    "evidence": "reports/sessions/skill-sessions.md",
+    "example_report": "reports/experiments/y-alignment-experiment.md"
   },
   "player": {
     "entrypoint": "python -m players.run --policy model --split development --case spell31",
@@ -30,8 +30,8 @@
     "default_model": "gemini-3.5-flash-lite",
     "credentials": "Google Application Default Credentials; project/location from private .env or process environment; never player inputs",
     "tools": [],
-    "observations": "standard model runs: visible observations, persistent read notes, and history=0 or 2 earlier observations; optional exploratory memory adds the most recent 60 observation/action-derived events",
-    "baseline_history": "up to ten earlier observations for reaction-delay tracking; velocity estimation uses the previous observation; baseline summaries currently label history as 2",
+    "observations": "standard model runs: visible observations including seconds_to_bearer derived from consecutive visible positions, persistent read notes, and history=0 or 2 explicit earlier observations; both settings retain derived motion; optional exploratory memory adds the most recent 60 observation/action-derived events",
+    "baseline_history": "up to ten earlier observations; new summaries report history=10 (historical summaries reported 2 incorrectly)",
     "standard_settings": {
       "speed_scale": 1.0,
       "lives": 3,
@@ -47,7 +47,7 @@
       "source": "players/model.py:PROMPT",
       "sha256": "266b037a82f744197692ef37585dcac34e5695fc2729a7c55a8ddb2630ccebf9",
       "selected_date": "2026-11-04",
-      "evidence": "reports/combat-speed-full.md",
+      "evidence": "reports/experiments/combat-speed-full.md",
       "status": "student-selected final tuned prompt; held-out evaluation pending",
       "rule_knowledge": "Explicit combat procedure and red/plain heka rule supplied in the prompt; no longer requires discovery by look."
     }

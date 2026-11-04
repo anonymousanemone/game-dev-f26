@@ -22,8 +22,11 @@ spawn timers, future color schedules, RNG state, correct-target hints and hidden
 Standard baseline/model comparisons must use the same observation representation.
 Record actual history access and prior knowledge: the baseline retains up to ten
 observations for its reaction delay and knows the heka rule; standard model runs
-use history=0 or 2 and discover that rule. The baseline summary's `history: 2`
-does not describe its full retained history. Optional event memory is a separate
+use history=0 or 2 explicit observations and the final tuned prompt also teaches
+the heka rule. Both model conditions receive derived seconds_to_bearer and
+persistent read notes. They compare additional explicit snapshots, not motion
+access versus no motion access. New baseline summaries report history=10;
+historical summaries reported 2 incorrectly. Optional event memory is a separate
 development variant. Keep speed/lives/count overrides and reach assistance out of
 standard suite results. The existing `--reach-flag` queries the exact engine
 strike/silhouette test and must be labeled privileged assistance, not ordinary

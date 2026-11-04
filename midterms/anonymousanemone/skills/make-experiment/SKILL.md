@@ -121,8 +121,8 @@ ranking; correlation in a trace does not establish causation. Report null and
 negative findings without tuning the conclusion to the desired result.
 
 For report examples, consult only those relevant to the experiment:
-`reports/learning-experiment.md` (memory/lives/counts), `reports/speed-sweep.md`
-(difficulty and reaction delay), and `reports/reach-flag-experiment.md`
+`reports/experiments/learning-experiment.md` (memory/lives/counts), `reports/experiments/speed-sweep.md`
+(difficulty and reaction delay), and `reports/experiments/reach-flag-experiment.md`
 (observation assistance). They are historical evidence, not templates to copy
 uncritically: flag confounds, boundary problems, and unsupported causal claims.
 

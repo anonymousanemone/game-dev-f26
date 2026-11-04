@@ -48,7 +48,7 @@ Spell32:
 
 ## Does Gemini learn within an episode?
 
-From [the learning experiment](reports/learning-experiment.md) (one episode per setting, development seed 30):
+From [the learning experiment](reports/experiments/learning-experiment.md) (one episode per setting, development seed 30):
 
 - With 5 lives and 20 crocodiles, no Gemini run did clearly better in its second half than its first. Without memory it turned back none of 20; with an event-log memory it turned back 3, then lost when a crocodile slipped past and stole the word.
 - With memory in the standard game (3 lives, 14 crocodiles) it turned back 1. After reading the shift rule it thrust with heka on 35 steps in a row at a red crocodile 150–290 px away, and its memory filled up with those repeated thrusts.
@@ -57,7 +57,7 @@ From [the learning experiment](reports/learning-experiment.md) (one episode per 
 
 ## Does a reach flag help?
 
-From [the reach flag experiment](reports/reach-flag-experiment.md): with an `in_reach` flag on each crocodile, Gemini thrust every time the flag was on, but the flag was on for only 2 of its 56 decisions, and it still turned back nothing. A test player that aims like the baseline and thrusts only on the flag won 14 of 14. Gemini's weakness is getting into position (height and facing), not knowing when to press.
+From [the reach flag experiment](reports/experiments/reach-flag-experiment.md): with an `in_reach` flag on each crocodile, Gemini thrust every time the flag was on, but the flag was on for only 2 of its 56 decisions, and it still turned back nothing. A test player that aims like the baseline and thrusts only on the flag won 14 of 14. Gemini's weakness is getting into position (height and facing), not knowing when to press.
 
 ## Limits of these findings
 

@@ -17,17 +17,6 @@ from .traces import archive
 COMBAT = model.COMBAT_INSTRUCTION
 
 
-class SpeedEngine:
-    """Trusted reset override only; observations/actions pass through unmodified."""
-    def __init__(self, engine, speed):
-        self.engine, self.speed = engine, speed
-
-    def call(self, op, **kwargs):
-        if op == 'reset':
-            kwargs['speed_scale'] = self.speed
-        return self.engine.call(op, **kwargs)
-
-
 def run(total_budget, resume=None, full=False):
     ceiling = 10 if full else 3
     if not 0 < total_budget <= ceiling:
@@ -78,6 +67,7 @@ def run(total_budget, resume=None, full=False):
                 if version() != game_hash:
                     raise RuntimeError('Game changed; stopping')
                 model.PROMPT = control if label == 'current' else control + '\n' + COMBAT
+                args.speed_scale = speed
                 folder = output / f'{label}-speed{speed}-seed{seed}'
                 folder.mkdir()
                 config = dict(common, variant=label, speed_scale=speed, seed=seed,
@@ -88,7 +78,7 @@ def run(total_budget, resume=None, full=False):
                 metadata.update(policy='model', speed_scale=speed)
                 with Engine() as engine, path.open('x') as trace:
                     write_trace(trace, metadata)
-                    summary = episode(SpeedEngine(engine, speed), 'spell32', seed, 'model', args,
+                    summary = episode(engine, 'spell32', seed, 'model', args,
                                       suite, trace, budget={'reserved_usd': 0.0})
                 (folder/'summary.json').write_text(json.dumps(summary, indent=2)+'\n')
                 results.append(dict(variant=label, speed_scale=speed, seed=seed, **metrics(path)))

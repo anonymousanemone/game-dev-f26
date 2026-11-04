@@ -16,14 +16,14 @@
 - [x] October 26 checkpoint branch pushed to the course fork; dedicated GitHub CI passed all 14 deterministic tests.
 - [x] In-game Record session beside Begin; native-input session replay, exact frame-delta preservation, local build archives and tamper checks.
 - [x] Crocodile speeds and arrival spacing synced with the tuned Totenbuch (commit 0d5a340), including returning crocodiles; deterministic spacing fixtures and current development baseline traces.
-- [x] Identify the Lepsius digital edition, digital-version supplier, repository, DOI/URN, deposit date and actual linked reuse notice in CREDITS.md and reports/lepsius-provenance.json.
+- [x] Identify the Lepsius digital edition, digital-version supplier, repository, DOI/URN, deposit date and actual linked reuse notice in CREDITS.md and reports/provenance/lepsius-provenance.json.
 
 ## Still needs actual evidence / student work
 
 - [x] Record the public-domain basis for the Lepsius edition: published 1842, copyright expired, and faithful scans create no new copyright (§ 68 UrhG; *Bridgeman v. Corel*). Recorded in CREDITS.md.
 - [x] Record the OldFax.ttf source and reuse terms: "Old Fax" by George Blackwell, CC BY 4.0, credited in CREDITS.md.
-- [ ] Link exported implementation sessions from the actual course PR; local evidence is in reports/codex-implementation-sessions.md and submission/PR.md.
-- [x] Use crocodile-evaluation by name in two separate sessions; see reports/skill-sessions.md and linked exports. make-experiment has one evidenced session so far.
+- [ ] Link exported implementation sessions from the actual course PR; local evidence is in reports/sessions/codex-implementation-sessions.md and submission/PR.md.
+- [x] Use crocodile-evaluation by name in two separate sessions; see reports/sessions/skill-sessions.md and linked exports. make-experiment has one evidenced session so far.
 - [ ] Obtain independent read-only review, with its findings committed.
 - [ ] Write AGENT-TEAM.md in your own voice.
 - [x] Run at least one live model episode and first comparison (due for the October 26 checkpoint; done November 4). Gemini 3.5 Flash-Lite on Vertex AI, spell32 seed 30, with `python -m players.checkpoint`; results in EVALUATION.md and reports/session7-comparison.md.

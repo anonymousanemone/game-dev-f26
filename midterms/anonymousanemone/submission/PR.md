@@ -15,8 +15,8 @@ Replace these placeholders with links to the committed folder at this PR:
 - Student-authored agent-team log: midterms/anonymousanemone/AGENT-TEAM.md
 - Peer notes: midterms/anonymousanemone/PEER-NOTES.md
 - Recording: ADD VIEWABLE RECORDING URL
-- Implementation evidence: [three Codex sessions](../reports/codex-implementation-sessions.md); [November 4 snapshot](../reports/codex-review-and-experiment-session.md). Use committed-file URLs when copying this description into the actual PR.
-- Reusable skills: [two-session evaluation-skill evidence and one experiment-skill use](../reports/skill-sessions.md).
+- Implementation evidence: [three Codex sessions](../reports/sessions/codex-implementation-sessions.md); [November 4 snapshot](../reports/sessions/codex-review-and-experiment-session.md). Use committed-file URLs when copying this description into the actual PR.
+- Reusable skills: [two-session evaluation-skill evidence and one experiment-skill use](../reports/sessions/skill-sessions.md).
 - Independent review: [task](../review.md); full independent review and response remain pending. The exported scope inspection is partial coverage.
 - Deterministic GitHub CI: https://github.com/anonymousanemone/game-dev-f26/actions/runs/40396786117 (14 tests passed on the checkpoint commit; refresh after final changes)
 

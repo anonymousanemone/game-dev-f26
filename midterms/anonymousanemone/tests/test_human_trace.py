@@ -12,6 +12,42 @@ from players.engine import ROOT, godot_binary
 
 
 class HumanTraceTests(unittest.TestCase):
+    def test_replay_restores_experimental_reset_settings(self):
+        import io
+        from types import SimpleNamespace
+        from players.engine import Engine
+        from players.run import episode
+        from unittest.mock import patch
+        args = SimpleNamespace(history=0, model='fixture', episode_timeout=30,
+            max_calls=15, call_timeout=1, input_price=1, output_price=2,
+            price_date='fixture', price_source='fixture', speed_scale=.75,
+            lives=5, crocodiles=20, reach_flag=True)
+        reply = (dict(move=0, face=0, thrust=False, heka=False), {}, '{}', 'fixture')
+        trace = io.StringIO()
+        with Engine() as engine, patch('players.run.model.choose', return_value=reply):
+            episode(engine, 'spell32', 30, 'model', args, {}, trace)
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'experimental.jsonl'
+            path.write_text(trace.getvalue())
+            result = subprocess.run([godot_binary(), '--headless', '--path', str(ROOT/'godot'),
+                '--script', 'res://scripts/replay.gd', '--', f'--replay={path}', '--verify-only'],
+                capture_output=True, text=True, timeout=30)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn('Verified all 15', result.stdout)
+            rows = [json.loads(line) for line in trace.getvalue().splitlines()]
+            rows[0].pop('settings')
+            from players.traces import archive
+            metadata = archive(path)
+            metadata['speed_scale'] = .75
+            rows.insert(0, metadata)
+            # Legacy configs kept the remaining reset overrides beside the trace.
+            (path.parent/'configuration.json').write_text(json.dumps({'arguments': vars(args)}))
+            path.write_text(''.join(json.dumps(row)+'\n' for row in rows))
+            result = subprocess.run([godot_binary(), '--headless', '--path', str(ROOT/'godot'),
+                '--script', 'res://scripts/replay.gd', '--', f'--replay={path}', '--verify-only'],
+                capture_output=True, text=True, timeout=30)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_intro_button_records_native_controls_and_replays_session(self):
         with tempfile.TemporaryDirectory(prefix='crocodiles-native-session-') as folder:
             trace = Path(folder)/'session.jsonl'

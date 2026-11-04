@@ -27,6 +27,7 @@ func start() -> void:
 	var seed_value := 30
 	var situation := "spell31"
 	var initial: Dictionary = {}
+	var settings: Dictionary = {}
 	var metadata: Dictionary = {}
 	var all_rows: Array = []
 	while not file.eof_reached():
@@ -44,6 +45,7 @@ func start() -> void:
 			seed_value = int(row.seed)
 			situation = row.case
 			initial = row.observation
+			settings = row.get("settings", {})
 		elif row.get("type") == "step":
 			actions.append(row.action)
 			rows.append(row)
@@ -66,7 +68,18 @@ func start() -> void:
 	var game = load("res://scenes/dangers.tscn").instantiate()
 	root.add_child(game)
 	episode = load("res://scripts/episode.gd").new(game)
-	var observed: Dictionary = episode.reset(seed_value, situation)
+	# Legacy experimental traces stored speed in metadata and other overrides in
+	# the adjacent configuration. New traces are self-contained in their reset row.
+	if settings.is_empty():
+		var config_path := path.get_base_dir().path_join("configuration.json")
+		var config: Variant = JSON.parse_string(FileAccess.get_file_as_string(config_path)) if FileAccess.file_exists(config_path) else {}
+		var arguments: Dictionary = config.get("arguments", {}) if config is Dictionary else {}
+		settings = {"speed_scale": metadata.get("speed_scale", arguments.get("speed_scale", 1.0)),
+			"lives": arguments.get("lives", 3), "crocodiles": arguments.get("crocodiles", 0),
+			"reach_flag": arguments.get("reach_flag", false)}
+	var observed: Dictionary = episode.reset(seed_value, situation,
+		float(settings.get("speed_scale", 1.0)), int(settings.get("lives", 3)),
+		int(settings.get("crocodiles", 0)), bool(settings.get("reach_flag", false)))
 	Build.lock_hud(game.hud)
 	if JSON.parse_string(JSON.stringify(observed)) != initial:
 		fail("initial observation")

@@ -59,16 +59,19 @@ def episode(engine, case, seed, policy, args, suite, trace, budget=None):
     if budget is None:
         budget = {'reserved_usd': 0.0}
     initial_reservation = budget['reserved_usd']
-    observation = engine.call('reset', seed=seed, case=case, lives=getattr(args, 'lives', 3),
-                              crocodiles=getattr(args, 'crocodiles', 0),
-                              reach_flag=getattr(args, 'reach_flag', False))
+    reset_settings = dict(speed_scale=getattr(args, 'speed_scale', 1.0),
+                          lives=getattr(args, 'lives', 3),
+                          crocodiles=getattr(args, 'crocodiles', 0),
+                          reach_flag=getattr(args, 'reach_flag', False))
+    observation = engine.call('reset', seed=seed, case=case, **reset_settings)
     memory = [] if getattr(args, 'memory', False) else None
     history = []
     calls = failed_calls = input_tokens = output_tokens = 0
     started = time.monotonic()
     latencies = []
     outcome = engine.call('outcome')
-    write_trace(trace, {'type': 'reset', 'case': case, 'seed': seed, 'observation': observation})
+    write_trace(trace, {'type': 'reset', 'case': case, 'seed': seed,
+                        'settings': reset_settings, 'observation': observation})
     while not outcome['terminal']:
         if time.monotonic() - started >= args.episode_timeout:
             outcome.update(status='limit', terminal=True, reason='episode_timeout')
@@ -124,7 +127,10 @@ def episode(engine, case, seed, policy, args, suite, trace, budget=None):
     if args.input_price is not None and args.output_price is not None:
         cost = (input_tokens * args.input_price + output_tokens * args.output_price) / 1_000_000
     summary = dict(case=case, seed=seed, policy=policy, model=args.model if policy == 'model' else None,
-        history=args.history if policy == 'model' else 2, calls=calls, failed_calls=failed_calls,
+        history=args.history if policy == 'model' else 10,
+        derived_motion_in_observation=True,
+        memory_events_capacity=MEMORY_EVENTS if memory is not None and policy == 'model' else 0,
+        calls=calls, failed_calls=failed_calls,
         input_tokens=input_tokens, output_tokens=output_tokens, estimated_cost_usd=cost,
         max_cost_usd=getattr(args, 'max_cost_usd', None),
         reserved_cost_usd=budget['reserved_usd'] - initial_reservation,

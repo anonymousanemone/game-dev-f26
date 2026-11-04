@@ -88,6 +88,7 @@ func legal_actions(player_id := 0) -> Array:
 func step(player_id: int, action: Variant) -> Dictionary:
 	if player_id != 0: return {"error": "unknown_player"}
 	if status != "ongoing": return {"error": "episode_terminal", "outcome": outcome()}
+	var action_steps: int = mini(LOOK_STEPS, STEP_LIMIT - steps)
 	steps += 1
 	_seen = _visible_snouts()
 	# `look` is optional; when true the other controls are ignored (the hands are off the keys).
@@ -108,8 +109,8 @@ func step(player_id: int, action: Variant) -> Dictionary:
 	if looking:
 		game.read_heka()
 		if not game.hud._text in notes: notes.append(game.hud._text)
-		steps += LOOK_STEPS - 1
-		_advance(LOOK_STEPS * FRAMES_PER_ACTION)
+		steps += action_steps - 1
+		_advance(action_steps * FRAMES_PER_ACTION)
 	else:
 		if controls.thrust: game._croc_thrust()
 		_advance(FRAMES_PER_ACTION)

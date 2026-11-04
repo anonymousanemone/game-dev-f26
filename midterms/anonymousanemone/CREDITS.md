@@ -21,11 +21,11 @@ The source URL supplied in the checklist is [Heidelberg's Propylaeum-DOK record 
 | Digital-version supplier | **Dr. Marcus Müller, Totenbuch-Projekt, University of Bonn.** The catalog credits him with supplying the digital version; it does not identify who operated the scanner or establish a digitization date. |
 | Repository / host | **Universitätsbibliothek Heidelberg, Propylaeum-DOK**, collection Propylaeum-DOK-Retro / Ägyptologie. Deposited January 15, 2010; that is the repository deposit date, not a claimed scan date. |
 | Download | [lepsius_todtenbuch.pdf](https://archiv.ub.uni-heidelberg.de/propylaeumdok/467/1/lepsius_todtenbuch.pdf), linked by that record. |
-| Game adaptation | The midterm copies exported PNGs from the student's existing **Totenbuch** project. [Source hashes](reports/source-manifest.json) and [direct-extraction evidence](reports/direct-extraction.json) identify those actual files. No original MDP or replacement source scan was copied into this project. |
+| Game adaptation | The midterm copies exported PNGs from the student's existing **Totenbuch** project. [Source hashes](reports/provenance/source-manifest.json) and [direct-extraction evidence](reports/provenance/direct-extraction.json) identify those actual files. No original MDP or replacement source scan was copied into this project. |
 
 Suggested image credit: **Carl Richard Lepsius, *Das Todtenbuch der Ägypter*, 1842, plate XVI (spells 31–32); digital version supplied by Dr. Marcus Müller, Totenbuch-Projekt, University of Bonn; hosted by Universitätsbibliothek Heidelberg / Propylaeum-DOK, DOI 10.11588/propylaeumdok.00000467. Cropped and adapted in Totenbuch.** This includes the library/title/page elements requested in Heidelberg's [picture-credit guidance](https://www.ub.uni-heidelberg.de/Englisch/helios/digi/nutzung/).
 
-The original source URL is now identified and its catalog provenance is verified. The PDF download returned a bot-check page during this audit, so no PDF checksum, scan-page inspection, or pixel match between this hosted PDF and the working PNGs is claimed. The plate locator above is retained from the game's existing source documentation. The verified local file chain begins with the existing Totenbuch exports, not a newly reconstructed cropping history. [Recorded metadata and retrieval hashes](reports/lepsius-provenance.json).
+The original source URL is now identified and its catalog provenance is verified. The PDF download returned a bot-check page during this audit, so no PDF checksum, scan-page inspection, or pixel match between this hosted PDF and the working PNGs is claimed. The plate locator above is retained from the game's existing source documentation. The verified local file chain begins with the existing Totenbuch exports, not a newly reconstructed cropping history. [Recorded metadata and retrieval hashes](reports/provenance/lepsius-provenance.json).
 
 ### Citation for the underlying papyrus
 
@@ -43,7 +43,7 @@ The copied files also include the original full strip, avatar, flesh health sign
 
 ## Your original game and existing implementation
 
-Source: [anonymousanemone/totenbuch-game](https://github.com/anonymousanemone/totenbuch-game), local working tree on 2026-10-26. The base Git commit was `228809a656ca0d20ba009c125bfcb533ee7d919c`; the working tree had uncommitted edits, so that commit alone does not identify everything copied. `reports/source-manifest.json` records actual original and destination hashes. `reports/inherited-crocodiles.patch` identifies the adaptations to the original combat file.
+Source: [anonymousanemone/totenbuch-game](https://github.com/anonymousanemone/totenbuch-game), local working tree on 2026-10-26. The base Git commit was `228809a656ca0d20ba009c125bfcb533ee7d919c`; the working tree had uncommitted edits, so that commit alone does not identify everything copied. `reports/provenance/source-manifest.json` records actual original and destination hashes. `reports/provenance/inherited-crocodiles.patch` identifies the adaptations to the original combat file.
 
 Extracted from your original game: `crocodiles.gd` combat, e31/e32 encounter dictionaries, the original scene transforms/metadata and exported spear animation metadata, PNG artwork, and shared spear timing/pose geometry from `dangers.gd`. Added for this submission: standalone completion flow, fixed-step JSON interface, deterministic shuffle, observation boundary, baseline, API player, evaluator, tests, replay, packaging and documentation.
 
@@ -57,8 +57,8 @@ The student identifies Totenbuch as their original game and authorized extractin
 
 The active game uses the original `godot/scenes/dangers.tscn`, with only unused
 node/resource blocks removed. Every retained scene block and every copied PNG/font
-is byte-for-byte original; `reports/direct-extraction.json` records the comparison.
+is byte-for-byte original; `reports/provenance/direct-extraction.json` records the comparison.
 The original camera, papyrus, HUD, avatar, captions and arena animation remain in
 use. The earlier substitute scenes/resources were discarded. `episode.gd` is a
-separate evaluation adapter around this original scene. `reports/extraction.patch`
+separate evaluation adapter around this original scene. `reports/provenance/extraction.patch`
 records scene and controller changes against the source project.

@@ -76,7 +76,6 @@ func advance() -> void:
 				var controls: Dictionary = row.controls
 				game.set_meta("midterm_controls", {"move": controls.move, "face": controls.face, "heka": controls.heka})
 				game.avatar.set_meta("session_walk_axis", controls.walk_axis)
-				game._focused = controls.focused
 				# JSON decimals can round native frame deltas. Preserve the exact binary value.
 				var delta: float = str(row.delta_float64).hex_decode().to_float64_array()[0]
 				tape.native_tick(delta, controls, row.paused)
@@ -90,8 +89,6 @@ func advance() -> void:
 					game.hud.say(row.view.speaker, row.view.message)
 				game.hud._intro.visible = row.view.intro
 				game.hud._outro.visible = row.view.outro
-				game.hud._journal_page.visible = row.view.journal
-				game.hud._journal_scroll.scroll_vertical = int(row.view.journal_scroll)
 				game.camera.offset = Vector2(row.view.camera_offset[0], row.view.camera_offset[1])
 				game.hud._title_label.text = "Session replay · frame %d · Space: pause · Right: one frame" % frame_index
 				return

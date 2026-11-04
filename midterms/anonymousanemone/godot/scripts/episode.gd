@@ -38,6 +38,9 @@ func reset(seed: int, situation := "spell31") -> Dictionary:
 	game.avatar.position.x = game.rects[e.spear].get_center().x
 	game._update_camera(1.0)
 	game.start_fight(e)
+	# The human "Press [space] to start" wait is presentation; agents start in the fight as before.
+	if game.fight.tut == "start": game.fight.tut = ""
+	game.say("Scribe", game._hints.text("dangers." + e.id, "instructions"))
 	# Skip only presentation time, preserving the original spawn-spacing checks (_instant stays false).
 	game._kill_fight_tweens()
 	game._croc_open(1.0)

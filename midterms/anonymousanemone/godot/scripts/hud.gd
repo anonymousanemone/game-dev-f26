@@ -1,13 +1,10 @@
 ## Screen-space interface: a title bar and the scribe's strip under the scene, both deep papyrus
 ## and each set off from the scene by the scroll's own frame band. The strip holds the last line said (its speaker as a tag on the
-## band), what you carry, and the Journal and Hint buttons; the Journal opens as a page over the
-## scene. Built in code so the level scenes stay small. Each level passes its own titles and texts
+## band). Built in code so the level scenes stay small. Each level passes its own titles and texts
 ## to setup(). Its look (palette, font, band, icons) is in ui.gd.
 extends CanvasLayer
 
-signal hint_pressed
 signal restart_pressed
-signal menu_pressed
 
 const TOP_BAR := 46.0         ## the title bar, without its band
 const STRIP := 130.0          ## the scribe's strip, its band included
@@ -26,26 +23,18 @@ var _root: Control
 var _say: RichTextLabel
 var _tag: PanelContainer
 var _tag_label: Label
-var _journal_page: Control
-var _journal_grid: GridContainer
-var _journal_title: Label
-var _journal_empty: Label
-var _held: TextureRect
 var _intro: Control
 var _outro: Control
 var _outro_text: RichTextLabel
 var _text := ""
-var _journal_entries := {}
-var _journal_scroll: ScrollContainer
 var _overlay_layouts: Array = []
-var _revision := 0
 var _title_label: Label
 var _record_session_button: Button
 var _stop_recording_button: Button
 var _recording_preparing := false
 
 
-## cfg keys: title, journal_hint, intro_title, intro_body, outro_title.
+## cfg keys: title, intro_title, intro_body, outro_title.
 func setup(level: Node, cfg: Dictionary) -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_level = level
@@ -57,14 +46,6 @@ func setup(level: Node, cfg: Dictionary) -> void:
 	add_child(_root)
 	_build_top_bar()
 	_build_strip()
-	_build_journal_page()
-	_held = TextureRect.new()
-	_held.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_held.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_held.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
-	_held.modulate.a = 0.9
-	_held.visible = false
-	_root.add_child(_held)
 	_intro = _build_overlay(cfg.intro_title, cfg.intro_body, "Begin", dismiss_intro)
 	if level.has_method("start_session_recording"):
 		_record_session_button = Button.new()
@@ -87,13 +68,17 @@ func setup(level: Node, cfg: Dictionary) -> void:
 				_overlay_layouts[0].button.disabled = false)
 		_overlay_layouts[0].actions.add_child(_record_session_button)
 	_intro.visible = true
-	_outro = _build_overlay(cfg.outro_title, "", "Go on", func(): Scroll.finish(level.scene_file_path.get_file().get_basename()))
+	_outro = _build_overlay(cfg.outro_title, "", "Play again", func(): Scroll.finish(level.scene_file_path.get_file().get_basename()))
 	_outro_text = _outro.find_child("Body", true, false)
+	var quit := Button.new()
+	quit.text = "Quit game"
+	quit.add_theme_font_size_override("font_size", UI.BIG)
+	quit.focus_mode = Control.FOCUS_NONE
+	quit.pressed.connect(func(): get_tree().quit())
+	_overlay_layouts[1].actions.add_child(quit)
 	get_viewport().size_changed.connect(_resize_hud)
 	_resize_hud.call_deferred()
 	_sync_pause()
-	if "--journal" in OS.get_cmdline_user_args():   # dev: open the Journal (for a screenshot)
-		toggle_journal.call_deferred(true)
 
 
 # ---------------------------------------------------------------- API used by the level
@@ -112,7 +97,7 @@ func bottom_height() -> float:
 
 
 func is_blocking() -> bool:
-	return _intro.visible or _outro.visible or _journal_page.visible
+	return _intro.visible or _outro.visible
 
 
 func dismiss_intro() -> void:
@@ -122,27 +107,17 @@ func dismiss_intro() -> void:
 
 
 func reset_view() -> void:
-	_journal_entries.clear()
-	for c in _journal_grid.get_children():
-		c.queue_free()
-	_journal_empty.visible = true
-	_journal_title.text = "JOURNAL"
-	_journal_page.visible = false
 	_outro.visible = false
 	_sync_pause()
 
 
 func say(who: String, text: String, category := "default") -> void:
-	# Hint-button messages take precedence over the surrounding gameplay context.
-	if who == "Hint":
-		category = "hint"
-	var color: Color = UI.TAG_HINT if category == "hint" else UI.TAG_MINIGAME if category == "minigame" else UI.TAG
+	var color: Color = UI.TAG_MINIGAME if category == "minigame" else UI.TAG
 	_tag.add_theme_stylebox_override("panel", UI.box(color, UI.INK, 4, 12, 0))
-	_tag_label.add_theme_color_override("font_color", UI.INK if category == "hint" else UI.CREAM)
+	_tag_label.add_theme_color_override("font_color", UI.CREAM)
 	_text = UI.plain(text)
 	_tag_label.text = who
 	_tag.visible = who != ""
-	_revision += 1
 	_say.text = _keys(_text)   # always at the dialogue size (two font pixels to a screen pixel), never paged
 
 
@@ -155,90 +130,11 @@ func _sync_pause() -> void:
 	get_tree().paused = blocked
 
 
-## Deferred messages are discarded when an interaction, reset, or later line supersedes them.
-func say_later(who: String, text: String, seconds: float, category := "default") -> void:
-	var revision := _revision
-	await get_tree().create_timer(seconds, false).timeout
-	if revision == _revision:
-		say(who, text, category)
-
-
-func show_outro_later(body: String, seconds: float) -> void:
-	var revision := _revision
-	await get_tree().create_timer(seconds, false).timeout
-	if revision == _revision:
-		show_outro(body)
-
-
-## The piece follows the pointer at roughly its on-screen size.
-func update_held(piece: String, tex: Texture2D, zoom: float) -> void:
-	_held.visible = piece != ""
-	if piece == "":
-		return
-	_held.texture = tex
-	_held.size = tex.get_size() * zoom * 0.8
-	_held.position = _root.get_local_mouse_position() + Vector2(14, 10)
-
-
-func add_journal_entry(label: String, note: String, tex: Texture2D, count: int, total: int, id := "", speaker := "") -> void:
-	_journal_empty.visible = false
-	_journal_title.text = "Journal · %d/%d" % [count, total]
-	if id == "":
-		id = label
-	if speaker == "":
-		speaker = label
-	if _journal_entries.has(id):
-		var old: Dictionary = _journal_entries[id]
-		old.label.text = label
-		old.picture.texture = tex
-		old.text = note
-		old.speaker = speaker
-		return
-	var entry := VBoxContainer.new()
-	entry.custom_minimum_size.x = 112
-	entry.mouse_filter = Control.MOUSE_FILTER_STOP
-	entry.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	var frame := PanelContainer.new()
-	frame.add_theme_stylebox_override("panel", UI.box(UI.DEEP, UI.RULE, 2, 4, 4))
-	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var pic := TextureRect.new()
-	pic.texture = tex
-	pic.custom_minimum_size = Vector2(104, 72)
-	pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	pic.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	frame.add_child(pic)
-	var name_label := Label.new()
-	name_label.text = label
-	name_label.autowrap_mode = TextServer.AUTOWRAP_WORD
-	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	name_label.custom_minimum_size.x = 112
-	name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	entry.add_child(frame)
-	entry.add_child(name_label)
-	_journal_entries[id] = {"node": entry, "label": name_label, "picture": pic, "text": note, "speaker": speaker}
-	entry.gui_input.connect(func(e):
-		if e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
-			_note_command("journal_entry", {"id": id})
-			var observed: Dictionary = _journal_entries[id]
-			say(observed.speaker, observed.text))
-	_journal_grid.add_child(entry)
-	_journal_grid.move_child(entry, 0)
-
-
 func show_outro(body: String) -> void:
-	var next := Scroll.next_built(_level.scene_file_path.get_file().get_basename())
-	var destination: String = "Next: [b]%s[/b]." % next.title if not next.is_empty() else "Return to the scroll."
-	_outro_text.text = _keys(body + "\n\n" + destination)
+	_outro_text.text = _keys(body)
+	_outro_text.get_parent().visible = body != ""
 	_outro.visible = true
 	_resize_hud.call_deferred()
-	_sync_pause()
-
-
-## The Journal opens over the scene; [j] or the button toggles it, [esc] or a click beside it closes it.
-func toggle_journal(open := not _journal_page.visible) -> void:
-	_note_command("journal", {"open": open})
-	_journal_page.visible = open
 	_sync_pause()
 
 
@@ -254,22 +150,6 @@ func _input(event: InputEvent) -> void:
 				Scroll.finish(_level.scene_file_path.get_file().get_basename())
 			get_viewport().set_input_as_handled()
 		return
-	if _journal_page.visible and event.keycode in [KEY_UP, KEY_DOWN, KEY_PAGEUP, KEY_PAGEDOWN, KEY_HOME, KEY_END]:
-		match event.keycode:
-			KEY_UP: _journal_scroll.scroll_vertical -= 70
-			KEY_DOWN: _journal_scroll.scroll_vertical += 70
-			KEY_PAGEUP: _journal_scroll.scroll_vertical -= 240
-			KEY_PAGEDOWN: _journal_scroll.scroll_vertical += 240
-			KEY_HOME: _journal_scroll.scroll_vertical = 0
-			KEY_END: _journal_scroll.scroll_vertical = int(_journal_scroll.get_v_scroll_bar().max_value)
-		get_viewport().set_input_as_handled()
-		return
-	if event.keycode == KEY_J:
-		toggle_journal()
-		get_viewport().set_input_as_handled()
-	elif event.keycode == KEY_ESCAPE and _journal_page.visible:
-		toggle_journal(false)
-		get_viewport().set_input_as_handled()
 
 
 # ---------------------------------------------------------------- building
@@ -307,13 +187,10 @@ func _build_top_bar() -> void:
 	row.add_child(UI.icon_button("restart", "Restart", func():
 		_note_command("restart")
 		restart_pressed.emit()))
-	row.add_child(UI.icon_button("menu", "Menu", func():
-		if _level.has_method("stop_session_recording"): _level.stop_session_recording("menu")
-		menu_pressed.emit()))
 
 
 ## The strip: deep papyrus under the band (and, if BOXED, inside it along the screen's edges), the
-## line said with its speaker's tag on the band, what you carry, Journal and Hint.
+## line said with its speaker's tag on the band.
 func _build_strip() -> void:
 	var strip := ColorRect.new()
 	strip.color = UI.DEEP
@@ -344,13 +221,6 @@ func _build_strip() -> void:
 	_say.add_theme_constant_override("paragraph_separation", 0)
 	row.add_child(_say)
 
-	var buttons := HBoxContainer.new()
-	buttons.add_theme_constant_override("separation", 16)
-	buttons.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	buttons.add_child(_labelled_button("journal", "journal", "Journal  [j]", func(): toggle_journal()))
-	buttons.add_child(_labelled_button("hint", "hint", "Hint", request_hint))
-	row.add_child(buttons)
-
 	# the speaker's tag sits on the band
 	_tag = PanelContainer.new()
 	_tag.add_theme_stylebox_override("panel", UI.box(UI.TAG, UI.INK, 4, 12, 0))
@@ -363,64 +233,6 @@ func _build_strip() -> void:
 	_tag_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_tag.add_child(_tag_label)
 	strip.add_child(_tag)
-
-
-## The Journal: a page over the scene, between the title bar and the strip.
-func _build_journal_page() -> void:
-	_journal_page = ColorRect.new()
-	(_journal_page as ColorRect).color = UI.DIM
-	_journal_page.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_journal_page.offset_top = top_height()
-	_journal_page.offset_bottom = -STRIP
-	_journal_page.mouse_filter = Control.MOUSE_FILTER_STOP
-	_journal_page.visible = false
-	_journal_page.gui_input.connect(func(e):    # a click beside the page closes it
-		if e is InputEventMouseButton and e.pressed:
-			toggle_journal(false))
-	_root.add_child(_journal_page)
-	var center := CenterContainer.new()
-	center.set_anchors_preset(Control.PRESET_FULL_RECT)
-	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_journal_page.add_child(center)
-	var sheet := PanelContainer.new()
-	sheet.add_theme_stylebox_override("panel", UI.box(UI.PAPYRUS, UI.INK, 4, 28, 20))
-	center.add_child(sheet)
-	var v := VBoxContainer.new()
-	v.add_theme_constant_override("separation", 12)
-	sheet.add_child(v)
-	var head := HBoxContainer.new()
-	_journal_title = Label.new()
-	_journal_title.text = "JOURNAL"
-	_journal_title.add_theme_font_size_override("font_size", UI.BIG)
-	_journal_title.add_theme_color_override("font_color", UI.TAG)
-	var spacer := Control.new()
-	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var close := Label.new()
-	close.text = "↑↓ scroll · j/esc close"
-	close.add_theme_color_override("font_color", UI.OCHRE)
-	close.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	head.add_child(_journal_title)
-	head.add_child(spacer)
-	head.add_child(close)
-	v.add_child(head)
-	var rule := ColorRect.new()
-	rule.color = UI.INK
-	rule.custom_minimum_size.y = 4
-	v.add_child(rule)
-	_journal_empty = Label.new()
-	_journal_empty.text = _cfg.get("journal_hint", "")
-	_journal_empty.add_theme_color_override("font_color", UI.OCHRE)
-	v.add_child(_journal_empty)
-	var scroll := ScrollContainer.new()
-	_journal_scroll = scroll
-	scroll.custom_minimum_size = Vector2(600, 280)
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	_journal_grid = GridContainer.new()
-	_journal_grid.columns = 7
-	_journal_grid.add_theme_constant_override("h_separation", 22)
-	_journal_grid.add_theme_constant_override("v_separation", 14)
-	scroll.add_child(_journal_grid)
-	v.add_child(scroll)
 
 
 func _build_overlay(title: String, body: String, button: String, on_press: Callable) -> Control:
@@ -478,27 +290,6 @@ func _note_command(op: String, data := {}) -> void:
 		_level.record_session_command(op, data)
 
 
-func request_hint() -> void:
-	_note_command("hint")
-	hint_pressed.emit()
-
-
-## An icon button with a small word under it (the Journal's count, "hint").
-func _labelled_button(icon: String, word: String, tip: String, on_press: Callable) -> VBoxContainer:
-	var v := VBoxContainer.new()
-	v.add_theme_constant_override("separation", 4)
-	var b := UI.icon_button(icon, tip, on_press)
-	b.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	b.size_flags_vertical = Control.SIZE_EXPAND | Control.SIZE_SHRINK_CENTER   # signs centre on one line, the words sit below
-	var l := Label.new()
-	l.text = word
-	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	l.add_theme_color_override("font_color", UI.OCHRE)
-	v.add_child(b)
-	v.add_child(l)
-	return v
-
-
 ## `text` with its bracketed key names escaped for BBCode.
 static func _keys(text: String) -> String:
 	text = text.replace("\n\n", "\n")
@@ -525,9 +316,6 @@ func _rich(size: int) -> RichTextLabel:
 func _resize_hud() -> void:
 	var viewport := get_viewport().get_visible_rect().size
 	_title_label.add_theme_font_size_override("font_size", UI.SMALL if viewport.x < 900.0 else UI.BIG)
-	var journal_width := clampf(viewport.x - 100.0, 240.0, 960.0)
-	_journal_scroll.custom_minimum_size = Vector2(journal_width, clampf(viewport.y - top_height() - STRIP - 150.0, 80.0, 380.0))
-	_journal_grid.columns = maxi(1, floori((journal_width + 22.0) / 134.0))
 	for layout in _overlay_layouts:
 		var width := clampf(viewport.x - 120.0, 200.0, OVERLAY_W)
 		layout.body.custom_minimum_size.x = width

@@ -101,7 +101,11 @@ class GameTests(unittest.TestCase):
              '--script', 'res://scripts/checks.gd', '--', '--machine'], capture_output=True, text=True, timeout=30)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertNotIn('SCRIPT ERROR', result.stderr)
-        self.assertNotIn('ERROR:', result.stderr)
+        # Godot's headless renderer cannot compile the success-glow shader's sampler and says so;
+        # windowed runs do not (the original Totenbuch autotest prints the same line).
+        headless_shader = 'ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true.'
+        stderr = '\n'.join(line for line in result.stderr.splitlines() if not line.startswith(headless_shader))
+        self.assertNotIn('ERROR:', stderr)
 
     def test_both_side_half_body_movement_spacing(self):
         result = subprocess.run([godot_binary(), '--headless', '--path', str(ROOT/'godot'),

@@ -13,7 +13,6 @@ const DATA_PATH := "res://assets/dangers/level.json"
 const SHEET_PATH := "res://assets/dangers/animation/spearers.json"   ## the spear-bearers' thrust (tools/spearer_sheet.py)
 const FIGURE_MASK := preload("res://scripts/figure_mask.gd")
 const SHEET_TEX := "res://assets/dangers/animation/spearers.png"
-const ASSET := "res://assets/dangers/figures/%s.png"
 const FIGHTS := ["crocs"]
 const ARENA_FIGHTS := ["crocs"]   ## the vignette opens out across the screen
 
@@ -37,9 +36,6 @@ var _section := ""       ## the encounter whose vignette you are walking through
 
 var bites := 0
 var finished := false
-var journal: Array[String] = []
-var _stats := {}         ## each creature fought: {attempts, time (s of active fighting)}, from the first fight on
-var _focused := true     ## the game window has the focus (time away from it is not fighting time)
 var current := {}        ## first unsolved crocodile encounter
 var fight := {}          ## state of the running fight, empty when walking
 var rng := RandomNumberGenerator.new()
@@ -133,14 +129,11 @@ func _ready() -> void:
 	_arena.visible = false
 	hud.setup(self, {
 		"title": "Dangers on the Road",
-		"journal_hint": "Each creature you overcome is recorded here.",
 		"intro_title": "Spells 31–32: Dangers on the Road",
-		"intro_body": "Crocodiles guard the road. Turn them back with the spear.\n\nWalk [b]right to left[/b] with [←] [→] or click the papyrus. Click a creature to learn its rule and take up the spear. [esc] leaves a fight.",
-		"outro_title": "The road is clear",
+		"intro_body": "Repel the crocodiles. Look and click around for helpful hints, and click the crocodiles to start fighting them.\n\nWalk [b]right to left[/b] with [←] [→] or click the papyrus. [esc] leaves a fight.",
+		"outro_title": "You've fended off the crocodiles.",
 	})
-	hud.hint_pressed.connect(hint)
 	hud.restart_pressed.connect(reset)
-	hud.menu_pressed.connect(func(): get_tree().reload_current_scene())
 	reset()
 	_maybe_run_cli()
 
@@ -164,7 +157,6 @@ func _picture(actor: Node2D) -> Sprite2D:
 
 
 func reset() -> void:
-	_hints.reset()
 	_kill_fight_tweens()
 	_session += 1
 	if not fight.is_empty() and fight.kind in ARENA_FIGHTS:
@@ -172,8 +164,6 @@ func reset() -> void:
 	heka_known = false
 	solved.clear()
 	_section = ""
-	journal.clear()
-	_stats.clear()
 	bites = 0
 	finished = false
 	fight = {}
@@ -289,11 +279,7 @@ func _inspection_at(point: Vector2) -> String:
 func _record_actor(name: String) -> void:
 	var id: String = actors[name].get_meta("registry_id")
 	var variant := "settled" if solved.has(id) else "default"
-	if _stats.has(id):        # a creature fought: its entry keeps its counts
-		_descriptions.show(id, hud, variant)
-		_journal_fight(id)
-		return
-	_descriptions.inspect(id, hud, journal, _picture(actors[name]).texture, _descriptions.journal_total(), variant)
+	_descriptions.show(id, hud, variant)
 
 
 ## What glows under the pointer (hit-tested by box): a heka word; a target in a fight, or, walking, a
@@ -463,34 +449,13 @@ func _check_position() -> void:
 func _solve(e: Dictionary) -> void:
 	solved[e.id] = true
 	say("Scribe", _hints.text("dangers." + e.id, "success"))
-	_journal_fight(e.id)
 	_refresh()
 
 func finish() -> void:
 	if finished: return
 	finished = true
 	_refresh()
-	hud.show_outro(_hints.message("dangers.finished"))
-
-func hint() -> void:
-	if finished:
-		return
-	if not fight.is_empty() and not solved.has(fight.e.id):
-		var phase := "fight"
-		if fight.kind == "crocs" and fight.get("heka_on", false):
-			phase = "heka"
-		say("Hint", _hints.advance("dangers." + fight.e.id, phase))
-		return
-	var nearby := here(FIGHTS)
-	if not nearby.is_empty():
-		say("Hint", _hints.find("dangers." + nearby.id, "nearby"))
-		return
-	# Resolve unfinished work from current state, including when a later vignette is solved first.
-	for encounter in ENCOUNTERS:
-		if encounter.kind in FIGHTS and not solved.has(encounter.id):
-			say("Hint", _hints.find("dangers." + encounter.id, "right" if avatar.position.x < span(encounter).x else "default"))
-			return
-
+	hud.show_outro("")
 
 ## In a fight, what the scribe would say is said under the danger's name (`tag`).
 func say(who: String, text: String) -> void:
@@ -532,9 +497,15 @@ func start_fight(e: Dictionary) -> void:
 	match e.kind:
 		"crocs":
 			crocodiles._crocs_start(e)
-	_stats.get_or_add(e.id, {"attempts": 0, "time": 0.0}).attempts += 1     # each start is an attempt, Esc and back too
-	_journal_fight(e.id)
-	say("Scribe", _hints.text("dangers." + e.id, "instructions"))
+			# the crocodiles hold off until [space] (the lesson already waits for its first thrust)
+			if fight.tut == "":
+				fight.tut = "start"
+	if e.kind == "crocs":
+		fight.feedback = {"controls": true}
+		say("Scribe", "%s %s Press [space] to start." % [_hints.text("dangers." + e.id, "instructions"),
+			_feedback_text("controls_both" if fight.both else "controls")])
+	else:
+		say("Scribe", _hints.text("dangers." + e.id, "instructions"))
 
 
 func end_fight() -> void:
@@ -549,6 +520,7 @@ func end_fight() -> void:
 	fight = {}
 	for n in _box_actors(e):
 		_restore(n)
+	for n in _success_glowers(e):
 		UI.success_flash(_picture(actors[n]))
 	avatar.position.x = spear.get_center().x
 	avatar.visible = true
@@ -585,6 +557,11 @@ func leave_fight() -> void:
 func _box_actors(e: Dictionary) -> Array:
 	var s := span(e)
 	return actors.keys().filter(func(n): return actors[n].get_meta("home").x > s.x and actors[n].get_meta("home").x < s.y)
+
+
+## What flashes pale green when `e` is won: its creatures and the spear-bearer, not the heka word or signs.
+func _success_glowers(e: Dictionary) -> Array:
+	return _creatures(e) + [e.spear]
 
 
 func _restore(n: String) -> void:
@@ -628,7 +605,6 @@ func _update_fight(dt: float) -> void:
 	fight.t += dt
 	match fight.kind:
 		"crocs": crocodiles._crocs(dt)
-	_tick_stats(dt)
 
 
 func fight_click(p: Vector2) -> void:
@@ -820,53 +796,6 @@ static func _ink_from(tex: Texture2D) -> Texture2D:
 	return ImageTexture.create_from_image(img)
 
 
-## Only post-choice encounters read these modes (those with `hard_ready` in danger_encounters.gd).
-func _journal_fight(id: String) -> void:
-	if not _descriptions.entries[id].get("journal", true):
-		return
-	if id not in journal:
-		journal.append(id)
-	var e: Dictionary = ENCOUNTERS.filter(func(entry): return entry.id == id)[0]
-	var note := _descriptions.text(id, "settled" if solved.has(id) else "default")
-	if _stats.has(id):
-		note += "\n\n" + _stats_text(_stats[id])
-	var pic: String = e.foes[0] if e.kind == "crocs" else e.foe
-	hud.add_journal_entry(_descriptions.entries[id].name, note, load(ASSET % pic), journal.size(),
-		_descriptions.journal_total(), _descriptions.key(id))
-
-
-## "Fought 4 times, for 3 min 12s total."
-func _stats_text(st: Dictionary) -> String:
-	var t := int(st.time)
-	var span := "%d min %ds" % [t / 60, t % 60] if t >= 60 else "%ds" % t
-	return _hints.message("dangers.fought_once" if int(st.attempts) == 1 else "dangers.fought") % ([span] if int(st.attempts) == 1 else [int(st.attempts), span])
-
-
-## The fight is under way and being played: the vignette open, not closing or lost, nothing over it,
-## not paused, the window in focus.
-func _fight_active() -> bool:
-	return not fight.is_empty() and fight.open >= 1.0 and not fight.get("closing", false) and not fight.get("lost", false) \
-		and not hud.is_blocking() and not get_tree().paused and _focused
-
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
-		_focused = false
-	elif what == NOTIFICATION_APPLICATION_FOCUS_IN:
-		_focused = true
-
-
-## Time spent fighting this creature; its journal line follows the whole seconds.
-func _tick_stats(dt: float) -> void:
-	if not _fight_active():
-		return
-	var st: Dictionary = _stats[fight.e.id]
-	var before := int(st.time)
-	st.time += dt
-	if int(st.time) != before:
-		_journal_fight(fight.e.id)
-
-
 func _heka_words(id: String) -> Array:
 	var h = level.get("heka", {})
 	return h.get(id, []) if h is Dictionary else h
@@ -912,6 +841,9 @@ func _arena_lost(e: Dictionary) -> void:
 
 func _croc_thrust() -> void:
 	if fight.thrust >= 0.0 or fight.open < 1.0 or fight.lost or fight.has("pin"):
+		return
+	if fight.tut == "start":   # this [space] only starts the fight
+		fight.tut = ""
 		return
 	fight.thrust = 0.0
 	fight.struck = false
@@ -1069,16 +1001,6 @@ static func _spear_at(t: float, rest := -CROC_PREP) -> float:
 	return lerpf(CROC_THRUST, rest, minf((t - THRUST_TIME[0]) / THRUST_TIME[1], 1.0))
 
 
-## One cell of the sprite sheet: bearer `nm` in pose `i`, the figure or (`spear`) his spear alone.
-func _sheet_frame(nm: String, i: int, spear: bool) -> AtlasTexture:
-	var at := AtlasTexture.new()
-	at.atlas = _sheet_tex
-	var cw: float = sheet.cell[0]
-	var ch: float = sheet.cell[1]
-	at.region = Rect2((i + (sheet.poses.size() if spear else 0)) * cw, float(sheet.bearers[nm].row) * ch, cw, ch)
-	return at
-
-
 ## Show bearer `nm` with his spear point `o` plate px along its line from where it is drawn: the
 ## nearest pose in the sheet (drawn back is sheet.back, the full strike sheet.reach, in strip px).
 func _bearer_pose(nm: String, o: float) -> void:
@@ -1100,15 +1022,6 @@ func _bearer_pose(nm: String, o: float) -> void:
 	(ps.texture as AtlasTexture).region = Rect2((i + sheet.poses.size()) * cw, row, cw, ch)
 
 
-## Dev: once per run, a picture of the screen to the path in environment variable `env`.
-func _dev_shot(env: String) -> void:
-	if OS.has_environment(env) and not has_meta(env):
-		set_meta(env, true)
-		get_tree().create_timer(0.1).timeout.connect(func():
-			get_viewport().get_texture().get_image().save_png(OS.get_environment(env)))
-
-
-## The time into a thrust (s) from which, and until which, its point presses a wave down.
 func _bite(key: String) -> void:
 	bites += 1
 	_feedback_once(key, _feedback_text(key))
@@ -1142,7 +1055,9 @@ func _update_camera(delta: float) -> void:
 		var s := span(fight.e)
 		focus = (s.x + s.y) / 2.0
 	focus = SCROLL_CAMERA.clamp_horizontal(focus, vis_w, level.width)
-	focus = maxf(focus, span(ENCOUNTERS[-1]).x + vis_w / 2.0)
+	# stop just past the double line left of the last vignette, so that line stays in view
+	var lw: float = level.rules[0][1] - level.rules[0][0]
+	focus = maxf(focus, span(ENCOUNTERS[-1]).x - 2.0 * lw - FRAME_GAP - 8.0 + vis_w / 2.0)
 	var k := SCROLL_CAMERA.smoothing(delta, 0.002)
 	var y := SCROLL_CAMERA.vertical_center(_view_height(), top, bottom, z, VIEW_TOP)
 	if not fight.is_empty() and fight.kind in ARENA_FIGHTS:
@@ -1301,6 +1216,12 @@ func _autotest() -> void:
 		expect.call(fight.is_empty() and not solved.has(e.id) and avatar.visible, e.id + " leaving restores the scroll without solving the encounter")
 		start_fight(e)
 		crocodiles.autotest(e, expect)
+		end_fight()
+		expect.call(solved.has(e.id), e.id + " overcome")
+		var glows := func(n): return _picture(actors[n]).get_children().any(func(c): return c.material is ShaderMaterial and (c.material as ShaderMaterial).get_shader_parameter("level") == UI.Glow.SUCCESS)
+		var glowers := _success_glowers(e)
+		expect.call(glowers.all(glows), e.id + " won: its creatures and bearer flash pale green")
+		expect.call(not _box_actors(e).any(func(n): return n not in glowers and glows.call(n)), e.id + " won: nothing else (heka word, signs) flashes")
 	reset()
 	for e in ENCOUNTERS: _solve(e)
 	avatar.position.x = rects[ENCOUNTERS[-1].spear].get_center().x

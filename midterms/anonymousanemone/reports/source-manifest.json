@@ -116,7 +116,7 @@
     },
     {
       "destination": "godot/assets/dangers/puzzles.json",
-      "destination_sha256": "e5046248c21d1cb9cbeff6bb75794e53d845f5f81d6a5e5f286aa84ebb1aa9a6",
+      "destination_sha256": "e39fb47d2c2a5ffcf20f98c9e947e5e5d07e6f008fb163e71598981ab91d0cc9",
       "source": "godot/assets/dangers/puzzles.json",
       "sha256": "9bb89455add7121d706607811abb7239e6289e7fb99f58fa387599318e7b2643",
       "unchanged": false
@@ -133,13 +133,6 @@
       "destination_sha256": "be7fdf7ddd1e579ccfe581cfb3c5095164fed0709088e48e11143818fc87780b",
       "source": "godot/assets/fonts/OldFax.ttf",
       "sha256": "be7fdf7ddd1e579ccfe581cfb3c5095164fed0709088e48e11143818fc87780b",
-      "unchanged": true
-    },
-    {
-      "destination": "godot/assets/messages.json",
-      "destination_sha256": "5b1b193122e3ec52ed5e8dd0e945b542a4f87a6369900a302da3e14ee496474c",
-      "source": "godot/assets/messages.json",
-      "sha256": "5b1b193122e3ec52ed5e8dd0e945b542a4f87a6369900a302da3e14ee496474c",
       "unchanged": true
     },
     {
@@ -171,48 +164,6 @@
       "unchanged": true
     },
     {
-      "destination": "godot/assets/ui/band_vertical.png",
-      "destination_sha256": "bbffc8c129852da1714bd98034a1181ca9559ed5795599ad61ea0f6db8e624a2",
-      "source": "godot/assets/ui/band_vertical.png",
-      "sha256": "bbffc8c129852da1714bd98034a1181ca9559ed5795599ad61ea0f6db8e624a2",
-      "unchanged": true
-    },
-    {
-      "destination": "godot/assets/ui/icon_ankh.png",
-      "destination_sha256": "9a47bee9bee92fac324dc5ab9e4d24a451de4e78154a4be535913649417057e5",
-      "source": "godot/assets/ui/icon_ankh.png",
-      "sha256": "9a47bee9bee92fac324dc5ab9e4d24a451de4e78154a4be535913649417057e5",
-      "unchanged": true
-    },
-    {
-      "destination": "godot/assets/ui/icon_back.png",
-      "destination_sha256": "39f441a2509b972ad0edfae7801e2360f2eee06dd2b8131f4354d65e242d8fa1",
-      "source": "godot/assets/ui/icon_back.png",
-      "sha256": "39f441a2509b972ad0edfae7801e2360f2eee06dd2b8131f4354d65e242d8fa1",
-      "unchanged": true
-    },
-    {
-      "destination": "godot/assets/ui/icon_hint.png",
-      "destination_sha256": "a9110a83cd60c3afadf9c994135493c97b2103186d0b07074793c2a5362b9d2f",
-      "source": "godot/assets/ui/icon_hint.png",
-      "sha256": "a9110a83cd60c3afadf9c994135493c97b2103186d0b07074793c2a5362b9d2f",
-      "unchanged": true
-    },
-    {
-      "destination": "godot/assets/ui/icon_journal.png",
-      "destination_sha256": "bdf2da0fdd21b211d39f02f6ac710623ddbecc5a7b5e900627eb8fe99aaf4712",
-      "source": "godot/assets/ui/icon_journal.png",
-      "sha256": "bdf2da0fdd21b211d39f02f6ac710623ddbecc5a7b5e900627eb8fe99aaf4712",
-      "unchanged": true
-    },
-    {
-      "destination": "godot/assets/ui/icon_menu.png",
-      "destination_sha256": "f8283a547a01536c41c8dd03a7f5bcce99f9dcfc1bc576bda12d35030e65025a",
-      "source": "godot/assets/ui/icon_menu.png",
-      "sha256": "f8283a547a01536c41c8dd03a7f5bcce99f9dcfc1bc576bda12d35030e65025a",
-      "unchanged": true
-    },
-    {
       "destination": "godot/assets/ui/icon_restart.png",
       "destination_sha256": "b827dd3709a271e64153f517c3ed3e7cc725b90cb683c3308737418b6128f84b",
       "source": "godot/assets/ui/icon_restart.png",
@@ -220,15 +171,8 @@
       "unchanged": true
     },
     {
-      "destination": "godot/assets/ui/icon_settings.png",
-      "destination_sha256": "d7cb5e59b263967b253cc0c615737cda266e5aec75cc5507409f147c85541be6",
-      "source": "godot/assets/ui/icon_settings.png",
-      "sha256": "d7cb5e59b263967b253cc0c615737cda266e5aec75cc5507409f147c85541be6",
-      "unchanged": true
-    },
-    {
       "destination": "godot/project.godot",
-      "destination_sha256": "dc6ce3f1d634ca4c36b79aa7ad8d8b9f6e09747eaacad0ce11a9e7e8d923a92e",
+      "destination_sha256": "fdf05b4932debf7158edaedd08a5ff81922708f3eab221f02bda2681b9b9535f",
       "source": "godot/project.godot",
       "sha256": "4e5e81ddfd30cd62407dc985288dfe49f6fb7337f0b4f39ec22f618858dc9166",
       "unchanged": false
@@ -270,7 +214,7 @@
     },
     {
       "destination": "godot/scripts/dangers/dangers.gd",
-      "destination_sha256": "9e7337692f1dc09f1f9f84d2124a00f1cc235f1c20b8efe6a30724b122f536bf",
+      "destination_sha256": "effa7d5b22accf3099b3de746a83ccf532b227fb7e22e4bb42ac63beeb0c0d70",
       "source": "godot/scripts/dangers/dangers.gd",
       "sha256": "cbfe99de0d670b6999e10c314110da2823b07906d3d1e1a36118199baeac6e23",
       "unchanged": false
@@ -291,7 +235,7 @@
     },
     {
       "destination": "godot/scripts/episode.gd",
-      "destination_sha256": "539343e3e4c6883e1b9f300cb418b4dfedf35cf3c6af8647c42e373daa06833a",
+      "destination_sha256": "72a1a42667a14c5cda62a4738ed1a1e3d1385d00b906088bca0120c5670ad22b",
       "added_for_midterm": true
     },
     {
@@ -317,7 +261,7 @@
     },
     {
       "destination": "godot/scripts/hud.gd",
-      "destination_sha256": "080b033d8ce4ce6d356ded47c4caaf849a772633a9b46670e38172050ccdd23b",
+      "destination_sha256": "3f445f702c517434011acfed81743412d865772585a091b00fd5b34b61d555ae",
       "source": "godot/scripts/hud.gd",
       "sha256": "e380427470552dbfd4d4836db8caa955261082f4435cf1a77f99e2a307c32d75",
       "unchanged": false

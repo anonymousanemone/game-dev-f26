@@ -53,5 +53,38 @@ func run() -> void:
 	game.crocodiles._crocs(1.0 / 60.0)
 	expect(is_equal_approx(lead.node.position.x - x, 120.0 * game.unit / 60.0), "speed applies scale once per fixed tick")
 	expect(game.ENCOUNTERS[1].waves[0].speed == 175.0, "spell32 base speed matches the tuned original")
+	# Walking to the far end, the camera stops just past spell32's left double line (x 3924-3943).
+	game.reset()
+	game.avatar.position.x = game.avatar.min_x
+	game._update_camera(1.0)
+	var left: float = game._visible_rect().position.x
+	expect(left <= 3924.0 and left >= 3900.0, "camera stops just past the second double line (left edge %.1f)" % left)
+	for b in game.hud.find_children("*", "BaseButton", true, false):
+		expect(not b.tooltip_text in ["Menu", "Hint", "Journal  [j]"], "no %s button" % b.tooltip_text)
+	# The screen keeps 16:9 at any window shape.
+	expect(ProjectSettings.get_setting("display/window/stretch/aspect") == "keep", "aspect ratio is locked")
+	var intro: String = game.hud._intro.find_child("Body", true, false).get_parsed_text()
+	expect(intro.begins_with("Repel the crocodiles. Look and click around for helpful hints"), "intro says what to do: " + intro)
+	# A human-started fight waits for [space] and says so; agent episodes skip that wait.
+	episode.reset(30, "spell32")
+	expect(game.fight.tut == "", "agent episodes start without the [space] wait")
+	game.reset()
+	game.start_fight(game.ENCOUNTERS[1])
+	game._croc_open(1.0)
+	expect(game.fight.tut == "start", "a clicked fight waits for [space]")
+	expect(game.hud._text.ends_with("Press [space] to start."), "fight text ends with the start prompt: " + game.hud._text)
+	expect("[↑] [↓]" in game.hud._text, "fight text includes the play instructions")
+	expect(game.hud._text.begins_with("Crocodiles come from both sides now. Turn and spear each one."), "spell32 uses the short story line")
+	for i in 300: game.crocodiles._crocs(1.0 / 60.0)
+	expect(game.fight.wave_launched == 0, "no crocodile comes in 5 s before [space] (%d)" % game.fight.wave_launched)
+	game._croc_thrust()
+	expect(game.fight.tut == "" and game.fight.thrust < 0.0, "[space] starts the fight without striking")
+	# The ending offers another go or quitting.
+	game.leave_fight()
+	game.finish()
+	var outro_buttons: Array = game.hud._outro.find_children("*", "Button", true, false).map(func(b): return b.text)
+	expect(outro_buttons == ["Play again", "Quit game"], "ending buttons: %s" % [outro_buttons])
+	var titles: Array = game.hud._outro.find_children("*", "Label", true, false).map(func(l): return l.text)
+	expect("You've fended off the crocodiles." in titles, "ending title: %s" % [titles])
 	print("Spacing fixtures: ", failures, " failures")
 	quit(1 if failures else 0)

@@ -2,8 +2,6 @@
 ## (click) or under keyboard control, and calls back on arrival.
 extends Node2D
 
-signal bumped  ## pushed against the left limit with the keyboard
-
 var speed := 330.0          ## world px per second
 var bob_height := 5.0
 const BOB_RATE := 9.0
@@ -36,14 +34,6 @@ func _ready() -> void:
 	sprite.offset = Vector2(0, -sprite.texture.get_height() / 2.0 + pad)
 
 
-## Attachment frame for carried items: follows the figure's walking bob and facing.
-func carrying_transform() -> Transform2D:
-	var on_you := global_transform * Transform2D(0.0, sprite.position)
-	if sprite.flip_h:
-		on_you *= Transform2D.FLIP_X
-	return on_you
-
-
 func walk_to(x: float, on_arrive := Callable()) -> void:
 	_target = clampf(x, min_x, max_x)
 	_on_arrive = on_arrive
@@ -52,10 +42,6 @@ func walk_to(x: float, on_arrive := Callable()) -> void:
 func stop() -> void:
 	_target = null
 	_on_arrive = Callable()
-
-
-func is_walking() -> bool:
-	return _target != null
 
 
 func _process(delta: float) -> void:
@@ -67,8 +53,6 @@ func _process(delta: float) -> void:
 		position.x = clampf(position.x + axis * speed * delta, min_x, max_x)
 		facing = 1 if axis > 0.0 else -1
 		moving = true
-		if axis < 0.0 and position.x <= min_x + 0.5:
-			bumped.emit()
 	elif _target != null:
 		var d: float = _target - position.x
 		if absf(d) < 4.0:

@@ -49,11 +49,6 @@ func run() -> void:
 	check(game.fight.thrust < 0.0, "holding Space does not auto-repeat thrusts")
 	check(game.fight.tut == "first", "native press starts original tutorial")
 	key(false)
-	game.hud.toggle_journal(true)
-	for i in 3: await process_frame
-	game.hud.toggle_journal(false)
-	game.hud.request_hint()
-	for i in 3: await process_frame
 	game.hud._note_command("restart")
 	game.hud.restart_pressed.emit()
 	for i in 3: await process_frame
@@ -68,6 +63,14 @@ func run() -> void:
 	game.set_meta("session_mouse", game.actor_rect("c32a").get_center())
 	game._unhandled_input(event)
 	game.remove_meta("session_mouse")
+	for i in 180:
+		if not game.fight.is_empty() and game.fight.open >= 1.0: break
+		await process_frame
+	check(game.fight.get("tut", "") == "start", "a clicked fight waits for [space]")
+	key(true)
+	await process_frame
+	key(false)
+	await process_frame
 	var saw_loss := false
 	for i in 1500:
 		await process_frame

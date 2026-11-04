@@ -88,7 +88,7 @@ func _process(delta: float) -> void:
 	var move := Vector2.ZERO
 	if not game.fight.is_empty(): move = game.crocodiles._keys()
 	var controls := {"move": move.y, "face": move.x, "heka": Input.is_key_pressed(KEY_SHIFT),
-		"walk_axis": Input.get_axis("ui_left", "ui_right"), "focused": game._focused}
+		"walk_axis": Input.get_axis("ui_left", "ui_right")}
 	var blocked: bool = game.get_tree().paused
 	native_tick(delta, controls, blocked)
 	frame_index += 1
@@ -131,8 +131,6 @@ func state() -> Dictionary:
 func view() -> Dictionary:
 	return {"message": game.hud._text, "speaker": game.hud._tag_label.text,
 		"intro": game.hud._intro.visible, "outro": game.hud._outro.visible,
-		"journal": game.hud._journal_page.visible,
-		"journal_scroll": game.hud._journal_scroll.scroll_vertical,
 		"camera_offset": [game.camera.offset.x, game.camera.offset.y]}
 
 func apply_command(row: Dictionary) -> void:
@@ -141,11 +139,6 @@ func apply_command(row: Dictionary) -> void:
 		"begin": game.hud.dismiss_intro()
 		"restart": game.reset()
 		"resize": game.get_window().size = Vector2i(int(data.width), int(data.height))
-		"hint": game.hint()
-		"journal": game.hud.toggle_journal(data.open)
-		"journal_entry":
-			var entry: Dictionary = game.hud._journal_entries[data.id]
-			game.hud.say(entry.speaker, entry.text)
 		"input":
 			var event: InputEvent
 			match data.kind:

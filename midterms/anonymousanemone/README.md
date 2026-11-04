@@ -12,7 +12,7 @@ Two complete encounters: spell 31's one-sided tutorial and mixed-color waves, an
 
 The game is a direct extraction of `godot/scenes/dangers.tscn`. The retained nodes,
 positions, textures, offsets, camera and papyrus are copied verbatim. Original
-walking/click-to-enter interaction, HUD, Journal, Hint, spear animation, arena
+walking/click-to-enter interaction, HUD, spear animation, arena
 opening/closing, health signs and defeat presentation are retained. The other
 encounter groups, carried breath/life objects and their movement/combat code are
 removed. Walking is bounded to the two crocodile vignettes. Completing both ends
@@ -44,7 +44,7 @@ Play exactly as in Dangers: click Begin, walk right to left with arrows or by
 clicking the papyrus, and click crocodiles to enter their encounter. In combat,
 up/down (or W/S) moves the spear-bearer; left/right (or A/D) turns him in spell 32.
 Space thrusts; hold Shift for red crocodiles only. Escape leaves an encounter.
-The original HUD provides restart, Journal and Hint. Three bites lose; using heka
+The HUD provides restart. Three bites lose; using heka
 against an ordinary crocodile loses, and an escaping crocodile can steal the word.
 Turn back every crocodile to win an encounter; complete both to finish the excerpt.
 
@@ -57,9 +57,9 @@ into **./playtrace/** automatically. Plain **Begin** starts an unrecorded sessio
 A **Recording · Stop** button appears in the top bar. Click it to finish saving
 while continuing to play, or close the game window to finish the recording.
 **Escape retains its normal meaning: leave the encounter.** It does not end this
-session recording. Restart, Journal, Hint, walking and further encounter attempts
+session recording. Restart, walking and further encounter attempts
 remain part of the session until you stop or close it. A new recording begins
-from the intro after returning to Menu or relaunching the game.
+from the intro after relaunching the game.
 
 This mode keeps the original native controls: movement responds each frame, and
 Space thrusts on a new key press. Holding Space does not auto-repeat. It records
@@ -102,7 +102,7 @@ python -m players.replay --latest-human --verify
 
 The JSONL preserves session/build identity, input commands and mouse world
 coordinates, movement/facing/heka state, pauses, frame timing, encounter state,
-health, progress, outcomes, dialogue, Journal position, and interruption reason.
+health, progress, outcomes, dialogue, and interruption reason.
 Trusted audit state is saved for analysis and never passed to a model policy.
 The build and exact Godot version are checked before replay. The archive excludes
 the engine executable, so keep access to the same Godot release too.

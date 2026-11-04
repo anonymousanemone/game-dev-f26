@@ -5,13 +5,7 @@
     "dangers.left_fight_plural": "You back out of the fight. %s await your next visit.",
     "dangers.click_to_fight": "Click the creature to take up the spear.",
     "dangers.heka_controls": "Hold [shift] while striking to use magic on the red crocodiles. Don't waste magic on the plain ones: they'll make off with your power.",
-    "dangers.start": "",
-    "dangers.blocked": "The man in front refuses you entry until you have vanquished all the dangers behind you.",
-    "dangers.clue_signs": "Two snakes up here, two snakes down there. Hmm\u2026 worth keeping an eye on in the fight.",
-    "dangers.finished": "The road is clear. You carry the breath of life.",
-    "dangers.fought": "Fought %d times, for %s total.",
-    "dangers.fought_once": "Fought 1 time, for %s total.",
-    "dangers.life_clue": "Alive, yes. Free, no. Perhaps life alone wasn't the thing to take."
+    "dangers.start": ""
   },
   "puzzles": {
     "dangers.e31": {
@@ -28,35 +22,10 @@
         "red_crocodile": "A red crocodile needs a red spear. The signs glowing above may say how.",
         "tutorial_bite": "The crocodile reached you. Your spear is supposed to reach it first.",
         "bitten": "A crocodile earns a snack."
-      },
-      "hints": {
-        "find": {
-          "default": "Look for crocodiles of spell 31 to your left.",
-          "nearby": "Click the creature to take up the spear.",
-          "right": "Look for crocodiles of spell 31 to your right."
-        },
-        "phases": {
-          "fight": [
-            {
-              "level": "act",
-              "text": "Aim with [\u2191] [\u2193]. Press [space] when the spear tip touches a crocodile."
-            }
-          ],
-          "heka": [
-            {
-              "level": "interpret",
-              "text": "Better a bite than a stolen word. If a crocodile is about to slip past, move into its path and let it bite you instead."
-            },
-            {
-              "level": "act",
-              "text": "Aim with [\u2191] [\u2193]. Press [space] when the spear tip touches a crocodile. Hold [shift] only for red crocodiles."
-            }
-          ]
-        }
       }
     },
     "dangers.e32": {
-      "instructions": "Crocodiles, now from both sides. Turn to meet each one with your spear. Any that slip past make off with your words of power.",
+      "instructions": "Crocodiles come from both sides now. Turn and spear each one.",
       "success": "The crocodiles of the four quarters are turned back.",
       "feedback": {
         "controls_both": "Press [space] to thrust the spear; [\u2191] [\u2193] (or [w] [s]) move you; [\u2190] [\u2192] turn you.",
@@ -71,31 +40,6 @@
         "tutorial_bite": "The crocodile reached you. Your spear is supposed to reach it first.",
         "bitten": "A crocodile earns a snack.",
         "behind_you": "One comes from behind! [\u2190] [\u2192] turn you to face either way."
-      },
-      "hints": {
-        "find": {
-          "default": "Look for crocodiles of spell 32 to your left.",
-          "nearby": "Click the creature to take up the spear.",
-          "right": "Look for crocodiles of spell 32 to your right."
-        },
-        "phases": {
-          "fight": [
-            {
-              "level": "act",
-              "text": "Turn with [\u2190] [\u2192], aim with [\u2191] [\u2193]. Hold [shift] only when striking a red crocodile."
-            }
-          ],
-          "heka": [
-            {
-              "level": "interpret",
-              "text": "Better a bite than a stolen word. If a crocodile is about to slip past, move into its path and let it bite you instead."
-            },
-            {
-              "level": "act",
-              "text": "Turn with [\u2190] [\u2192], aim with [\u2191] [\u2193]. Hold [shift] only when striking a red crocodile. Hold [shift] only for red crocodiles."
-            }
-          ]
-        }
       }
     }
   }

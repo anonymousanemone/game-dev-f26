@@ -13,19 +13,16 @@ const BAND := 16.0            ## the frame band's thickness
 const PAPYRUS := Color("e2d0a6")     ## the scene's papyrus: pages
 const DEEP := Color("cbb07c")        ## deep papyrus: bars, strips, buttons
 const INK := Color("2e1d10")
-const RULE := Color("8f7142")
 const OCHRE := Color("62380e")
 const TAG := Color("963e28")         ## speakers' tags, headings, the main button
 const TAG_MINIGAME := Color("456137") ## minigame instructions, clues and feedback
-const TAG_HINT := Color("d2ad46")     ## Hint-button messages
 const CREAM := Color("f1e7cd")
 
 # Display colors and ink multipliers are deliberately separate.
 const DANGER := Color("b55b3c")
 const SUCCESS := Color(1.8, 1.4, 0.6)
-const PREVIEW := Color(1.9, 1.0, 0.6, 0.2)
-## Matches the level selector in glow.gdshader; all hover glow colors live there.
-enum Glow { DEFAULT, PROCESSION, DANGER, SUCCESS }
+## Matches the `level` enum in glow.gdshader; all hover glow colors live there.
+enum Glow { DEFAULT, DANGER, SUCCESS }
 const SUCCESS_GLOW := Color(156.0 / 255.0, 184.0 / 255.0, 79.0 / 255.0, 0.4)  ## UI band light green #9cb84f
 const SUCCESS_IN := 0.8       ## s for a success glow to come up ...
 const SUCCESS_OUT := 3.2      ## ... and to fade
@@ -97,7 +94,7 @@ static func theme() -> Theme:
 	th.set_stylebox("normal", "Button", box(PAPYRUS, INK, 4, 16, 8))
 	th.set_stylebox("hover", "Button", box(Color("efe0bb"), INK, 4, 16, 8))
 	th.set_stylebox("pressed", "Button", box(DEEP, INK, 4, 16, 8))
-	th.set_stylebox("focus", "Button", StyleBoxEmpty.new())   # menu buttons turn red instead (menu.gd)
+	th.set_stylebox("focus", "Button", StyleBoxEmpty.new())
 	th.set_stylebox("panel", "TooltipPanel", box(PAPYRUS, INK, 2, 8, 4))
 	th.set_color("font_color", "TooltipLabel", INK)
 	return th

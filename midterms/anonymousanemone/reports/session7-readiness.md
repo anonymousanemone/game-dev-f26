@@ -51,7 +51,7 @@ November 6, the completed course PR URL on CourseWorks by **November 7 at 11:59
 p.m.**, and three assigned recording critiques before class November 16.
 Held-out comparisons, the viewable 3–5 minute recording, independent read-only
 review, two separately evidenced skill sessions, the implementation session link,
-optional image crop-chain documentation, and the student's own team log and reflection
+and the student's own team log
 remain required before final hand-in. They are not fabricated as completed.
 
 The assignment identifies a changed scope as requiring a Week 3 thread update.

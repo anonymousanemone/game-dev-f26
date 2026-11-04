@@ -41,6 +41,15 @@
     },
     "experimental_inputs": "reach_flag uses the exact engine strike/silhouette test and is privileged assistance; exclude it from standard observation-only comparisons",
     "max_cost_usd": 10,
-    "trace_directory": "playtrace"
+    "trace_directory": "playtrace",
+    "tuned_prompt": {
+      "name": "combined-combat",
+      "source": "players/model.py:PROMPT",
+      "sha256": "266b037a82f744197692ef37585dcac34e5695fc2729a7c55a8ddb2630ccebf9",
+      "selected_date": "2026-11-04",
+      "evidence": "reports/combat-speed-full.md",
+      "status": "student-selected final tuned prompt; held-out evaluation pending",
+      "rule_knowledge": "Explicit combat procedure and red/plain heka rule supplied in the prompt; no longer requires discovery by look."
+    }
   }
 }

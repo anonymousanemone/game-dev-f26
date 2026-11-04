@@ -4,7 +4,7 @@ A self-contained midterm excerpt of your original game, [Totenbuch](https://gith
 
 ## Scope
 
-[Game rules, core loop and interfaces](GAME.md) provides a short submission-ready description based on the implemented source. Interface screenshots are pending.
+[Game rules, core loop and interfaces](GAME.md) provides a short submission-ready description based on the implemented source.
 
 For the October 26 checkpoint, see [current readiness and remaining blockers](reports/session7-readiness.md). [GitHub deterministic CI passed all 14 tests](https://github.com/anonymousanemone/game-dev-f26/actions/runs/40396786117). The first live model episode, Gemini 3.5 Flash-Lite on spell32 seed 30, ran on November 4. Its comparison with the baseline is in [EVALUATION.md](EVALUATION.md). The held-out comparison has not been run.
 
@@ -118,7 +118,7 @@ unzip playtrace/YOUR_FILENAME.jsonl.build.zip -d /tmp/crocodiles-restored-attemp
 
 Replay reconstructs and verifies gameplay; it is not a pixel-identical video
 capture or a recording of spoken comments. Keep screenshots and screen recordings
-outside the project. Label playback **human session replay**, and write actual
+outside the project. Write actual
 classmate questions separately in [PEER-NOTES.md](PEER-NOTES.md).
 
 For a README-only audit, let the classmate follow setup and play without coaching.
@@ -208,7 +208,7 @@ For visual playback, use the path to an actual episode trace:
 "$GODOT" --path godot --script res://scripts/replay.gd -- --replay=/ABSOLUTE/PATH/TO/spell31-30.jsonl
 ```
 
-This replays recorded actions with the same engine. Label it as replay in a recording; it is not a fresh live trial. No manual move selection is needed. See [RECORDING.md](RECORDING.md) for the recording plan; recording link is pending.
+This replays recorded actions with the same engine. No manual move selection is needed. See [RECORDING.md](RECORDING.md); the recording link is pending.
 
 ## Machine interface and information boundary
 
@@ -284,7 +284,7 @@ Historical image source: **Carl Richard Lepsius, *Das Todtenbuch der Ägypter*, 
 - [Reusable evaluation skill](skills/crocodile-evaluation/SKILL.md), [experiment skill](skills/make-experiment/SKILL.md), and [invocation evidence](reports/skill-sessions.md)
 - [Three implementation-session exports](reports/codex-implementation-sessions.md) and [November 4 review/experiment snapshot](reports/codex-review-and-experiment-session.md)
 - [Independent review task](review.md), [peer playtest notes](PEER-NOTES.md)
-- [Recording plan and link field](RECORDING.md), [remaining checklist](MIDTERM-CHECKLIST.md)
+- [Recording link](RECORDING.md), [remaining checklist](MIDTERM-CHECKLIST.md)
 
 Stage the course-repository files from this folder (login inferred from the source repository owner; change it if your course login differs):
 

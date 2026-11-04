@@ -1,6 +1,6 @@
 # Reflection notes: evidence for the student's reflection
 
-**These are agent-gathered notes, not the reflection.** The assignment requires the reflection in the student's own voice; this file only collects findings from the saved traces so they can be checked, interpreted and written up. Figures were computed on 2026-11-04 from the files linked below.
+**These are agent-gathered notes.** This file only collects findings from the saved traces so they can be checked, interpreted and written up. Figures were computed on 2026-11-04 from the files linked below.
 
 ## Sources
 
@@ -66,11 +66,3 @@ From [the reach flag experiment](reports/reach-flag-experiment.md): with an `in_
 - The four recordings span several builds from 2026-11-04; the crocodile tuning was the same in all of them.
 - The agent figures come from one episode each on the development seed. They are not held-out results.
 
-## Questions for the reflection
-
-- What do you make of Gemini's failure: is it about timing, perception (raw coordinates), priorities (colour over distance), or the prompt? What would you try, and would changing it be fair before the held-out runs?
-- Does the baseline's strength (no bites, wins everything on development cases) help or hurt the comparison you want to make?
-- The baseline now waits 0.4 s (the fast end of your reaction times) before reacting to a crocodile. In the [speed sweep](reports/speed-sweep.md) it stays reliable up to 1.4× the tuned speed, yet you lost first attempts at 1.0×. Does that make it a fairer stand-in for a human, and what does it still do that you don't (exact prediction, no hesitation)?
-- How close is the agent's heka discovery to yours? You kept the look cost at 1.0 s although your recordings show about 2.5 s; why is 1.0 s the right choice?
-- What did you learn from losing your first spell32 attempts? What does it mean that the agents do not improve within an episode even with more lives and a memory?
-- How might a first-time player differ from you, and what will the partner playtest add?

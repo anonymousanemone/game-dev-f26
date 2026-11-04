@@ -50,8 +50,6 @@ The repeated decision is which threat to meet next and when to commit to a thrus
 
 The game retains the original papyrus scene, artwork, camera, arena animations and HUD. The scroll serves as the encounter-selection interface: walking brings the player to a vignette, and clicking its crocodiles opens combat. The combat view shows the spear-bearer, moving crocodiles, red heka cues and health signs. The spear animation and crocodile reactions provide action feedback. The HUD supplies a restart control. The intro also offers **Record session** beside Begin, with a Stop control in the top bar while recording.
 
-Screenshots are pending. Useful captures would show the scroll with the HUD, spell 31 with its health and heka cues, and spell 32 with threats on both sides. Captures should come from the running game and be stored outside the project, as required by AGENTS.md. Source artwork alone is not a screenshot of the interface.
-
 ### Agent interface
 
 Human, baseline, model and replay all use the same Godot scene and combat rules. The automated interface wraps the scene through [episode.gd](godot/scripts/episode.gd) and exposes five operations: `reset`, `observe`, `legal_actions`, `step` and `outcome`.

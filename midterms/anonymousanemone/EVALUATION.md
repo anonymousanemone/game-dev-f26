@@ -1,5 +1,24 @@
 # Evaluation — development results and first live trial; held-out comparison pending
 
+## Final tuned prompt selection — November 4
+
+The student selected the **combined combat prompt** as the final tuned default
+in `players/model.py`, retaining Vertex Gemini 3.5 Flash-Lite, normal speed,
+memory off and the standard observation boundary. `agent-config.json` records
+the exact prompt hash and evidence. This supersedes earlier descriptions of the
+default prompt leaving the heka rule to discovery: the selected prompt explicitly
+teaches red/plain heka selection, target priority, facing, alignment and timing.
+The historical control remains available as `BASE_PROMPT`; the combat experiment
+runner preserves that control and does not append the combined instructions twice.
+
+In the [four full development runs](reports/combat-speed-full.md), turn-backs
+were 2/14 and 2/14 for the control at 1.0× and 0.75× speed, versus 7/14 and 6/14
+for combined. All four lost. One stochastic trial per condition on seed 30
+supports this selection only as development evidence; it is not a general ranking
+or a successful held-out evaluation. No additional paid calls were made to adopt
+the prompt. The student will commit manually; no gate or merge is approved here.
+
+
 This evaluates a self-contained excerpt of the student’s original Totenbuch game. The design is original; the implementation starts from their own existing Godot codebase.
 
 ## Declared experiment
@@ -152,6 +171,6 @@ Local Godot import, startup, scroll and opened-arena rendering checks passed. Th
 
 ## Limitations — student to revise after playtests
 
-On the current game there is one live model episode and one baseline episode on a single development seed. Earlier live trials ran in the narrow headless arena and are not comparable. The required held-out experiment (six episodes each for the baseline and the model at history 0 and 2) has not been run. A three-case small classroom sample cannot support statistical certainty. Structured positions simplify perception; inference is paused, and each decision advances 0.1 simulated seconds. Human play retains the original scroll and real-time controls. Agent evaluation wraps the same original scene, skips its opening presentation and advances the original simulation in fixed 1/60-second ticks. It uses the project's 1280×720 viewport, and human play keeps the same 16:9 view at any window shape (the aspect ratio is locked), so humans and agents see the same arena. No replacement arena or HUD is used. No learning or improvement through repeated play is claimed. Full independent review, peer feedback, the required viewable recording, and student-authored reflection remain pending. Two separate uses of crocodile-evaluation are now documented in [skill-session evidence](reports/skill-sessions.md); the linked exports also preserve implementation and partial scope-review evidence. The later alignment experiment is recorded separately in [its report](reports/y-alignment-experiment.md). CREDITS.md and reports/lepsius-provenance.json document the Lepsius digital edition and its supplier. The edition was published in 1842 and is in the public domain; faithful scans create no new copyright. The HUD font is "Old Fax" by George Blackwell, under CC BY 4.0. The existing PNGs' precise PDF-to-export crop history is not recorded. The baseline has not been retuned since the arena fix; it now wins all three development cases. A baseline that strong may leave little room for the model to do better on held-out cases. The model's single spell32 loss against the baseline's win is one episode and does not rank the players in general.
+On the current game there is one live model episode and one baseline episode on a single development seed. Earlier live trials ran in the narrow headless arena and are not comparable. The required held-out experiment (six episodes each for the baseline and the model at history 0 and 2) has not been run. A three-case small classroom sample cannot support statistical certainty. Structured positions simplify perception; inference is paused, and each decision advances 0.1 simulated seconds. Human play retains the original scroll and real-time controls. Agent evaluation wraps the same original scene, skips its opening presentation and advances the original simulation in fixed 1/60-second ticks. It uses the project's 1280×720 viewport, and human play keeps the same 16:9 view at any window shape (the aspect ratio is locked), so humans and agents see the same arena. No replacement arena or HUD is used. No learning or improvement through repeated play is claimed. Full independent review, peer feedback and the required viewable recording remain pending. Two separate uses of crocodile-evaluation are now documented in [skill-session evidence](reports/skill-sessions.md); the linked exports also preserve implementation and partial scope-review evidence. The later alignment experiment is recorded separately in [its report](reports/y-alignment-experiment.md). CREDITS.md and reports/lepsius-provenance.json document the Lepsius digital edition and its supplier. The edition was published in 1842 and is in the public domain; faithful scans create no new copyright. The HUD font is "Old Fax" by George Blackwell, under CC BY 4.0. The existing PNGs' precise PDF-to-export crop history is not recorded. The baseline has not been retuned since the arena fix; it now wins all three development cases. A baseline that strong may leave little room for the model to do better on held-out cases. The model's single spell32 loss against the baseline's win is one episode and does not rank the players in general.
 
 The student must write their own interpretation of model failures/history, design decisions and actual peer observations. If partner notes have not arrived by November 6, state that and link the notes you gave.

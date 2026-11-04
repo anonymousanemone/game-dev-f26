@@ -24,8 +24,8 @@
 - [x] Record the OldFax.ttf source and reuse terms: "Old Fax" by George Blackwell, CC BY 4.0, credited in CREDITS.md.
 - [ ] Link exported implementation sessions from the actual course PR; local evidence is in reports/codex-implementation-sessions.md and submission/PR.md.
 - [x] Use crocodile-evaluation by name in two separate sessions; see reports/skill-sessions.md and linked exports. make-experiment has one evidenced session so far.
-- [ ] Obtain independent read-only review and respond to its actual findings.
-- [ ] Write AGENT-TEAM.md and reflection in your own voice.
+- [ ] Obtain independent read-only review, with its findings committed.
+- [ ] Write AGENT-TEAM.md in your own voice.
 - [x] Run at least one live model episode and first comparison (due for the October 26 checkpoint; done November 4). Gemini 3.5 Flash-Lite on Vertex AI, spell32 seed 30, with `python -m players.checkpoint`; results in EVALUATION.md and reports/session7-comparison.md.
 - [ ] After freezing tuning, run baseline and model on the six held-out episodes; compare model history=0 and history=2, document failures and cost.
 - [ ] Incorporate real peer playtest notes and limitations.

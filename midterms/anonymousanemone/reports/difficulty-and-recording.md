@@ -71,5 +71,4 @@ episodes are not evidence of statistical balance or a live model comparison.
 
 The player observation/action boundary is unchanged. Native audit state and RNG
 are offline recording metadata, never model inputs. Actual independent review
-and a human check of the revised feel remain pending; this implementation report
-does not certify either.
+remains pending; this implementation report does not certify it.

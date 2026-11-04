@@ -14,7 +14,7 @@ import urllib.request
 MAX_OUTPUT_TOKENS = 1024
 TOKEN_URL = 'https://oauth2.googleapis.com/token'
 
-PROMPT = '''You play Crocodiles. Return one JSON object with exactly move (-1 up, 0 still,
+BASE_PROMPT = '''You play Crocodiles. Return one JSON object with exactly move (-1 up, 0 still,
 1 down), face (-1 left, 0 unchanged, 1 right), thrust (boolean), heka (boolean: hold
 the magic key during the action), look (boolean). In spell31 face must be 0. Each
 action lasts 0.1 simulation seconds. Thrust lands 0.0833s after initiation and
@@ -35,6 +35,28 @@ what the game said. The engine freezes while you decide. Earlier observations, i
 supplied, are bounded history; use successive positions to estimate velocity.
 Choose the action yourself. Do not provide prose or markdown. No tools are
 available.'''
+
+# Final tuned prompt selected by the student on 2026-11-04.
+# Keep the pre-tuning control available for reproducible comparisons.
+COMBAT_INSTRUCTION = '''Line up with approaching crocodiles by matching the spear tip's y level to the crocodile's snout y level (dy_from_tip near zero). Positive dy_from_tip means the crocodile is below your spear: move=1 moves down toward it. Negative dy_from_tip means it is above: move=-1 moves up toward it. Use move=0 once lined up; a movement action shifts you about 39 world pixels.
+For each decision, choose the approaching crocodile with the smallest nonnegative
+seconds_to_bearer; if none has an estimate, use the closest visible snout to the
+bearer. Use that same target for facing, vertical alignment, timing and heka.
+In spell32 face=-1 for a target on your left and face=1 for one on your right;
+in spell31 keep face=0. Reassess the target on the next observation.
+When attacking a red crocodile use heka=true; when attacking an ordinary
+crocodile use heka=false. Heka on an ordinary crocodile loses the encounter.
+Do not keep heka on indiscriminately after reading the word.
+Estimate target velocity from successive visible snout positions and times.
+Predict its snout position 5/60 seconds ahead, when the thrust lands, and compare
+with the spear stroke at your chosen facing. Turning changes the tip position:
+reflect tip.x about player_x if you turn. Thrust only when vertically aligned
+and the predicted snout or silhouette will meet the spear stroke. When thrusting
+hold move=0 to preserve alignment. If thrusting is already true, do not request
+another thrust; use subsequent observations to wait for attack availability.
+Reading with look costs 1.0 simulation seconds; avoid reading during an imminent
+attack. No visible target: stay still with thrust=false and heka=false.'''
+PROMPT = BASE_PROMPT + '\n' + COMBAT_INSTRUCTION
 
 _token = {'value': None, 'expires': 0.0}
 

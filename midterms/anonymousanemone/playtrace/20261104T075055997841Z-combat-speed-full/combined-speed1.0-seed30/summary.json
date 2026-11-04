@@ -1,0 +1,29 @@
+{
+  "case": "spell32",
+  "seed": 30,
+  "policy": "model",
+  "model": "gemini-3.5-flash-lite",
+  "history": 2,
+  "calls": 159,
+  "failed_calls": 0,
+  "input_tokens": 359088,
+  "output_tokens": 6180,
+  "estimated_cost_usd": 0.12317639999999999,
+  "max_cost_usd": 2.5,
+  "reserved_cost_usd": 0.7277853000000001,
+  "run_reserved_cost_usd": 0.7277853000000001,
+  "price_date": "2026-11-03",
+  "price_source": "https://cloud.google.com/model-garden/pricing",
+  "input_price_per_million": 0.3,
+  "output_price_per_million": 2.5,
+  "elapsed_seconds": 169.91513516701525,
+  "mean_latency_seconds": 1.0588116569579258,
+  "outcome": {
+    "invalid_actions": 0,
+    "reason": "three_bites",
+    "score": 7,
+    "status": "lost",
+    "steps": 159,
+    "terminal": true
+  }
+}

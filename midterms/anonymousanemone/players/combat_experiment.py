@@ -8,30 +8,13 @@ import subprocess
 from types import SimpleNamespace
 
 from . import model
-from .alignment_experiment import INSTRUCTION, metrics
+from .alignment_experiment import metrics
 from .config import load_env
 from .engine import Engine, ROOT, godot_binary
 from .run import episode, version, write_trace
 from .traces import archive
 
-COMBAT = INSTRUCTION + '''
-For each decision, choose the approaching crocodile with the smallest nonnegative
-seconds_to_bearer; if none has an estimate, use the closest visible snout to the
-bearer. Use that same target for facing, vertical alignment, timing and heka.
-In spell32 face=-1 for a target on your left and face=1 for one on your right;
-in spell31 keep face=0. Reassess the target on the next observation.
-When attacking a red crocodile use heka=true; when attacking an ordinary
-crocodile use heka=false. Heka on an ordinary crocodile loses the encounter.
-Do not keep heka on indiscriminately after reading the word.
-Estimate target velocity from successive visible snout positions and times.
-Predict its snout position 5/60 seconds ahead, when the thrust lands, and compare
-with the spear stroke at your chosen facing. Turning changes the tip position:
-reflect tip.x about player_x if you turn. Thrust only when vertically aligned
-and the predicted snout or silhouette will meet the spear stroke. When thrusting
-hold move=0 to preserve alignment. If thrusting is already true, do not request
-another thrust; use subsequent observations to wait for attack availability.
-Reading with look costs 1.0 simulation seconds; avoid reading during an imminent
-attack. No visible target: stay still with thrust=false and heka=false.'''
+COMBAT = model.COMBAT_INSTRUCTION
 
 
 class SpeedEngine:
@@ -73,6 +56,7 @@ def run(total_budget, resume=None, full=False):
     else:
         output.mkdir(exist_ok=False)
     original = model.PROMPT
+    control = model.BASE_PROMPT
     game_hash = version()
     common = dict(date_utc=stamp, provider='vertex', case='spell32', split='exploratory-development',
         declared_seeds=seeds, total_budget_usd=total_budget, arguments=vars(args),
@@ -93,7 +77,7 @@ def run(total_budget, resume=None, full=False):
                     continue
                 if version() != game_hash:
                     raise RuntimeError('Game changed; stopping')
-                model.PROMPT = original if label == 'current' else original + '\n' + COMBAT
+                model.PROMPT = control if label == 'current' else control + '\n' + COMBAT
                 folder = output / f'{label}-speed{speed}-seed{seed}'
                 folder.mkdir()
                 config = dict(common, variant=label, speed_scale=speed, seed=seed,

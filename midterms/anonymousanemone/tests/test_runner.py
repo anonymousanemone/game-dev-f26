@@ -129,10 +129,10 @@ class VertexAdapterTests(unittest.TestCase):
         self.assertEqual(schema['properties']['look'], {'type': 'BOOLEAN'})
         self.assertIn('look', schema['required'])
 
-    def test_prompt_leaves_the_heka_rule_to_discovery(self):
-        # The human learns which crocodiles need heka by clicking the glowing word; so must the model.
+    def test_control_prompt_leaves_the_heka_rule_to_discovery(self):
+        # The historical control leaves discovery to look; the tuned default teaches the rule.
         from players import model
-        prompt = model.PROMPT.lower()
+        prompt = model.BASE_PROMPT.lower()
         for told in ['red crocodile', 'only for red', 'ordinary crocodile', 'shift']:
             self.assertNotIn(told, prompt)
         self.assertIn('look', prompt)

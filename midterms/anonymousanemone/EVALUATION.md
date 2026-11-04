@@ -1,5 +1,22 @@
 # Evaluation — development results and first live trial; held-out comparison pending
 
+## Completed held-out evaluation — November 4
+
+All 18 frozen held-out episodes reached actual outcomes: baseline **6/6 wins**,
+combined-prompt model history=0 **0/6**, and history=2 **2/6**. The two model wins
+were both spell31 seeds; all model spell32/low-start episodes lost. Total
+turn-backs were 74/74, 7/74 and 30/74 respectively. Fourteen provider failures
+were retained as neutral fallbacks. Total reservation was **$9.6231501/$20**;
+estimated returned-usage cost was **$1.3998745**. No increase, retry or limit
+truncation occurred. All 28 deterministic tests passed before execution.
+
+[Full report and per-episode evidence](reports/held-out-final.md). The prompt,
+suite, player sources and game were frozen throughout. These results supersede
+historical statements below that held-out evaluation was pending. Independent
+review and course gate decisions remain separate. The held-out seeds have now
+been evaluated and must not be treated as unseen tuning-validation data.
+
+
 ## Final tuned prompt selection — November 4
 
 The student selected the **combined combat prompt** as the final tuned default

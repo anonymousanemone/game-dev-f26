@@ -1,0 +1,33 @@
+{
+  "condition": "model-h2",
+  "trace": "playtrace/20261104T082332827621Z-held-out-final/model-h2/spell31-101.jsonl",
+  "case": "spell31",
+  "seed": 101,
+  "policy": "model",
+  "model": "gemini-3.5-flash-lite",
+  "history": 2,
+  "derived_motion_in_observation": true,
+  "memory_events_capacity": 0,
+  "calls": 402,
+  "failed_calls": 0,
+  "input_tokens": 842759,
+  "output_tokens": 15636,
+  "estimated_cost_usd": 0.29191769999999995,
+  "max_cost_usd": 20.0,
+  "reserved_cost_usd": 1.8365216999999925,
+  "run_reserved_cost_usd": 5.417645599999993,
+  "price_date": "2026-11-03",
+  "price_source": "https://cloud.google.com/model-garden/pricing",
+  "input_price_per_million": 0.3,
+  "output_price_per_million": 2.5,
+  "elapsed_seconds": 432.16259633301524,
+  "mean_latency_seconds": 1.0704438337324702,
+  "outcome": {
+    "invalid_actions": 0,
+    "reason": "all_crocodiles_defeated",
+    "score": 9,
+    "status": "won",
+    "steps": 411,
+    "terminal": true
+  }
+}

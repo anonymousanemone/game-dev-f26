@@ -48,8 +48,16 @@
       "sha256": "266b037a82f744197692ef37585dcac34e5695fc2729a7c55a8ddb2630ccebf9",
       "selected_date": "2026-11-04",
       "evidence": "reports/experiments/combat-speed-full.md",
-      "status": "student-selected final tuned prompt; held-out evaluation pending",
+      "status": "student-selected final tuned prompt; held-out evaluation completed; see reports/held-out-final.md",
       "rule_knowledge": "Explicit combat procedure and red/plain heka rule supplied in the prompt; no longer requires discovery by look."
+    },
+    "held_out_evaluation": {
+      "report": "reports/held-out-final.md",
+      "artifacts": "playtrace/20261104T082332827621Z-held-out-final",
+      "completed_episodes": 18,
+      "authorized_total_usd": 20,
+      "reserved_total_usd": 9.62315009999996,
+      "status": "complete; no policy tuning or gate approval"
     }
   }
 }

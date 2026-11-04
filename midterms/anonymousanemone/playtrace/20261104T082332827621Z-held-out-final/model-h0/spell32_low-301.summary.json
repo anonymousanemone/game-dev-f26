@@ -1,0 +1,33 @@
+{
+  "condition": "model-h0",
+  "trace": "playtrace/20261104T082332827621Z-held-out-final/model-h0/spell32_low-301.jsonl",
+  "case": "spell32_low",
+  "seed": 301,
+  "policy": "model",
+  "model": "gemini-3.5-flash-lite",
+  "history": 0,
+  "derived_motion_in_observation": true,
+  "memory_events_capacity": 0,
+  "calls": 90,
+  "failed_calls": 1,
+  "input_tokens": 124468,
+  "output_tokens": 3140,
+  "estimated_cost_usd": 0.0451904,
+  "max_cost_usd": 20.0,
+  "reserved_cost_usd": 0.37062720000000215,
+  "run_reserved_cost_usd": 3.1275146999999963,
+  "price_date": "2026-11-03",
+  "price_source": "https://cloud.google.com/model-garden/pricing",
+  "input_price_per_million": 0.3,
+  "output_price_per_million": 2.5,
+  "elapsed_seconds": 114.64329841698054,
+  "mean_latency_seconds": 1.269199311498475,
+  "outcome": {
+    "invalid_actions": 1,
+    "reason": "three_bites",
+    "score": 1,
+    "status": "lost",
+    "steps": 90,
+    "terminal": true
+  }
+}

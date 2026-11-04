@@ -6,7 +6,7 @@ This evaluates a self-contained excerpt of the student’s original Totenbuch ga
 
 The 2026-10-26 suite in [suite.json](suite.json) was written before player tuning. Three starting situations: spell31 tutorial/waves; standard two-sided spell32; spell32 starting at the lowest allowed position. Development uses seed 30. Held-out seeds are 101/102, 201/202 and 301/302 respectively and have not been used during setup. Run each case/held-out seed for the baseline, model history=0, and model history=2 after freezing prompts and the heuristic. This gives six episodes per policy/history condition, two per situation.
 
-The model and baseline receive the same accessible visible-state representation and control meanings. Since 2026-11-04 they differ in one piece of knowledge: the model is not told the heka rule and must discover it (see "Heka discovery" below), while the baseline keeps it built in as an informed reference. The baseline is a real heuristic competitor: it estimates velocity from successive visible snout positions, aligns vertically, turns toward the closest threat and chooses ordinary or heka thrusts by visible color. It has no engine handle or hidden speed/spawn data. The model-history comparison is needed because one snapshot deliberately omits velocity; history can recover visible motion.
+The model and baseline receive the same accessible visible-state representation and control meanings. Since 2026-11-04 they differ in one piece of knowledge: the model is not told the heka rule and must discover it (see "Heka discovery" below), while the baseline keeps it built in as an informed reference. The baseline is a real heuristic competitor: it reacts to a crocodile only after it has been visible 0.4 s (the fast end of the student's measured reaction times), estimates velocity from successive visible snout positions, aligns vertically, turns toward the closest threat and chooses ordinary or heka thrusts by visible color. It has no engine handle or hidden speed/spawn data. The model-history comparison is needed because one snapshot deliberately omits velocity; history can recover visible motion.
 
 ## Heka discovery (2026-11-04)
 
@@ -24,22 +24,32 @@ On November 4 the crocodile combat was synced with the tuned Totenbuch game (com
 
 Headless Godot has no window and reported a square 1280×1280 viewport to every agent run. The arena's width follows the viewport's aspect (`vis_w = vp.x / z`, with zoom `z` fitted to the height). So agents fought in an arena about half as wide as the game's 1280×720 window: 1,187 instead of 2,471 world px. Crocodiles started 30–300 px from the bearer instead of 344–866, and a spell 32 copy's snout could appear 29 px away. `episode.gd` now sets the root viewport to the project's 1280×720 base size in headless runs; windowed human play is unaffected. The regression check is in `spacing_checks.gd`. It failed before the fix and passes after. **Every agent result before this fix, baseline and model, was measured in the narrow arena** and is kept below only as history.
 
-## Current development baseline (2026-11-04, Totenbuch sync and arena-width fix)
+## Baseline reaction delay (2026-11-04)
 
-Game content SHA-256 `d33f017b8ed276aff1b69b5800afdef62d971ca44ee2b9655463b684ad096f80`; Godot 4.7.2 on macOS. [Configuration](playtrace/20261104T025623889524Z-baseline-h2-development/configuration.json) · [summary](playtrace/20261104T025623889524Z-baseline-h2-development/summary.json); traces are beside them.
+The baseline's job is to be a fair, simple competitor: a hand-written policy that uses only what the player can see, so the comparison shows whether the model adds anything. Because this is a reaction game, an instant, exact policy wins almost by construction. To make it a closer stand-in for a human player, the baseline now ignores a crocodile until it has been visible for **0.4 s** (`REACTION_SECONDS` in [baseline.py](players/baseline.py)). In the student's four session recordings a new crocodile was first acted on 0.40–1.17 s after it appeared (middle half of 44 cases, median 0.59 s); the student chose the fast end, 0.4 s. The student took longer to turn toward a crocodile behind them (median 1.52 s, 9 cases), but that sample is small and partly reflects choice, so no separate turning delay was added. Once it reacts, the baseline still estimates speed and predicts the strike point exactly. See [REFLECTION-NOTES.md](REFLECTION-NOTES.md) for the recordings analysis.
 
-| Situation | Seed | Outcome | Score | Steps | Illegal actions | Calls |
-|---|---:|---|---:|---:|---:|---:|
-| spell31 | 30 | won: all_crocodiles_defeated | 9 | 396 | 0 | 0 |
-| spell32 | 30 | won: all_crocodiles_defeated | 14 | 189 | 0 | 0 |
-| spell32_low | 30 | won: all_crocodiles_defeated | 14 | 179 | 0 | 0 |
+## Current development baseline (2026-11-04, with 0.4 s reaction delay)
+
+Game content SHA-256 `5e81f385505bc61cfa794cdb369b78337377c38d7d489cb8b648e4e8e09824cf`; Godot 4.7.2 on macOS. [Configuration](playtrace/20261104T060838473822Z-baseline-h2-development/configuration.json) · [summary](playtrace/20261104T060838473822Z-baseline-h2-development/summary.json); traces are beside them.
+
+| Situation | Seed | Outcome | Score | Steps | Bites | Illegal actions | Calls |
+|---|---:|---|---:|---:|---:|---:|---:|
+| spell31 | 30 | won: all_crocodiles_defeated | 9 | 396 | 0 | 0 | 0 |
+| spell32 | 30 | won: all_crocodiles_defeated | 14 | 215 | 1 | 0 | 0 |
+| spell32_low | 30 | won: all_crocodiles_defeated | 14 | 205 | 1 | 0 | 0 |
+
+Without the delay, earlier the same day ([run](playtrace/20261104T025623889524Z-baseline-h2-development/summary.json)), it won in 396 / 189 / 179 steps with no bites. With 0.6 s ([run](playtrace/20261104T060429310913Z-baseline-h2-development/summary.json)) it won in 396 / 217 / 207 steps with one bite in each spell32 case. The live checkpoint below was run against the baseline before any delay.
+
+## Crocodile speed sweep (2026-11-04)
+
+[Full report](reports/speed-sweep.md). Raising every wave's speed (five non-held-out seeds per setting, baseline only), the 0.4 s baseline wins every spell32 seed up to 1.4× the tuned speed, then 1 in 5 at 1.6×–2.0× and none from 2.2×. An instant-reaction baseline also fails from about 2.2×, so beyond that the game is too fast for this strategy whatever the reaction time; between 1.6× and 2.0× the 0.4 s delay decides it. Spell31 has no breaking point up to 3×; its few losses at 1.6× and 2.0× look like a timing quirk in the baseline's fixed-lead strike prediction (likely, not verified). At the tuned speed the baseline has about 1.4× of headroom, while the student lost several first spell32 attempts at 1.0×.
 
 Earlier versions, all measured in the narrow headless arena, kept as history:
 - **After the sync, before the arena fix** ([run](playtrace/20261104T023058631783Z-baseline-h2-development/summary.json)): 251 / 35 (1 turned back) / 32 (1) steps.
 - **Before the sync, also November 4** ([run](playtrace/20261104T022216325694Z-baseline-h2-development/summary.json)): 251 / 70 (3 turned back) / 43 (2) steps.
 - **October 26** ([run](playtrace/20261026T234254422011Z-baseline-h2-development/summary.json)): 249 / 122 (8) / 43 (2) steps. This run predates the final October 26 edits to `crocodiles.gd` and `danger_encounters.gd`, made about ten minutes later.
 
-Local validation covers **17 tests**, including native record-button play through defeat/return-to-scroll, exact replay, altered-frame rejection, all-height/all-side spacing, the headless arena-width regression and a mocked Vertex request/response check. The previously linked 14-test GitHub CI run is historical until refreshed for this revision.
+Local validation covers **21 tests**, including native record-button play through defeat/return-to-scroll, exact replay, altered-frame rejection, all-height/all-side spacing, the headless arena-width regression and a mocked Vertex request/response check. The previously linked 14-test GitHub CI run is historical until refreshed for this revision.
 
 ## Earlier development baselines (older game versions)
 
@@ -109,7 +119,7 @@ Store every trace, including API failures and limits. The runner hashes game/sui
 
 **Actual GitHub CI:** [dedicated midterm run — success, 14 tests](https://github.com/anonymousanemone/game-dev-f26/actions/runs/40396786117), for commit `88c9a6d09d3b44512490e4238754b4088977a157` on the course fork's `anonymousanemone/midterm` branch. GitHub installed Godot 4.7.2, imported the packaged project and ran the complete deterministic suite under Python 3.12 on Ubuntu. [Machine-readable evidence](reports/ci-evidence.json). This is the game's own workflow, not only the starter tests. The upstream course PR remains unopened. The same workflow is now in the course repository branch as `.github/workflows/midterm-anonymousanemone.yml`. The course's boundary and workflow screen (`scripts/minigames.py`) passes locally for this folder plus that file. A GitHub run for this version is pending until the branch is pushed.
 
-See [reports/deterministic-tests.txt](reports/deterministic-tests.txt). Nineteen local tests now cover heka discovery by looking (and that the prompt no longer states the rule), archived trace replay and tamper detection, native human-session replay, cost reservations and the earlier checks: a complete baseline success, plain/red/heka rules, health/third-bite loss, original click/leave interaction, the two-encounter ending, opposite-side spacing, final-strike victory, seeded JSON replay, legal and illegal actions, terminal lock, the [observed JSON-number regression](reports/regression.md), observation leakage checks, step/call/time limits, failed calls/fallbacks, observation-only input, cost accounting and the Vertex request/response format (mocked). Direct-state GDScript fixtures test rules and are not counted as player victories.
+See [reports/deterministic-tests.txt](reports/deterministic-tests.txt). Twenty-one local tests now cover the crocodile speed setting, the baseline's 0.4 s reaction delay, heka discovery by looking (and that the prompt no longer states the rule), archived trace replay and tamper detection, native human-session replay, cost reservations and the earlier checks: a complete baseline success, plain/red/heka rules, health/third-bite loss, original click/leave interaction, the two-encounter ending, opposite-side spacing, final-strike victory, seeded JSON replay, legal and illegal actions, terminal lock, the [observed JSON-number regression](reports/regression.md), observation leakage checks, step/call/time limits, failed calls/fallbacks, observation-only input, cost accounting and the Vertex request/response format (mocked). Direct-state GDScript fixtures test rules and are not counted as player victories.
 
 Local Godot import, startup, scroll and opened-arena rendering checks passed. The game now uses a direct extraction of the original `dangers.tscn`. All 55 retained scene blocks match the source exactly apart from trailing blank lines between blocks (which Godot rewrites on save), and the 27 copied artwork/font files match byte-for-byte; [direct extraction evidence](reports/direct-extraction.json) and [source patch](reports/extraction.patch) document that boundary. The original HUD, papyrus, captions, avatar, camera and arena animations are retained, while unused encounter nodes and movement/combat code are removed. The packaged course workflow has now run successfully on GitHub, linked above. Add the eventual upstream course PR and refresh evidence for the final submitted version.
 

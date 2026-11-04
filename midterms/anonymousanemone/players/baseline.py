@@ -2,9 +2,9 @@
 import math
 
 # Human reaction time: in the student's recordings a new crocodile is first acted on
-# a median 0.59 s after it appears (44 cases). The baseline ignores a crocodile until
-# it has been visible this long.
-REACTION_SECONDS = 0.6
+# 0.40-1.17 s after it appears (middle half of 44 cases, median 0.59 s). The student set
+# the faster end, 0.4 s. The baseline ignores a crocodile until it has been visible this long.
+REACTION_SECONDS = 0.4
 
 
 def _same(a, b):

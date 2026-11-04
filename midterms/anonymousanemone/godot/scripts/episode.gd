@@ -27,7 +27,10 @@ func _init(scene) -> void:
 		game.get_tree().root.size = Vector2i(ProjectSettings.get_setting("display/window/size/viewport_width"),
 			ProjectSettings.get_setting("display/window/size/viewport_height"))
 
-func reset(seed: int, situation := "spell31") -> Dictionary:
+## `speed_scale` multiplies every wave's crocodile speed (difficulty sweeps; 1.0 = as tuned). It is an
+## evaluation setting chosen by the caller of reset, not something a player controls. Spell 31's
+## single slow lesson crocodile (`first_speed`) is not scaled.
+func reset(seed: int, situation := "spell31", speed_scale := 1.0) -> Dictionary:
 	if situation not in CASES: return {"error": "unknown_case"}
 	game.reset()
 	game.hud.dismiss_intro()
@@ -44,6 +47,11 @@ func reset(seed: int, situation := "spell31") -> Dictionary:
 	game.avatar.position.x = game.rects[e.spear].get_center().x
 	game._update_camera(1.0)
 	game.start_fight(e)
+	if speed_scale != 1.0:
+		game.fight.waves = game.fight.waves.map(func(w):
+			var scaled: Dictionary = w.duplicate()
+			scaled.speed = w.speed * speed_scale
+			return scaled)
 	# The human "Press [space] to start" wait is presentation; agents start in the fight as before.
 	if game.fight.tut == "start": game.fight.tut = ""
 	game.say("Scribe", game._hints.text("dangers." + e.id, "instructions"))

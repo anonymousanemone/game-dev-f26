@@ -34,7 +34,8 @@ Spell32:
 |---|---|---|---|---|---|---|
 | Student, winning attempts | 14/14 | 24–26 s | 1.1–1.2 | 1–2 | 22–35% | 4–10 |
 | Student, losing attempts | 6–11 kills, then three bites | 19–33 s | 1.2–1.6 | 3 | 13–26% | 8–12 |
-| Baseline | 14/14 | 18.9 s | 1.2 | 0 | 53% | 8 |
+| Baseline (before the reaction delay) | 14/14 | 18.9 s | 1.2 | 0 | 53% | 8 |
+| Baseline with 0.4 s reaction delay | 14/14 | 21.5 s | 1.2 | 1 | — | — |
 | Gemini | 0 kills, three bites | 6.5 s | 9 thrusts, no kills | 3 | 8% | 1 |
 
 1. **Accuracy.** On wins the student needed about 1.1 thrusts per kill, the same as the baseline. Gemini never connected.
@@ -56,6 +57,7 @@ Spell32:
 
 - What do you make of Gemini's failure: is it about timing, perception (raw coordinates), priorities (colour over distance), or the prompt? What would you try, and would changing it be fair before the held-out runs?
 - Does the baseline's strength (no bites, wins everything on development cases) help or hurt the comparison you want to make?
-- How close is the agent's heka discovery to yours? Should the look cost change to about 2.5 s based on your recordings?
+- The baseline now waits 0.4 s (the fast end of your reaction times) before reacting to a crocodile. In the [speed sweep](reports/speed-sweep.md) it stays reliable up to 1.4× the tuned speed, yet you lost first attempts at 1.0×. Does that make it a fairer stand-in for a human, and what does it still do that you don't (exact prediction, no hesitation)?
+- How close is the agent's heka discovery to yours? You kept the look cost at 1.0 s although your recordings show about 2.5 s; why is 1.0 s the right choice?
 - What did you learn from losing your first spell32 attempts, and what does it mean that the agents cannot learn across episodes?
 - How might a first-time player differ from you, and what will the partner playtest add?

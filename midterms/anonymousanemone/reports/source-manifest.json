@@ -179,7 +179,7 @@
     },
     {
       "destination": "godot/scenes/dangers.tscn",
-      "destination_sha256": "47f19416dc1b572d7fe0287cf51a6fd914696c2bb71b9837134d9e9c1a8b9874",
+      "destination_sha256": "8d342d2d11df81b71a648984d9df8ff402da4230390ddb0e1a998a7bbb8e2130",
       "source": "godot/scenes/dangers.tscn",
       "sha256": "1cdc488a01b1aba59a8b7fcc3d435c097f03244778b23e063746ec7328c927cc",
       "unchanged": false
@@ -214,7 +214,7 @@
     },
     {
       "destination": "godot/scripts/dangers/dangers.gd",
-      "destination_sha256": "e0865a9910b40242240410a0fc6b5eba5c32aa593a3de6fce4df3be3435bb0d0",
+      "destination_sha256": "9fe3f4c45835648ad9e6ca47ccddfdacf7bc8fd3b77171b392e6c2866b585fd1",
       "source": "godot/scripts/dangers/dangers.gd",
       "sha256": "cbfe99de0d670b6999e10c314110da2823b07906d3d1e1a36118199baeac6e23",
       "unchanged": false
@@ -235,7 +235,7 @@
     },
     {
       "destination": "godot/scripts/episode.gd",
-      "destination_sha256": "4e19d0b73f5f1f431e5206540c74deb330d5890c7122578afc7cfe34f10a6c76",
+      "destination_sha256": "a1066c7ac584b018290f6b42fbb04fc672cbf6414b62dbca2517831b85a089e8",
       "added_for_midterm": true
     },
     {
@@ -308,7 +308,7 @@
     },
     {
       "destination": "godot/scripts/server.gd",
-      "destination_sha256": "524a7b68e84177f930d10239402bae9d29092ad8b373fbd9e3351c855e3a9ebe",
+      "destination_sha256": "d1addb45f8264f418ceae00a3ec3267b48d2037fd590c2653ab8bf0d026d5f92",
       "added_for_midterm": true
     },
     {

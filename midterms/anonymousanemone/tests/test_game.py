@@ -67,6 +67,20 @@ class GameTests(unittest.TestCase):
             o = self.engine.call('step', action=WAIT)['observation']
         self.assertEqual(o['notes'], [])
 
+    def test_speed_scale_for_difficulty_sweeps(self):
+        # An evaluation setting chosen by whoever calls reset; the default leaves the game as tuned.
+        def per_step(scale):
+            o = self.engine.call('reset', seed=30, case='spell32', speed_scale=scale)
+            seen = []
+            while len(seen) < 2:
+                o = self.engine.call('step', action=WAIT)['observation']
+                if o['crocodiles']: seen.append(o['crocodiles'][0]['snout'][0])
+            return abs(seen[1] - seen[0])
+        normal = per_step(1.0)
+        self.assertAlmostEqual(per_step(1.5), 1.5 * normal, delta=1.0)
+        self.engine.call('reset', seed=30, case='spell32')
+        self.assertAlmostEqual(per_step(1.0), normal)
+
     def test_deterministic_seeded_replay(self):
         def play():
             self.engine.call('reset', seed=30, case='spell32')
@@ -108,7 +122,9 @@ class GameTests(unittest.TestCase):
         self.assertEqual(result['outcome']['score'], 9)
 
     def test_baseline_reacts_only_after_human_reaction_time(self):
-        # Student recordings: a new crocodile is acted on about 0.6 s after it appears.
+        from players import baseline
+        self.assertEqual(baseline.REACTION_SECONDS, 0.4)
+        # Student recordings: a new crocodile is acted on 0.4-1.2 s after it appears; the baseline uses 0.4 s.
         def seen(time, x):
             return {'tutorial': '', 'time': time, 'both_sides': False, 'player_x': 500.0,
                     'tip': [400.0, 300.0], 'facing': -1, 'thrusting': False,
@@ -116,7 +132,7 @@ class GameTests(unittest.TestCase):
                                     'width': 200.0, 'height': 80.0}]}
         empty = dict(seen(0.0, 0.0), crocodiles=[])
         now = seen(1.0, 395.0)  # aligned and in reach of the tip
-        just_appeared = [dict(empty, time=t / 10) for t in range(4)] + [seen(.4 + t / 10, 239.0 + 26 * t) for t in range(6)]
+        just_appeared = [dict(empty, time=t / 10) for t in range(7)] + [seen(.7 + t / 10, 317.0 + 26 * t) for t in range(3)]  # visible 0.3 s
         self.assertEqual(choose(now, just_appeared), dict(move=0, face=0, thrust=False, heka=False))
         visible_long_enough = [seen(.1 * t, 135.0 + 26 * t) for t in range(10)]
         self.assertTrue(choose(now, visible_long_enough)['thrust'])

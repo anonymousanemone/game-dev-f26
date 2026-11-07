@@ -86,3 +86,55 @@ authorship, peer experience, current CI and submission remain separate evidence.
 Validation after the frame-reporting fix: all 29 deterministic tests passed in
 35.751 seconds outside the sandbox. No paid or held-out episodes were run for
 these fixes, and no commit was made by the assistant.
+
+## Independent submission review — November 7, 2026
+
+Reviewer: separate Codex review session, with no instruction to approve and no
+implementation work in this session. Reviewed the current course submission at
+`53e56d6e25f401bf5bce9c9ed417b5129f0ea566` plus local documentation edits against
+the supplied midterm HTML instructions and rubric. Current game SHA-256:
+`c0e8645f4a2436dfe8af2d36495a70eb8ab6cf315a2a3857fe003e8fa606da5b`.
+Applied the `crocodile-evaluation` skill through source and saved-artifact
+inspection. The unfinished student-authored `AGENT-TEAM.md` is a known gap.
+
+### Findings
+
+1. **Medium — saved evaluation traces cannot replay against the current build
+   (3a/5a).** `godot/scripts/replay.gd:52–57` rejects any source-manifest or Godot
+   version mismatch. The saved held-out `baseline/spell32-201.jsonl` manifest
+   differs from the current source in `scripts/dangers/dangers.gd`,
+   `scripts/hud.gd`, and `scripts/session_tape.gd`. Matching build archives exist
+   locally but are untracked. A fresh clone needs explicit instructions to
+   recover the evaluated build from Git before replaying historical evidence.
+   This is a static comparison; replay was not executed during this review.
+2. **Medium — timeout enforcement is incomplete (3b).**
+   `players/model.py:127–135` passes a timeout to the network operation; the
+   runner checks elapsed episode time after the call returns
+   (`players/run.py`, `episode`). This does not enforce a hard elapsed-time
+   deadline across response reading: a response that continues delivering data
+   slowly can exceed the declared wall-time budget. This is a source-level
+   concern, not an observed failure in the saved trials.
+3. **Medium — final-version evidence needs updating (3a/3c).** The cited CI
+   covers `ae74a5d`, preceding the current web console and Godot changes. The
+   dedicated workflow runs discovery only under `tests/`, omitting
+   `web_console/tests/`. `PR.md:32` incorrectly describes the committed web
+   console and Godot additions as uncommitted; its artifact links also point to
+   the older version. Refresh the evidence and description for the final head.
+
+### Checks and limits
+
+The labeled rule/source map, authoritative engine state, action validation,
+standard observation boundary, strong baseline, separation of development
+experiments, and substantive human feedback are supported by inspection.
+Recomputed the saved held-out summaries and counted trace step rows: baseline
+6/6 wins, model history=0 0/6, and history=2 2/6; all 14 provider failures are
+retained. The history comparison's limitations are accurately disclosed.
+Parsed the project's Python sources successfully with `ast.parse`.
+
+No files were changed during the review, and no runtime tests, paid calls, or
+held-out gameplay were run. Attempts to retrieve the linked video and hosted CI
+page failed, so recording requirements (5c) and current remote check status
+remain unverified. Source inspection does not certify student authorship,
+source permissions, or human experience. This review does not approve a gate
+or merge. At the user's subsequent request, this report was appended here;
+no implementation fixes were made by this reviewer.

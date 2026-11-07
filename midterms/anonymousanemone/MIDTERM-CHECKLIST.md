@@ -30,7 +30,7 @@
 - [x] Run at least one live model episode and first comparison (due for the October 26 checkpoint; done November 4). Gemini 3.5 Flash-Lite on Vertex AI, spell32 seed 30, with `python -m players.checkpoint`; results in EVALUATION.md and reports/session7-comparison.md.
 - [x] Completed all 18 frozen held-out episodes (six per condition), including model history=0/2, failures and cost; report: reports/held-out-final.md. Evidence committed at aee02a6.
 - [x] Incorporate real peer playtest notes and limitations. Playtest done; feedback (add an intermediate level or ease spell 32) was noted but not implemented. See PEER-NOTES.md.
-- [ ] Record 3–5 minutes and link it from README/PR.
+- [x] Record 3–5 minutes and link it from README/PR: https://youtu.be/vOJ406Mh6Yk
 - [x] Project is in the course repository; dedicated CI passed 29 tests on ae74a5d. See reports/validation/ci-evidence.json.
 - [ ] Refresh CI evidence for later changes; the recorded ae74a5d run does not validate 07a348d or current local edits.
 - [x] Course PR #66 exists, as recorded in EVALUATION.md and CI evidence.

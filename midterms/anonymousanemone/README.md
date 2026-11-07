@@ -120,7 +120,7 @@ The baseline retains up to ten observations and waits 0.4 seconds before reactin
 
 ## Recording and replay
 
-**Required 3–5 minute demonstration URL: pending.** It must show agent play without manual move selection and be linked from the PR too.
+**Demonstration video: [https://youtu.be/vOJ406Mh6Yk](https://youtu.be/vOJ406Mh6Yk).** It shows the game and agent play without manual move selection, and is linked from the PR too.
 
 Native **Record session**, beside Begin, saves a human JSONL and matching local build archive under `playtrace/`. Stop in the top bar or close the game to finish; Escape only leaves combat. Web exports disable human recording.
 
@@ -158,4 +158,4 @@ HUD borders and pixel icons were created using Claude Code. All other artwork de
 - [Agent configuration](agent-config.json), [evaluation skill](skills/crocodile-evaluation/SKILL.md), [experiment skill](skills/make-experiment/SKILL.md)
 - [Skill invocation index](reports/sessions/skill-sessions.md), [implementation exports](reports/sessions/codex-implementation-sessions.md), [review/experiment export](reports/sessions/codex-review-and-experiment-session.md), [combat-tuning export](reports/sessions/codex-combat-tuning-session.md)
 
-The peer playtest is done (see [PEER-NOTES.md](PEER-NOTES.md)); its feedback was noted but not implemented. The student-authored team narrative and the recording remain pending. Submit the course PR URL on CourseWorks by November 7, 11:59 p.m. Complete source and evidence belong in this folder, with the dedicated workflow at `.github/workflows/midterm-anonymousanemone.yml` in the repository root.
+The peer playtest is done (see [PEER-NOTES.md](PEER-NOTES.md)); its feedback was noted but not implemented. The student-authored team narrative remains pending. Submit the course PR URL on CourseWorks by November 7, 11:59 p.m. Complete source and evidence belong in this folder, with the dedicated workflow at `.github/workflows/midterm-anonymousanemone.yml` in the repository root.

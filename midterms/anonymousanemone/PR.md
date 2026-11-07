@@ -13,7 +13,7 @@ Artifacts:
 - [Final evaluation](https://github.com/anonymousanemone/game-dev-f26/blob/ae74a5d699b877f11098c3d09c3d610c6d5c0771/midterms/anonymousanemone/reports/held-out-final.md)
 - [Agent team](https://github.com/anonymousanemone/game-dev-f26/blob/ae74a5d699b877f11098c3d09c3d610c6d5c0771/midterms/anonymousanemone/AGENT-TEAM.md)
 - [Peer notes](https://github.com/anonymousanemone/game-dev-f26/blob/ae74a5d699b877f11098c3d09c3d610c6d5c0771/midterms/anonymousanemone/PEER-NOTES.md)
-- Recording: pending; see the README's Recording and replay section.
+- [Demonstration video (YouTube)](https://youtu.be/vOJ406Mh6Yk)
 - [Independent review](https://github.com/anonymousanemone/game-dev-f26/blob/ae74a5d699b877f11098c3d09c3d610c6d5c0771/midterms/anonymousanemone/review.md)
 - [Implementation sessions](https://github.com/anonymousanemone/game-dev-f26/blob/ae74a5d699b877f11098c3d09c3d610c6d5c0771/midterms/anonymousanemone/reports/sessions/codex-implementation-sessions.md)
 - [Review/experiment session](https://github.com/anonymousanemone/game-dev-f26/blob/ae74a5d699b877f11098c3d09c3d610c6d5c0771/midterms/anonymousanemone/reports/sessions/codex-review-and-experiment-session.md)
@@ -24,7 +24,7 @@ Remaining before ready for review:
 
 - [ ] Complete the student-authored one-page agent-team narrative and personal interpretation/limitations.
 - [x] Peer playtest done; anonymous notes and playtrace data are in PEER-NOTES.md. The feedback was noted but not implemented.
-- [ ] Record and link a viewable 3–5 minute demonstration showing the game and agent play without manual move selection.
+- [x] Recorded and linked a viewable demonstration showing the game and agent play without manual move selection.
 - [x] Course PR checks passed on ae74a5d; updated local CI evidence is prepared for the student to commit.
 - [x] Week 3 scope thread updated by the student.
 - [ ] Submit this PR URL on CourseWorks by November 7, 11:59 p.m.

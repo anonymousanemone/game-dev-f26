@@ -139,7 +139,7 @@ python -m web_console.build
 python -m web_console.server
 ```
 
-Open `http://127.0.0.1:8765`. The console runs both development spells with a shared $5 reservation cap after confirmation, or rehearses with the baseline, then offers verified replay. Its Python backend stays local; it is not a static web upload. Rebuild after game-source changes. Browser playback remains unverified in the recorded implementation checks.
+Open `http://127.0.0.1:8765`. The console runs both development spells with a shared $5 reservation cap after confirmation, or rehearses with the baseline, then offers verified replay. Its Python backend stays local; it is not a static web upload. The console also lists three saved Spell 32 episodes from the held-out evaluation (one baseline win, two model losses) (`web_console/examples.json`) that replay without any new model calls. Rebuild after game-source changes. Browser playback remains unverified in the recorded implementation checks.
 
 ## Credits and reuse
 
@@ -158,4 +158,4 @@ HUD borders and pixel icons were created using Claude Code. All other artwork de
 - [Agent configuration](agent-config.json), [evaluation skill](skills/crocodile-evaluation/SKILL.md), [experiment skill](skills/make-experiment/SKILL.md)
 - [Skill invocation index](reports/sessions/skill-sessions.md), [implementation exports](reports/sessions/codex-implementation-sessions.md), [review/experiment export](reports/sessions/codex-review-and-experiment-session.md), [combat-tuning export](reports/sessions/codex-combat-tuning-session.md)
 
-Peer observations, the student-authored team narrative and the recording remain pending. Submit the course PR URL on CourseWorks by November 7, 11:59 p.m. Complete source and evidence belong in this folder, with the dedicated workflow at `.github/workflows/midterm-anonymousanemone.yml` in the repository root.
+The peer playtest is done (see [PEER-NOTES.md](PEER-NOTES.md)); its feedback was noted but not implemented. The student-authored team narrative and the recording remain pending. Submit the course PR URL on CourseWorks by November 7, 11:59 p.m. Complete source and evidence belong in this folder, with the dedicated workflow at `.github/workflows/midterm-anonymousanemone.yml` in the repository root.

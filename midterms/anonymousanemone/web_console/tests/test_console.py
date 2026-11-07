@@ -36,6 +36,27 @@ class ConsoleTests(unittest.TestCase):
         self.assertEqual(self.request('GET', '/replay/../server.py')[0], 404)
         self.assertEqual(self.request('GET', '/api/config', headers={'Host': 'untrusted.example'})[0], 403)
 
+    def test_saved_examples_are_listed_and_need_no_run_or_spending(self):
+        status, body = self.request('GET', '/api/examples')
+        self.assertEqual(status, 200)
+        examples = json.loads(body)
+        self.assertEqual(len(examples), 3)
+        for item in examples:
+            self.assertTrue(item['run'].startswith('example-'))
+            self.assertTrue(item['episode'].startswith('spell32'))
+            # Trace is served only when the matching browser build exists (409 otherwise).
+            url = f"/api/runs/{item['run']}/trace?episode={item['episode']}"
+            self.assertIn(self.request('GET', url)[0], (200, 409))
+            self.assertIn(self.request('GET', f"/api/runs/{item['run']}/trace?episode=unknown")[0], (404, 409))
+            self.assertEqual(self.request('GET', f"/api/runs/{item['run']}/events")[0], 404)
+
+    def test_examples_outside_playtrace_are_refused(self):
+        listing = {'examples': [{'id': 'x', 'title': 't', 'summary': 's', 'trace': 'godot/project.godot'},
+                                {'id': 'y', 'title': 't', 'summary': 's', 'trace': '../../../etc/hosts'}]}
+        with patch('web_console.server.json.loads', return_value=listing):
+            from web_console.server import load_examples
+            self.assertEqual(load_examples(), {})
+
     def test_run_requires_token_and_explicit_live_authorization(self):
         settings = dict(case='both', policy='model', history=2)
         self.assertEqual(self.request('POST', '/api/runs', settings)[0], 403)

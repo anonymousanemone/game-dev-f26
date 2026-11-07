@@ -23,9 +23,10 @@ Artifacts:
 Remaining before ready for review:
 
 - [ ] Complete the student-authored one-page agent-team narrative and personal interpretation/limitations.
-- [ ] Add actual anonymous peer playtest notes given and received.
+- [x] Peer playtest done; anonymous notes and playtrace data are in PEER-NOTES.md. The feedback was noted but not implemented.
 - [ ] Record and link a viewable 3–5 minute demonstration showing the game and agent play without manual move selection.
 - [x] Course PR checks passed on ae74a5d; updated local CI evidence is prepared for the student to commit.
-- [ ] Check whether the Week 3 scope thread needs updating; submit this PR URL on CourseWorks by November 7, 11:59 p.m.
+- [x] Week 3 scope thread updated by the student.
+- [ ] Submit this PR URL on CourseWorks by November 7, 11:59 p.m.
 
 This is a draft, not a completed submission or gate approval. Newer uncommitted local web-console and Godot edits are not part of this PR. Historical traces retain their original hashes; the subsequent frame-reporting correction is documented in the evaluation report.

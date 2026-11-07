@@ -1,0 +1,22 @@
+{
+  "examples": [
+    {
+      "id": "baseline-win-spell32",
+      "title": "Baseline: a won Spell 32",
+      "summary": "Held-out seed 201, spell32 (default start). The observation-only heuristic baseline turned back all 14 crocodiles in 233 steps with no invalid actions and no model calls. On this seed Gemini 3.5 Flash-Lite lost with 0 turned back (two observations) and 1 turned back (no history).",
+      "trace": "playtrace/20261104T082332827621Z-held-out-final/baseline/spell32-201.jsonl"
+    },
+    {
+      "id": "model-h2-best-spell32",
+      "title": "Model, 2 observations: its furthest Spell 32 attempt",
+      "summary": "Held-out seed 301, spell32_low (same two-sided rules; the bearer starts at the lowest allowed position). Gemini 3.5 Flash-Lite with two prior observations turned back 7 of 14 crocodiles in 148 steps, then lost to three bites. This is the best model result on any Spell 32 case. The baseline won the same case and seed in 182 steps.",
+      "trace": "playtrace/20261104T082332827621Z-held-out-final/model-h2/spell32_low-301.jsonl"
+    },
+    {
+      "id": "model-h0-word-stolen-spell32",
+      "title": "Model, no history: a loss that is not three bites",
+      "summary": "Held-out seed 302, spell32_low. Gemini 3.5 Flash-Lite with no explicit history turned back 2 of 14 crocodiles in 110 steps, and the encounter ended with the terminal reason word_stolen instead of three_bites. It is the only Spell 32 episode in the held-out set that ended this way. The baseline won the same case and seed in 233 steps."  ,
+      "trace": "playtrace/20261104T082332827621Z-held-out-final/model-h0/spell32_low-302.jsonl"
+    }
+  ]
+}

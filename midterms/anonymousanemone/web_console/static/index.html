@@ -20,6 +20,7 @@
 <div><h2>Live terminal</h2><pre id="terminal" tabindex="0" aria-label="Run output"></pre></div>
 <div><h2>JSONL records <a id="download" hidden download="trace.jsonl">Download trace</a></h2><pre id="json" tabindex="0" aria-label="Raw JSONL records"></pre></div>
 </section>
+<section id="examples" hidden><div class="replay-heading"><h2>Saved Spell 32 examples</h2><label>Example<select id="example"></select></label><button id="example-replay">Show replay</button></div><p id="example-summary"></p><p>These are recorded episodes from the final evaluation. Replaying them makes no model calls and costs nothing.</p></section>
 <section><div class="replay-heading"><h2>Visual replay</h2><label>Episode<select id="replay-episode" disabled></select></label><button id="replay" disabled>Show replay</button></div><p>Click inside the replay for controls: Space pauses, Right steps, 1 / 2 / 3 selects speed.</p><iframe id="viewer" title="Recorded encounter replay" hidden allow="autoplay; fullscreen" allowfullscreen></iframe></section>
 <dialog id="confirm-run"><h2>Confirm this run</h2><p id="confirmation-details"></p><p>One attempt per spell, no retries. The shared cap can stop play before an encounter ends. A completed attempt may be a loss.</p><form method="dialog"><button value="cancel">Cancel</button> <button value="confirm">Confirm and run</button></form></dialog>
 </main>

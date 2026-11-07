@@ -73,3 +73,22 @@ $('replay').onclick = () => {
   $('viewer').hidden = false;
   $('viewer').scrollIntoView({behavior:'smooth',block:'start'});
 };
+let examples = [];
+fetch('/api/examples').then(r => r.json()).then(list => {
+  examples = list;
+  if (!list.length) return;
+  $('example').replaceChildren(...list.map(item => new Option(item.title, item.id)));
+  showExampleSummary();
+  $('examples').hidden = false;
+}).catch(() => {});
+function selectedExample() { return examples.find(item => item.id === $('example').value); }
+function showExampleSummary() { const item = selectedExample(); $('example-summary').textContent = item ? item.summary : ''; }
+$('example').onchange = showExampleSummary;
+$('example-replay').onclick = () => {
+  const item = selectedExample();
+  if (!item) return;
+  const trace = `/api/runs/${item.run}/trace?episode=${encodeURIComponent(item.episode)}`;
+  $('viewer').src = `/replay/replay.html?trace=${encodeURIComponent(trace)}`;
+  $('viewer').hidden = false;
+  $('viewer').scrollIntoView({behavior:'smooth',block:'start'});
+};

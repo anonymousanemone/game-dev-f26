@@ -115,6 +115,28 @@ class Run:
             self.process.wait(timeout=10)
 
 
+class Example:
+    """A saved, already-recorded episode served through the same replay route as a run."""
+    done = True
+    ready = True
+
+    def __init__(self, trace):
+        self.traces = {trace.stem: trace}
+        self.replay_identity = None
+
+
+def load_examples():
+    """Saved episodes listed in examples.json; only files under playtrace/ are served."""
+    listing = json.loads((HERE / 'examples.json').read_text())['examples']
+    playtrace = (ROOT / 'playtrace').resolve()
+    examples = {}
+    for item in listing:
+        trace = (ROOT / item['trace']).resolve()
+        if trace.is_relative_to(playtrace) and trace.suffix == '.jsonl' and trace.is_file():
+            examples[item['id']] = (item, Example(trace))
+    return examples
+
+
 def source_identity():
     import hashlib
     from players.engine import godot_binary
@@ -133,6 +155,12 @@ class Server(ThreadingHTTPServer):
         self.lock = threading.Lock()
         self.token = secrets.token_urlsafe(32)
         load_env(ROOT / '.env')
+        self.examples = load_examples()
+        manifest = HERE / 'build' / 'source.json'
+        identity = json.loads(manifest.read_text()) if manifest.exists() else None
+        for key, (_, example) in self.examples.items():
+            example.replay_identity = identity
+            self.runs['example-' + key] = example
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -191,6 +219,11 @@ class Handler(BaseHTTPRequestHandler):
                 'input_price': os.environ.get('CROC_INPUT_PRICE'),
                 'output_price': os.environ.get('CROC_OUTPUT_PRICE'),
                 'price_date': os.environ.get('CROC_PRICE_DATE')}).encode())
+        if path == '/api/examples':
+            return self.send_bytes(json.dumps([
+                {'id': key, 'title': item['title'], 'summary': item['summary'],
+                 'run': 'example-' + key, 'episode': next(iter(example.traces))}
+                for key, (item, example) in self.server.examples.items()]).encode())
         parts = path.strip('/').split('/')
         if len(parts) == 4 and parts[:2] == ['api', 'runs']:
             run = self.server.runs.get(parts[2])
@@ -205,7 +238,7 @@ class Handler(BaseHTTPRequestHandler):
                 if trace is None:
                     return self.send_bytes(b'Unknown episode', 'text/plain', 404)
                 return self.send_bytes(trace.read_bytes(), 'application/x-ndjson')
-            if parts[3] == 'events':
+            if parts[3] == 'events' and isinstance(run, Run):
                 self.send_response(200)
                 self.send_header('Content-Type', 'text/event-stream')
                 self.send_header('Cache-Control', 'no-cache')

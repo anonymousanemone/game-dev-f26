@@ -40,7 +40,7 @@ Earlier narrow-headless-arena results used different geometry and cannot validat
 
 ## Deterministic verification
 
-[Dedicated course CI](https://github.com/columbia-university-ai-games/game-dev-f26/actions/runs/41857753499) passed **29 tests** on commit `ae74a5d699b877f11098c3d09c3d610c6d5c0771`, Godot 4.7.2 / Python 3.12 / Ubuntu. [Machine-readable evidence](reports/validation/ci-evidence.json) records the run and scope. This covers that commit, not subsequent local edits; no paid calls were part of CI.
+[Dedicated course CI](https://github.com/columbia-university-ai-games/game-dev-f26/actions/runs/42418064311) passed **29 tests** on commit `74df51ec755e7f989e4f6fbc73981197bbd54ac7`, Godot 4.7.2 / Python 3.12 / Ubuntu. [Machine-readable evidence](reports/validation/ci-evidence.json) records the run and scope. This covers that commit, not later edits; no paid calls were part of CI.
 
 Run `python -m unittest discover -s tests -v` from `midterms/anonymousanemone/`. Checks cover rule invariants, successful baseline play, legal/illegal actions, terminal locks, seeded determinism, observation boundaries, observed regressions, step/call/time limits, failed calls, budget reservations and replay/tamper detection. Mocked Vertex responses check transport, not live model performance. Direct-state rule fixtures are not player victories. [Independent review findings and responses](review.md) are separate evidence.
 

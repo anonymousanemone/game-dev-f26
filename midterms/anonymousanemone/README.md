@@ -43,7 +43,7 @@ python -m unittest discover -s tests -v
 python -m players.run --policy baseline --split development
 ```
 
-The runner saves configurations, summaries and JSONL traces under `playtrace/`. [The frozen comparison](reports/held-out-final.md) completed 18 episodes: baseline 6/6 wins, model history=0 0/6, history=2 2/6. [Recorded GitHub CI](https://github.com/columbia-university-ai-games/game-dev-f26/actions/runs/41857753499) passed 29 tests on `ae74a5d`; it does not cover newer local edits.
+The runner saves configurations, summaries and JSONL traces under `playtrace/`. [The frozen comparison](reports/held-out-final.md) completed 18 episodes: baseline 6/6 wins, model history=0 0/6, history=2 2/6. [Recorded GitHub CI](https://github.com/columbia-university-ai-games/game-dev-f26/actions/runs/42418064311) passed 29 tests on `74df51e`; it does not cover later edits.
 
 ### Live model setup
 

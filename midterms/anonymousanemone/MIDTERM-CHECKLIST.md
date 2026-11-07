@@ -31,8 +31,8 @@
 - [x] Completed all 18 frozen held-out episodes (six per condition), including model history=0/2, failures and cost; report: reports/held-out-final.md. Evidence committed at aee02a6.
 - [x] Incorporate real peer playtest notes and limitations. Playtest done; feedback (add an intermediate level or ease spell 32) was noted but not implemented. See PEER-NOTES.md.
 - [x] Record 3–5 minutes and link it from README/PR: https://youtu.be/vOJ406Mh6Yk
-- [x] Project is in the course repository; dedicated CI passed 29 tests on ae74a5d. See reports/validation/ci-evidence.json.
-- [ ] Refresh CI evidence for later changes; the recorded ae74a5d run does not validate 07a348d or current local edits.
+- [x] Project is in the course repository; dedicated CI passed 29 tests on 74df51e. See reports/validation/ci-evidence.json.
+- [x] Refresh CI evidence for later changes: 74df51e passed 29 tests (run 42418064311).
 - [x] Course PR #66 exists, as recorded in EVALUATION.md and CI evidence.
 - [ ] Complete/update links in the actual course PR (PR.md is the local draft) and submit its URL on CourseWorks by November 7, 11:59 p.m.
 - [x] Update the Week 3 scope thread if the chosen scope changed (done by the student).

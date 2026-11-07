@@ -1,20 +1,20 @@
 {
   "repository": "columbia-university-ai-games/game-dev-f26",
   "branch": "anonymousanemone/repelling-crocodiles",
-  "tested_commit": "ae74a5d699b877f11098c3d09c3d610c6d5c0771",
+  "tested_commit": "74df51ec755e7f989e4f6fbc73981197bbd54ac7",
   "workflow": ".github/workflows/midterm-anonymousanemone.yml",
   "event": "pull_request",
-  "run_id": 41857753499,
-  "run_url": "https://github.com/columbia-university-ai-games/game-dev-f26/actions/runs/41857753499",
-  "job_url": "https://github.com/columbia-university-ai-games/game-dev-f26/actions/runs/41857753499/job/126670847597",
+  "run_id": 42418064311,
+  "run_url": "https://github.com/columbia-university-ai-games/game-dev-f26/actions/runs/42418064311",
+  "job_url": "https://github.com/columbia-university-ai-games/game-dev-f26/actions/runs/42418064311/job/128540342413",
   "status": "completed",
   "conclusion": "success",
   "test_count": 29,
-  "test_elapsed_seconds": 31.179,
+  "test_elapsed_seconds": 34.623,
   "python": "3.12",
   "godot": "4.7.2",
   "runner": "Ubuntu",
   "upstream_pr": "https://github.com/columbia-university-ai-games/game-dev-f26/pull/66",
   "other_pr_checks": "Submission boundaries, minigame tests/gallery and Python 3.11/3.12 deterministic checks passed; optional live setup skipped.",
-  "limitation": "Verifies committed ae74a5d, not newer uncommitted local changes. No paid model calls were part of CI."
+  "limitation": "Verifies committed 74df51e, not later commits. No paid model calls were part of CI."
 }
